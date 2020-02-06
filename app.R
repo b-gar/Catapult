@@ -65,13 +65,13 @@ ui <- dashboardPage(skin = "yellow", title = "Catapult",
 # Server
 server <- function(input, output) {
     
-    output$table <- renderDataTable(options = list(scroller = TRUE, bPaginate = FALSE),
-        
+    df <- reactive({
+            data <- as.data.frame(rbindlist(lapply(input$files$datapath, read.csv, skip = 9)))
+            
+    })
     
-        df <- rbindlist(lapply(input$files$datapath, read.csv, skip = 9)) 
-        
-    )
     
+    output$table <- renderDataTable(df(), options = list(scroller = TRUE, bPaginate = FALSE))
 }
 
 # Run the application 
