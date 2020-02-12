@@ -41,7 +41,9 @@ ui <- dashboardPage(skin = "yellow", title = "Catapult",
                     ),
                     ## ROW 2 ##
                     fluidRow(
-                        DTOutput("table")
+                        column(12,
+                               withSpinner(DTOutput("table"), type = 7, color = "#FFCC00", size = 2) 
+                        )
                     )
                 ),
                 
@@ -86,7 +88,7 @@ server <- function(input, output) {
         return(dfCombined)
     })
     
-    output$table <- renderDT(Data())
+    output$table <- renderDT(Data(), options = list(scroller = TRUE, bPaginate = FALSE))
 }
 
 # Run the application 
