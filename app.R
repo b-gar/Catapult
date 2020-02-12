@@ -4,8 +4,11 @@ library(shinycssloaders)
 library(DT)
 library(dplyr)
 library(data.table)
+library(stringr)
 
-# Define UI for application that draws a histogram
+# Custom function to get dates from file titles    
+
+# UI #
 ui <- dashboardPage(skin = "yellow", title = "Catapult",
                     
         ## HEADER ##
@@ -30,17 +33,15 @@ ui <- dashboardPage(skin = "yellow", title = "Catapult",
                     ## ROW 1 ##
                     fluidRow(
                         box(width = 3, status = "warning", align = "center",
-                            fileInput("files", "Select CSV File", multiple = TRUE, accept = c(".csv"))
+                            fileInput("files", "Select CSV File(s)", multiple = TRUE, accept = c(".csv"))
                         ),
                         box(width = 3, status = "warning", align = "center",
-                            dateInput("date", label = "Date of File", value = "2020-01-01")
+                            checkboxInput("show", "Show Table")
                         )
                     ),
                     ## ROW 2 ##
                     fluidRow(
-                        column(12,
-                              withSpinner(dataTableOutput("table"), type = 7, color = "#FFCC00", size = 2) 
-                        )
+                        DTOutput("table")
                     )
                 ),
                 
@@ -55,6 +56,7 @@ ui <- dashboardPage(skin = "yellow", title = "Catapult",
                         
                     ## ROW 2 ##
                     fluidRow(
+                        
                     )
                     )
                 )
@@ -62,16 +64,29 @@ ui <- dashboardPage(skin = "yellow", title = "Catapult",
         )
 )
 
-# Server
+# Server #
 server <- function(input, output) {
     
-    df <- reactive({
-            data <- as.data.frame(rbindlist(lapply(input$files$datapath, read.csv, skip = 9)))
+    # Reactive expression to get DF from file input
+    Data <- reactive({
+        req(input$files)
+        # Empty DF for Loop
+        dfCombined <- data.frame()
+        
+        for (i in 1:length(input$files$name)) {
+            df1 <- read.csv(input$files$datapath[i], skip = 9)
+            df1$date <- str_extract(readLines(input$files$datapath[i], n=1), "\\d+/\\d+/\\d+")
+            df1$activity <- str_extract(input$files$name[i], "practice|Practice|Activity|Game")
+            df1$activity[df1$activity == "Activity"] <- "practice"
+            df1$activity <- str_to_title(df1$activity)
+            df1 <- df1 %>% filter(Period.Name == "Session") %>% select(1,4,7:9,16, date, activity)
+            dfCombined <- rbind(df1, dfCombined)
             
+        }
+        return(dfCombined)
     })
     
-    
-    output$table <- renderDataTable(df(), options = list(scroller = TRUE, bPaginate = FALSE))
+    output$table <- renderDT(Data())
 }
 
 # Run the application 
