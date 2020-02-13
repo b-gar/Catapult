@@ -6,8 +6,6 @@ library(dplyr)
 library(data.table)
 library(stringr)
 
-# Custom function to get dates from file titles    
-
 # UI #
 ui <- dashboardPage(skin = "yellow", title = "Catapult",
                     
