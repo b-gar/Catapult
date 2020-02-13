@@ -17,7 +17,7 @@ ui <- dashboardPage(skin = "yellow", title = "Catapult",
         ## SIDEBAR ##
         dashboardSidebar(
             sidebarMenu(
-                menuItem("Import File", tabName = "tab1", icon = icon("file")),
+                menuItem("File Upload", tabName = "tab1", icon = icon("file")),
                 menuItem("test", tabName = "tab2", icon = icon("chart-line")),
                 menuItem("GitHub", icon = icon("github"), href = "https://github.com/blg-uwm/Catapult", newtab = TRUE)
             )
@@ -33,16 +33,16 @@ ui <- dashboardPage(skin = "yellow", title = "Catapult",
                     ## ROW 1 ##
                     fluidRow(
                         box(width = 3, status = "warning", align = "center",
-                            fileInput("files", "Select CSV File(s)", multiple = TRUE, accept = c(".csv"))
-                        ),
-                        box(width = 3, status = "warning", align = "center",
+                            fileInput("files", "Select CSV File(s)", multiple = TRUE, accept = c(".csv")),
                             checkboxInput("show", "Show Table")
                         )
                     ),
                     ## ROW 2 ##
                     fluidRow(
-                        column(12,
+                        conditionalPanel(condition = "input.show == true",
+                            column(12,
                                withSpinner(DTOutput("table"), type = 7, color = "#FFCC00", size = 2) 
+                            )
                         )
                     )
                 ),
@@ -71,7 +71,9 @@ server <- function(input, output) {
     
     # Reactive expression to get DF from file input
     Data <- reactive({
+        
         req(input$files)
+        
         # Empty DF for Loop
         dfCombined <- data.frame()
         
@@ -88,6 +90,7 @@ server <- function(input, output) {
         return(dfCombined)
     })
     
+    # Data Table Output
     output$table <- renderDT(Data(), options = list(scroller = TRUE, bPaginate = FALSE))
 }
 
