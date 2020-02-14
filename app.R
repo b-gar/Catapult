@@ -32,14 +32,14 @@ ui <- dashboardPage(skin = "yellow", title = "Catapult",
                     fluidRow(
                         box(width = 3, status = "warning", align = "center",
                             fileInput("files", "Select CSV File(s)", multiple = TRUE, accept = c(".csv")),
-                            checkboxInput("show", "Show Table")
+                            checkboxInput("show", "Show Table", value = TRUE)
                         )
                     ),
                     ## ROW 2 ##
                     fluidRow(
                         conditionalPanel(condition = "input.show == true",
                             column(12,
-                               withSpinner(DTOutput("table"), type = 7, color = "#FFCC00", size = 2) 
+                               withSpinner(DTOutput("table"), type = 7, color = "#FFCC00", size = 3) 
                             )
                         )
                     )
@@ -93,6 +93,30 @@ server <- function(input, output) {
             dfCombined <- rbind(df1, dfCombined)
             
         }
+        
+            # Add Game-Day Coding
+            dfCombined$nextdate <- lag(dfCombined$date)
+            dfCombined$days_between <- dfCombined$nextdate -dfCombined$date 
+            dfCombined$gdays <- NA
+        
+        
+            for( i in 1:nrow(dfCombined)){
+                if (dfCombined$activity[[i]] == "Game")
+                    dfCombined$gdays[[i]] <- 0
+                else {
+                    if (i>1)
+                        dfCombined$gdays[[i]] <- dfCombined$gdays[[i-1]] + dfCombined$days_between[[i]]
+                    else dfCombined$gdays[[i]] = NA
+                
+            }
+            
+        } 
+        
+            dfCombined$gcode <- ifelse(dfCombined$gdays>0,paste0("G",dfCombined$gdays),"G")
+        
+            dfCombined <- arrange(dfCombined,date)
+            dfCombined <- dfCombined %>% select(1:8,12)
+        
         return(dfCombined)
     })
     
