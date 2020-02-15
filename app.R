@@ -36,7 +36,8 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                         ),
                         box(title = "Upload Catapult File(s)", width = 3, background = "black", align = "center",
                             fileInput("files", "Select CSV File(s)", multiple = TRUE, accept = c(".csv")),
-                            checkboxInput("show", "Show Table", value = TRUE)
+                            tags$h5("Missing Catapult data and want to test out the app?"),
+                            actionButton("demoFiles", "Get Files", onclick = "window.open('https://github.com/blg-uwm/Catapult/tree/master/Catapult%20Demo%20Files', '_blank')")
                         ),
                         column(6,
                                valueBoxOutput("numGames"),
@@ -45,11 +46,7 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                     ),
                     ## ROW 2 ##
                     fluidRow(
-                        conditionalPanel(condition = "input.show == true",
-                            column(12,
-                               withSpinner(DTOutput("table"), type = 7, color = "#FFCC00", size = 3) 
-                            )
-                        )
+                    
                     )
                 ),
                 
@@ -128,9 +125,6 @@ server <- function(input, output) {
         return(dfCombined)
     })
     
-    # Data Table Output
-    output$table <- renderDT(Data(), options = list(scroller = TRUE, bPaginate = FALSE))
-    
     # Reactive Value for Value Box Ouput Game
     numGame <- reactive({
         Data() %>% select(date, activity) %>% filter(activity=="Game") %>% group_by(date) %>% n_distinct()
@@ -151,6 +145,7 @@ server <- function(input, output) {
         req(input$files)
         valueBox(numPractice(), "Practices", color = "black")
     })
+    
 }
 
 # Run the application 
