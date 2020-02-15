@@ -7,16 +7,17 @@ library(data.table)
 library(stringr)
 
 # UI #
-ui <- dashboardPage(skin = "yellow", title = "Catapult",
+ui <- dashboardPage(skin = "black", title = "Catapult",
                     
         ## HEADER ##
-        dashboardHeader(title = strong("Catapalt")),
+        dashboardHeader(title = strong("Catapult")),
 
         ## SIDEBAR ##
         dashboardSidebar(
             sidebarMenu(
                 menuItem("File Upload", tabName = "tab1", icon = icon("file")),
-                menuItem("test", tabName = "tab2", icon = icon("chart-line")),
+                menuItem("Team", tabName = "tab2", icon = icon("users")),
+                menuItem("Player", tabName = "tab3", icon = icon("user")),
                 menuItem("GitHub", icon = icon("github"), href = "https://github.com/blg-uwm/Catapult", newtab = TRUE)
             )
         ),
@@ -30,9 +31,16 @@ ui <- dashboardPage(skin = "yellow", title = "Catapult",
             
                     ## ROW 1 ##
                     fluidRow(
-                        box(width = 3, status = "warning", align = "center",
+                        column(3,
+                            img(src="logo.png", height = "85%", width = "85%")       
+                        ),
+                        box(title = "Upload Catapult File(s)", width = 3, background = "black", align = "center",
                             fileInput("files", "Select CSV File(s)", multiple = TRUE, accept = c(".csv")),
                             checkboxInput("show", "Show Table", value = TRUE)
+                        ),
+                        column(6,
+                               valueBoxOutput("numGames"),
+                               valueBoxOutput("numPractices")
                         )
                     ),
                     ## ROW 2 ##
@@ -112,7 +120,7 @@ server <- function(input, output) {
             
         } 
         
-            dfCombined$gcode <- ifelse(dfCombined$gdays>0,paste0("G",dfCombined$gdays),"G")
+            dfCombined$gcode <- ifelse(dfCombined$gdays>0,paste0("G-",dfCombined$gdays),"G")
         
             dfCombined <- arrange(dfCombined,date)
             dfCombined <- dfCombined %>% select(1:8,12)
@@ -122,6 +130,27 @@ server <- function(input, output) {
     
     # Data Table Output
     output$table <- renderDT(Data(), options = list(scroller = TRUE, bPaginate = FALSE))
+    
+    # Reactive Value for Value Box Ouput Game
+    numGame <- reactive({
+        Data() %>% select(date, activity) %>% filter(activity=="Game") %>% group_by(date) %>% n_distinct()
+    })
+    
+    # Value Box Output Game
+    output$numGames <- renderValueBox({
+        req(input$files)
+        valueBox(numGame(), "Games", color = "black")
+    })
+    # Reactive Value for Value Box Output Practice
+    numPractice <- reactive({
+        Data() %>% select(date, activity) %>% filter(activity=="Practice") %>% group_by(date) %>% n_distinct()
+    })
+    
+    # Value Box Output Practice
+    output$numPractices <- renderValueBox({
+        req(input$files)
+        valueBox(numPractice(), "Practices", color = "black")
+    })
 }
 
 # Run the application 
