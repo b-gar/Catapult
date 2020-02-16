@@ -46,7 +46,9 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                     ),
                     ## ROW 2 ##
                     fluidRow(
-                    
+                        column(12,
+                               withSpinner(DTOutput("table"), type = 7, color = "#FFCC00", size = 2) 
+                        )
                     )
                 ),
                 
@@ -146,6 +148,10 @@ server <- function(input, output) {
         valueBox(numPractice(), "Practices", color = "black")
     })
     
+    # Data Table Output
+    output$table <- renderDT(Data(), extensions = c('Buttons', 'FixedHeader', 'Responsive'), rownames = FALSE, filter = 'top',
+                             options = list(dom = 'Brtip', fixedHeader = TRUE, scroller = TRUE, bPaginate = FALSE, 
+                                            buttons = c('csv', 'excel')))
 }
 
 # Run the application 
