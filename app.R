@@ -44,6 +44,9 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                                valueBoxOutput("numPractices")
                         )
                     ),
+                    br(),
+                    br(),
+                    
                     ## ROW 2 ##
                     fluidRow(
                         column(12,
