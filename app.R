@@ -5,6 +5,8 @@ library(DT)
 library(dplyr)
 library(data.table)
 library(stringr)
+library(plotly)
+library(ggplot2)
 
 # UI #
 ui <- dashboardPage(skin = "black", title = "Catapult",
@@ -66,7 +68,9 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                         
                     ## ROW 2 ##
                     fluidRow(
-                        
+                        column(12,
+                               withSpinner(plotlyOutput("AverageTeamLoad"), type = 7, color = "#FFCC00", size = 2) 
+                        )
                     )
                     )
                 )
@@ -156,6 +160,14 @@ server <- function(input, output) {
     output$table <- renderDT(Data(), extensions = c('Buttons', 'FixedHeader', 'Responsive'), rownames = FALSE, filter = 'top',
                              options = list(dom = 'Brtip', fixedHeader = TRUE, scroller = TRUE, bPaginate = FALSE, 
                                             buttons = c('csv', 'excel')))
+    # Plotly Average Player Load Over Time
+    output$AverageTeamLoad <- renderPlotly({
+        p1 <- Data() %>% select(playerLoad, Date, Activity, gameCode) %>% group_by(Date) %>% 
+            mutate(averagePlayerLoad = mean(playerLoad)) %>% distinct(Date, .keep_all = TRUE) %>% select(-playerLoad) %>%
+            ggplot(aes(x = Date, y = averagePlayerLoad, group = 1)) + geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() +
+            theme(axis.text.x = element_text(angle = 45, hjust = 1))
+        ggplotly(p1)
+    })
 }
 
 # Run the application 
