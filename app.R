@@ -126,13 +126,14 @@ server <- function(input, output) {
         
             dfCombined <- arrange(dfCombined,date)
             dfCombined <- dfCombined %>% select(1:8,12)
+            colnames(dfCombined) <- c("Name", "Position", "Duration", "Distance", "playerLoad", "maxVelocity", "Date", "Activity", "gameCode")
         
         return(dfCombined)
     })
     
     # Reactive Value for Value Box Ouput Game
     numGame <- reactive({
-        Data() %>% select(date, activity) %>% filter(activity=="Game") %>% group_by(date) %>% n_distinct()
+        Data() %>% select(Date, Activity) %>% filter(Activity=="Game") %>% group_by(Date) %>% n_distinct()
     })
     
     # Value Box Output Game
@@ -142,7 +143,7 @@ server <- function(input, output) {
     })
     # Reactive Value for Value Box Output Practice
     numPractice <- reactive({
-        Data() %>% select(date, activity) %>% filter(activity=="Practice") %>% group_by(date) %>% n_distinct()
+        Data() %>% select(Date, Activity) %>% filter(Activity=="Practice") %>% group_by(Date) %>% n_distinct()
     })
     
     # Value Box Output Practice
