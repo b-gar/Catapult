@@ -48,9 +48,21 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                             tags$h5("Missing Catapult data and want to test out the app?"),
                             actionButton("demoFiles", "Get Files", onclick = "window.open('https://github.com/blg-uwm/Catapult/tree/master/Catapult%20Demo%20Files', '_blank')")
                         ),
-                        column(6,
-                               valueBoxOutput("numGames"),
-                               valueBoxOutput("numPractices")
+                        column(3,
+                               valueBoxOutput("numGame"),
+                               valueBoxOutput("numPractice")
+                        ),
+                        tabBox(width = 3,
+                            tabPanel("Games",
+                                verbatimTextOutput("minGame"),
+                                verbatimTextOutput("avgGame"),
+                                verbatimTextOutput("maxGame")
+                            ),
+                            tabPanel("Practices",
+                                verbatimTextOutput("minPractice"),
+                                verbatimTextOutput("avgPractice"),
+                                verbatimTextOutput("maxPractice")
+                            )
                         )
                     ),
                     br(),
@@ -97,7 +109,7 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                     ## ROW 1 ##
                     fluidRow(
                         column(3,
-                            selectInput("player", "Player", choices = NULL)
+                            selectInput("player", "Player", choices = NULL, selected = 1)
                         )
                     )        
                     
@@ -164,25 +176,76 @@ server <- function(input, output, session) {
         return(dfCombined)
     })
     
-    # Reactive Value for Value Box Ouput Game
+    # Number of Games
     numGame <- reactive({
         Data() %>% select(Date, Activity) %>% filter(Activity=="Game") %>% group_by(Date) %>% n_distinct()
     })
-    
-    # Value Box Output Game
-    output$numGames <- renderValueBox({
+    output$numGame <- renderValueBox({
         req(input$files)
-        valueBox(numGame(), "Games", color = "black")
+        valueBox(numGame(), "Games", color = "black", width = 8)
     })
-    # Reactive Value for Value Box Output Practice
+    
+    # Number of Practices
     numPractice <- reactive({
         Data() %>% select(Date, Activity) %>% filter(Activity=="Practice") %>% group_by(Date) %>% n_distinct()
     })
-    
-    # Value Box Output Practice
-    output$numPractices <- renderValueBox({
+    output$numPractice <- renderValueBox({
         req(input$files)
-        valueBox(numPractice(), "Practices", color = "black")
+        valueBox(numPractice(), "Practices", color = "black", width = 8)
+    })
+    
+    # Game Minimum
+    minGame <- reactive({
+        Data() %>% select(Activity, playerLoad) %>% filter(Activity=="Game") %>% summarise(minLoad = min(playerLoad))
+    })
+    output$minGame <- renderText({
+        req(input$files)
+        paste0("Miniumum Player Load: ", minGame())
+    })
+    
+    # Practice Minimum
+    minPractice <- reactive({
+        Data() %>% select(Activity, playerLoad) %>% filter(Activity=="Practice") %>% summarise(minLoad = min(playerLoad))
+    })
+    output$minPractice <- renderText({
+        req(input$files)
+        paste0("Miniumum Player Load: ", minPractice())
+    })
+    
+    # Game Average
+    avgGame <- reactive({
+        Data() %>% select(Activity, playerLoad) %>% filter(Activity=="Game") %>% summarise(avgLoad = mean(playerLoad))
+    })
+    output$avgGame <- renderText({
+        req(input$files)
+        paste0("Average Player Load: ", avgGame())
+    })
+    
+    # Practice Average
+    avgPractice <- reactive({
+        Data() %>% select(Activity, playerLoad) %>% filter(Activity=="Practice") %>% summarise(avgLoad = mean(playerLoad))
+    })
+    output$avgPractice <- renderText({
+        req(input$files)
+        paste0("Average Player Load: ", avgPractice())
+    })
+    
+    # Game Max
+    maxGame <- reactive({
+        Data() %>% select(Activity, playerLoad) %>% filter(Activity=="Game") %>% summarise(maxLoad = max(playerLoad))
+    })
+    output$maxGame <- renderText({
+        req(input$files)
+        paste0("Maximum Player Load: ", maxGame())
+    })
+    
+    # Practice Max
+    maxPractice <- reactive({
+        Data() %>% select(Activity, playerLoad) %>% filter(Activity=="Practice") %>% summarise(maxLoad = max(playerLoad))
+    })
+    output$maxPractice <- renderText({
+        req(input$files)
+        paste0("Maximum Player Load: ", maxPractice())
     })
     
     # Data Table Output
@@ -210,7 +273,7 @@ server <- function(input, output, session) {
         ggplotly(p2)
     })
     
-    # Update Player Selecter Input
+    # Update Player Selector Input
     observe({
         updateSelectInput(session, "player", choices = Data() %>% select(Name) %>% distinct())
     })
