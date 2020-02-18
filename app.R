@@ -96,8 +96,8 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                         
                     ## ROW 1 ##
                     fluidRow(
-                        column(5,
-                               h3(strong(""))
+                        column(3,
+                            selectInput("player", "Player", choices = NULL)
                         )
                     )        
                     
@@ -107,7 +107,7 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
 )
 
 # Server #
-server <- function(input, output) {
+server <- function(input, output, session) {
     
     # Reactive expression to get DF from file input
     Data <- reactive({
@@ -209,6 +209,12 @@ server <- function(input, output) {
             scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Average Player Load by Game Code")
         ggplotly(p2)
     })
+    
+    # Update Player Selecter Input
+    observe({
+        updateSelectInput(session, "player", choices = Data() %>% select(Name) %>% distinct())
+    })
+    
 }
 
 # Run the application 
