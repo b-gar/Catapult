@@ -1,6 +1,6 @@
 # Catapult Shiny App
 
-### This app is for visualizing and making predictions using past practice and game positioning systems data from Catapult Wearable Technologies
+### This app is for visualizing and making predictions using past practice and game positioning systems data from Catapult Wearable Technologies. This was created for Marquette University Sports Performance but may be used by anyone.
 
 ### Shiny Application: https://bengarski.shinyapps.io/Catapult/
 
