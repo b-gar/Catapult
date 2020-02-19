@@ -2,6 +2,7 @@ library(shiny)
 library(shinydashboard)
 library(shinydashboardPlus)
 library(shinycssloaders)
+library(shinyWidgets)
 library(shinyjs)
 library(DT)
 library(dplyr)
@@ -115,7 +116,8 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                     ## ROW 1 ##
                     fluidRow(
                         column(3,
-                            selectInput("player", "Player", choices = NULL, selected = 1)
+                            pickerInput("player", "Player", choices = NULL, multiple = TRUE, 
+                                        options = pickerOptions(actionsBox = TRUE))
                         )
                     )        
                     
@@ -287,7 +289,7 @@ server <- function(input, output, session) {
     
     # Update Player Selector Input
     observe({
-        updateSelectInput(session, "player", choices = Data() %>% select(Name) %>% distinct())
+        updatePickerInput(session, inputId = "player", choices = Data() %>% mutate(Name = as.character(Name)) %>% distinct(Name))
     })
     
 }
