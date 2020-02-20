@@ -55,9 +55,9 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                             actionButton("demoFiles", "Get Files", onclick = "window.open('https://github.com/blg-uwm/Catapult/tree/master/Catapult%20Demo%20Files', '_blank')")
                         ),
                         gradientBox(width = 2, title = "Overview", footer = 
-                               h2(id = "numGame", textOutput("numGame")),
-                               br(),
-                               h2(id = "numPractice", textOutput("numPractice"))
+                            h2(id = "numPractice", textOutput("numPractice")),
+                            br(),
+                            h2(id = "numGame", textOutput("numGame"))
                         ),
                         tabBox(width = 4, title = "Player Load Statistics",
                             tabPanel("Games",
@@ -270,10 +270,11 @@ server <- function(input, output, session) {
     output$AverageTeamLoad <- renderPlotly({
         p1 <- Data() %>% select(playerLoad, Date, Activity, gameCode) %>% group_by(Date) %>% 
             mutate(averagePlayerLoad = mean(playerLoad)) %>% distinct(Date, .keep_all = TRUE) %>% select(-playerLoad) %>%
-            ggplot(aes(x = Date, y = averagePlayerLoad, group = 1)) + geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() +
+            ggplot(aes(x = Date, y = averagePlayerLoad, group = 1, text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "averagePlayerLoad: ", round(averagePlayerLoad, 2)))) + 
+            geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() +
             theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
             scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Average Player Load by Date")
-        ggplotly(p1)
+        ggplotly(p1, tooltip = "text")
     })
     
     # Plotly Average Player Load/gameCode
