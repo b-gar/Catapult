@@ -270,7 +270,8 @@ server <- function(input, output, session) {
     output$AverageTeamLoad <- renderPlotly({
         p1 <- Data() %>% select(playerLoad, Date, Activity, gameCode) %>% group_by(Date) %>% 
             mutate(averagePlayerLoad = mean(playerLoad)) %>% distinct(Date, .keep_all = TRUE) %>% select(-playerLoad) %>%
-            ggplot(aes(x = Date, y = averagePlayerLoad, group = 1, text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "averagePlayerLoad: ", round(averagePlayerLoad, 2)))) + 
+            ggplot(aes(x = Date, y = averagePlayerLoad, group = 1, 
+            text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "averagePlayerLoad: ", round(averagePlayerLoad, 2)))) + 
             geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() +
             theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
             scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Average Player Load by Date")
