@@ -317,7 +317,7 @@ server <- function(input, output, session) {
       ggplotly(p3, tooltip = "text")
     })
     
-    # Plotly Average Player Load/GameCode
+    # Plotly Average Player Load/gameCode
     output$AveragePlayerGameCodeLoad <- renderPlotly({
       p4 <- Data() %>% select(Name, playerLoad, Activity, gameCode) %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7")) %>% 
         mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>% filter(Name == input$player) %>%
