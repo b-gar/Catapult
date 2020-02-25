@@ -168,7 +168,7 @@ server <- function(input, output, session) {
             
         }
         
-            # Add Game-Day Coding
+            # Add Game Day Coding
             dfCombined$nextdate <- lag(dfCombined$date)
             dfCombined$days_between <- dfCombined$nextdate -dfCombined$date 
             dfCombined$gdays <- NA
