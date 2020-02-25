@@ -122,7 +122,7 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                     ## ROW 2 ##
                     fluidRow(
                       column(12,
-                             withSpinner(plotlyOutput("AveragePlayerLoad"), type = 7, color = "#FFCC00", size = 2) 
+                             withSpinner(plotlyOutput("playerLoad"), type = 7, color = "#FFCC00", size = 2) 
                       )
                     ),
                     br(),
@@ -306,15 +306,14 @@ server <- function(input, output, session) {
         updatePickerInput(session, inputId = "player", choices = Data() %>% mutate(Name = as.character(Name)) %>% distinct(Name))
     })
     
-    # Plotly Average Player Load Over Time/Player
-    output$AveragePlayerLoad <- renderPlotly({
-      p3 <- Data() %>% select(Name, playerLoad, Date, Activity, gameCode) %>% filter(Name == input$player) %>% group_by(Date) %>%
-        mutate(averagePlayerLoad = mean(playerLoad)) %>% distinct(Date, .keep_all = TRUE) %>% select(-playerLoad) %>%
-        ggplot(aes(x = Date, y = averagePlayerLoad, group = 1, 
-                   text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "averagePlayerLoad: ", round(averagePlayerLoad, 2)))) + 
+    # Plotly Player Load Over Time/Player
+    output$playerLoad <- renderPlotly({
+      p3 <- Data() %>% select(Name, playerLoad, Date, Activity, gameCode) %>% filter(Name == input$player) %>%
+        ggplot(aes(x = Date, y = playerLoad, group = 1, 
+                   text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "playerLoad: ", round(playerLoad, 2)))) + 
         geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() +
         theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
-        scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Average Player Load Over Time")
+        scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Player Load Over Time")
       ggplotly(p3, tooltip = "text")
     })
     
