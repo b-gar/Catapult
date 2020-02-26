@@ -11,7 +11,7 @@ library(stringr)
 library(plotly)
 library(ggplot2)
 
-# Specify CSS For Error Messsage
+# Specify CSS For Error Messsage/Font
 CSS <- ".shiny-output-error { visibility: hidden; }
 .shiny-output-error:before {
     visibility: visible;
