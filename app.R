@@ -432,7 +432,7 @@ server <- function(input, output, session) {
       )
     })
     
-    # Plotly Team Game Code Graph
+    # Plotly Player Game Code Graph
     output$AveragePlayerGameCode <- renderPlotly({
       selectPlayerGameCode()
     })
