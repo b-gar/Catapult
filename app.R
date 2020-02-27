@@ -92,7 +92,7 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                                radioButtons("radio1", label = NULL, choices = c("Player Load", "Max Velocity"), selected = "Player Load")
                         ),
                         column(10,
-                               withSpinner(plotlyOutput("AverageTeamChrono", height = "285px"), type = 7, color = "#FFCC00", size = 2) 
+                               withSpinner(plotlyOutput("AverageTeamChrono", height = "275px"), type = 7, color = "#FFCC00", size = 2) 
                         )
                       ),
                       br(),
@@ -103,7 +103,7 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                                radioButtons("radio2", label = NULL, choices = c("Player Load", "Max Velocity"), selected = "Player Load")
                         ),
                         column(10,
-                               withSpinner(plotlyOutput("AverageTeamGameCode", height = "285px"), type = 7, color = "#FFCC00", size = 2) 
+                               withSpinner(plotlyOutput("AverageTeamGameCode", height = "275px"), type = 7, color = "#FFCC00", size = 2) 
                         )
                       )
                 ),
@@ -124,7 +124,7 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                              radioButtons("radio3", label = NULL, choices = c("Player Load", "Max Velocity"), selected = "Player Load")
                       ),
                       column(10,
-                             withSpinner(plotlyOutput("AveragePlayerChrono", height = "285px"), type = 7, color = "#FFCC00", size = 2) 
+                             withSpinner(plotlyOutput("AveragePlayerChrono", height = "275px"), type = 7, color = "#FFCC00", size = 2) 
                       )
                     ),
                     br(),
@@ -135,7 +135,7 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                              radioButtons("radio4", label = NULL, choices = c("Player Load", "Max Velocity"), selected = "Player Load")
                       ),
                       column(10,
-                             withSpinner(plotlyOutput("AveragePlayerGameCode", height = "285px"), type = 7, color = "#FFCC00", size = 2) 
+                             withSpinner(plotlyOutput("AveragePlayerGameCode", height = "275px"), type = 7, color = "#FFCC00", size = 2) 
                       )
                     )
                 )
