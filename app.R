@@ -89,21 +89,21 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                       ## ROW 1 ##
                       fluidRow(
                         column(1,
-                               radioButtons("radio1", "Load or Max Velocity", choices = c("Player Load", "Max Velocity"), selected = "Player Load")
+                               radioButtons("radio1", label = NULL, choices = c("Player Load", "Max Velocity"), selected = "Player Load")
                         ),
                         column(11,
-                               withSpinner(plotlyOutput("AverageTeamChrono"), type = 7, color = "#FFCC00", size = 2) 
+                               withSpinner(plotlyOutput("AverageTeamChrono", height = "395px"), type = 7, color = "#FFCC00", size = 2) 
                         )
                       ),
                       br(),
-                      
+                      br(),
                       ## ROW 2 ##
                       fluidRow(
                         column(1,
-                               radioButtons("radio2", "Load or Max Velocity", choices = c("Player Load", "Max Velocity"), selected = "Player Load")
+                               radioButtons("radio2", label = NULL, choices = c("Player Load", "Max Velocity"), selected = "Player Load")
                         ),
                         column(11,
-                               withSpinner(plotlyOutput("AverageTeamGameCode"), type = 7, color = "#FFCC00", size = 2) 
+                               withSpinner(plotlyOutput("AverageTeamGameCode", height = "395px"), type = 7, color = "#FFCC00", size = 2) 
                         )
                       )
                 ),
