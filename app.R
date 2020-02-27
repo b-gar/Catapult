@@ -88,10 +88,10 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                         
                       ## ROW 1 ##
                       fluidRow(
-                        column(2,
-                               radioButtons("radio1", "Load or Max Velocity", choices = c("Player Load", "Max Velocity"), selected = 1)
+                        column(1,
+                               radioButtons("radio1", "Load or Max Velocity", choices = c("Player Load", "Max Velocity"), selected = "Player Load")
                         ),
-                        column(10,
+                        column(11,
                                withSpinner(plotlyOutput("AverageTeamChrono"), type = 7, color = "#FFCC00", size = 2) 
                         )
                       ),
@@ -99,10 +99,10 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                       
                       ## ROW 2 ##
                       fluidRow(
-                        column(2,
-                               radioButtons("radio2", "Load or Max Velocity", choices = c("Player Load", "Max Velocity"), selected = 1)
+                        column(1,
+                               radioButtons("radio2", "Load or Max Velocity", choices = c("Player Load", "Max Velocity"), selected = "Player Load")
                         ),
-                        column(10,
+                        column(11,
                                withSpinner(plotlyOutput("AverageTeamGameCode"), type = 7, color = "#FFCC00", size = 2) 
                         )
                       )
@@ -118,24 +118,24 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                         )
                     ),
                     
-                    ## ROW 2 ##
+                    ## ROW 1 ##
                     fluidRow(
-                      column(6,
-                             withSpinner(plotlyOutput("playerLoad"), type = 7, color = "#FFCC00", size = 2) 
+                      column(1,
+                             radioButtons("radio3", "Load or Max Velocity", choices = c("Player Load", "Max Velocity"), selected = "Player Load")
                       ),
-                      column(6,
-                             withSpinner(plotlyOutput("playerMaxVelocity"), type = 7, color = "#FFCC00", size = 2) 
+                      column(11,
+                             withSpinner(plotlyOutput("AveragePlayerChrono"), type = 7, color = "#FFCC00", size = 2) 
                       )
                     ),
                     br(),
                     
-                    ## ROW 3 ##
+                    ## ROW 2 ##
                     fluidRow(
-                      column(6,
-                             withSpinner(plotlyOutput("AveragePlayerGameCodeLoad"), type = 7, color = "#FFCC00", size = 2) 
+                      column(1,
+                             radioButtons("radio4", "Load or Max Velocity", choices = c("Player Load", "Max Velocity"), selected = "Player Load")
                       ),
-                      column(6,
-                             withSpinner(plotlyOutput("AveragePlayerGameCodeVelocity"), type = 7, color = "#FFCC00", size = 2) 
+                      column(11,
+                             withSpinner(plotlyOutput("AveragePlayerGameCode"), type = 7, color = "#FFCC00", size = 2) 
                       )
                     )
                 )
@@ -313,7 +313,7 @@ server <- function(input, output, session) {
     })
     
     # Graph Input Selector for Team Chronological
-    selectTeamChronological <- reactive({
+    selectTeamChrono <- reactive({
       switch(input$radio1,
              "Player Load" = p1(),
              "Max Velocity" = p2()
@@ -322,7 +322,7 @@ server <- function(input, output, session) {
     
     # Plotly Team Chronological Graph
     output$AverageTeamChrono <- renderPlotly({
-      selectTeamChronological()
+      selectTeamChrono()
     })
     
     # Plotly Average Load by Game Code
@@ -348,7 +348,7 @@ server <- function(input, output, session) {
     })
     
     # Graph Input Selector for Team Game Code
-    selectGameCodeChronological <- reactive({
+    selectTeamGameCode <- reactive({
       switch(input$radio2,
              "Player Load" = p3(),
              "Max Velocity" = p4()
@@ -357,7 +357,7 @@ server <- function(input, output, session) {
     
     # Plotly Team Game Code Graph
     output$AverageTeamGameCode <- renderPlotly({
-      selectGameCodeChronological()
+      selectTeamGameCode()
     })
     
     ## Player Tab ##
@@ -368,47 +368,73 @@ server <- function(input, output, session) {
     })
     
     # Plotly Player Load Over Time/Player
-    output$playerLoad <- renderPlotly({
-      p5 <- Data() %>% select(Name, playerLoad, Date, Activity, gameCode) %>% filter(Name == input$player) %>%
+    p5 <- reactive({
+      p5a <- Data() %>% select(Name, playerLoad, Date, Activity, gameCode) %>% filter(Name == input$player) %>%
         ggplot(aes(x = Date, y = playerLoad, group = 1, 
                    text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "playerLoad: ", round(playerLoad, 2)))) + 
         geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() +
         theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
         scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Player Load Over Time")
-      ggplotly(p5, tooltip = "text")
+      ggplotly(p5a, tooltip = "text")
     })
     
     # Plotly Player Max Velocity Over Time/Player
-    output$playerMaxVelocity <- renderPlotly({
-      p6 <- Data() %>% select(Name, maxVelocity, Date, Activity, gameCode) %>% filter(Name == input$player, maxVelocity < 20) %>%
+    p6 <- reactive({
+      p6a <- Data() %>% select(Name, maxVelocity, Date, Activity, gameCode) %>% filter(Name == input$player, maxVelocity < 20) %>%
         ggplot(aes(x = Date, y = maxVelocity, group = 1, 
                    text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "maxVelocity: ", round(maxVelocity, 2)))) + 
         geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() +
         theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
         scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Max Velocity Over Time")
-      ggplotly(p6, tooltip = "text")
+      ggplotly(p6a, tooltip = "text")
+    })
+    
+    # Graph Input Selector for Player Chronological
+    selectPlayerChrono <- reactive({
+      switch(input$radio3,
+             "Player Load" = p5(),
+             "Max Velocity" = p6()
+      )
+    })
+    
+    # Plotly Player Chronological Graph
+    output$AveragePlayerChrono <- renderPlotly({
+      selectPlayerChrono()
     })
     
     # Plotly Average Player Load/gameCode
-    output$AveragePlayerGameCodeLoad <- renderPlotly({
-      p7 <- Data() %>% select(Name, playerLoad, Activity, gameCode) %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7")) %>% 
+    p7 <- reactive({
+      p7a <- Data() %>% select(Name, playerLoad, Activity, gameCode) %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7")) %>% 
         mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>% filter(Name == input$player) %>%
         group_by(gameCode) %>% mutate(averagePlayerLoad = mean(playerLoad)) %>% select(-playerLoad) %>% 
         ggplot(aes(x = gameCode, y = averagePlayerLoad, group = 1)) + geom_point(aes(color = Activity), size = 4) + geom_line() + 
         theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
         scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Average Player Load by Game Code")
-      ggplotly(p7)
+      ggplotly(p7a)
     })
     
     # Plotly Average Max Velocity/gameCode
-    output$AveragePlayerGameCodeVelocity <- renderPlotly({
-      p8 <- Data() %>% select(Name, maxVelocity, Activity, gameCode) %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7")) %>% 
+    p8 <- reactive({
+      p8a <- Data() %>% select(Name, maxVelocity, Activity, gameCode) %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7")) %>% 
         mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>% 
         filter(Name == input$player, maxVelocity < 20) %>% group_by(gameCode) %>% mutate(averageMaxVelocity = mean(maxVelocity)) %>% 
         select(-maxVelocity) %>% ggplot(aes(x = gameCode, y = averageMaxVelocity, group = 1)) + geom_point(aes(color = Activity), size = 4) + 
         geom_line() + theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
         scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Average Max Velocity by Game Code")
-      ggplotly(p8)
+      ggplotly(p8a)
+    })
+    
+    # Graph Input Selector for Player Game Code
+    selectPlayerGameCode <- reactive({
+      switch(input$radio4,
+             "Player Load" = p7(),
+             "Max Velocity" = p8()
+      )
+    })
+    
+    # Plotly Team Game Code Graph
+    output$AveragePlayerGameCode <- renderPlotly({
+      selectPlayerGameCode()
     })
 }
 # Run the application 
