@@ -88,22 +88,22 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                         
                       ## ROW 1 ##
                       fluidRow(
-                        column(1,
+                        column(2,
                                radioButtons("radio1", label = NULL, choices = c("Player Load", "Max Velocity"), selected = "Player Load")
                         ),
-                        column(11,
-                               withSpinner(plotlyOutput("AverageTeamChrono", height = "395px"), type = 7, color = "#FFCC00", size = 2) 
+                        column(10,
+                               withSpinner(plotlyOutput("AverageTeamChrono", height = "285px"), type = 7, color = "#FFCC00", size = 2) 
                         )
                       ),
                       br(),
-                      br(),
+                      
                       ## ROW 2 ##
                       fluidRow(
-                        column(1,
+                        column(2,
                                radioButtons("radio2", label = NULL, choices = c("Player Load", "Max Velocity"), selected = "Player Load")
                         ),
-                        column(11,
-                               withSpinner(plotlyOutput("AverageTeamGameCode", height = "395px"), type = 7, color = "#FFCC00", size = 2) 
+                        column(10,
+                               withSpinner(plotlyOutput("AverageTeamGameCode", height = "285px"), type = 7, color = "#FFCC00", size = 2) 
                         )
                       )
                 ),
@@ -120,22 +120,22 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                     
                     ## ROW 1 ##
                     fluidRow(
-                      column(1,
+                      column(2,
                              radioButtons("radio3", label = NULL, choices = c("Player Load", "Max Velocity"), selected = "Player Load")
                       ),
-                      column(11,
-                             withSpinner(plotlyOutput("AveragePlayerChrono", height = "395px"), type = 7, color = "#FFCC00", size = 2) 
+                      column(10,
+                             withSpinner(plotlyOutput("AveragePlayerChrono", height = "285px"), type = 7, color = "#FFCC00", size = 2) 
                       )
                     ),
                     br(),
                     
                     ## ROW 2 ##
                     fluidRow(
-                      column(1,
+                      column(2,
                              radioButtons("radio4", label = NULL, choices = c("Player Load", "Max Velocity"), selected = "Player Load")
                       ),
-                      column(11,
-                             withSpinner(plotlyOutput("AveragePlayerGameCode", height = "395px"), type = 7, color = "#FFCC00", size = 2) 
+                      column(10,
+                             withSpinner(plotlyOutput("AveragePlayerGameCode", height = "285px"), type = 7, color = "#FFCC00", size = 2) 
                       )
                     )
                 )
