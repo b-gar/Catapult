@@ -253,7 +253,7 @@ server <- function(input, output, session) {
         geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() +
         theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
         scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Average Load Over Time")
-      ggplotly(p1, tooltip = "text")
+      ggplotly(p1, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
     
     # Plotly Average Max Velocity Over Time
@@ -265,7 +265,7 @@ server <- function(input, output, session) {
         geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() +
         theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
         scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Average Max Velocity Over Time")
-      ggplotly(p2, tooltip = "text")
+      ggplotly(p2, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
     
     # Plotly Average Load by Game Code
@@ -276,7 +276,7 @@ server <- function(input, output, session) {
         ggplot(aes(x = gameCode, y = averagePlayerLoad, group = 1)) + geom_point(aes(color = Activity), size = 4) + geom_line() + 
         theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
         scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Average Load by Game Code")
-      ggplotly(p3)
+      ggplotly(p3) %>% config(displayModeBar = FALSE)
     })
     
     # Plotly Average Max Velocity by Game Code
@@ -287,7 +287,7 @@ server <- function(input, output, session) {
         ggplot(aes(x = gameCode, y = averageMaxVelocity, group = 1)) + geom_point(aes(color = Activity), size = 4) + geom_line() + 
         theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
         scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Average Max Velocity by Game Code")
-      ggplotly(p4)
+      ggplotly(p4) %>% config(displayModeBar = FALSE)
     })
     
     ## Player Tab ##
@@ -305,7 +305,7 @@ server <- function(input, output, session) {
         geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() +
         theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
         scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Player Load Over Time")
-      ggplotly(p5, tooltip = "text")
+      ggplotly(p5, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
     
     # Plotly Player Max Velocity Over Time/Player
@@ -316,7 +316,7 @@ server <- function(input, output, session) {
         geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() +
         theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
         scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Max Velocity Over Time")
-      ggplotly(p6, tooltip = "text")
+      ggplotly(p6, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
     
     # Plotly Average Player Load/gameCode
@@ -327,7 +327,7 @@ server <- function(input, output, session) {
         ggplot(aes(x = gameCode, y = averagePlayerLoad, group = 1)) + geom_point(aes(color = Activity), size = 4) + geom_line() + 
         theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
         scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Average Player Load by Game Code")
-      ggplotly(p7)
+      ggplotly(p7) %>% config(displayModeBar = FALSE)
     })
     
     # Plotly Average Max Velocity/gameCode
@@ -338,7 +338,7 @@ server <- function(input, output, session) {
         select(-maxVelocity) %>% ggplot(aes(x = gameCode, y = averageMaxVelocity, group = 1)) + geom_point(aes(color = Activity), size = 4) + 
         geom_line() + theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
         scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Average Max Velocity by Game Code")
-      ggplotly(p8)
+      ggplotly(p8) %>% config(displayModeBar = FALSE)
     })
     
 }
