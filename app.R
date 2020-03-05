@@ -46,8 +46,8 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
             
                     ## ROW 1 ##
                     fluidRow(
-                        column(3,
-                            img(src="logo.png", height = "85%", width = "85%")       
+                        column(2,
+                            img(src="logo.png", height = "100%", width = "100%")       
                         ),
                         box(title = "Upload Catapult File(s)", width = 3, background = "black", align = "center",
                             fileInput("files", "Select CSV File(s)", multiple = TRUE, accept = c(".csv")),
@@ -55,20 +55,16 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                             actionButton("demoFiles", "Get Files", onclick = "window.open('https://github.com/blg-uwm/Catapult/tree/master/Catapult%20Demo%20Files', '_blank')")
                         ),
                         gradientBox(width = 2, title = "Overview", footer = 
-                            h2(id = "numPractice", textOutput("numPractice")),
+                            h3(id = "numPractice", textOutput("numPractice")),
                             br(),
-                            h2(id = "numGame", textOutput("numGame"))
+                            h3(id = "numGame", textOutput("numGame"))
                         ),
-                        tabBox(width = 4, title = "Player Load Statistics",
+                        tabBox(width = 5, title = "Player Load Statistics",
                             tabPanel("Games",
-                                verbatimTextOutput("minGame"),
-                                verbatimTextOutput("avgGame"),
-                                verbatimTextOutput("maxGame")
+                                verbatimTextOutput("gameSummary")
                             ),
                             tabPanel("Practices",
-                                verbatimTextOutput("minPractice"),
-                                verbatimTextOutput("avgPractice"),
-                                verbatimTextOutput("maxPractice")
+                                verbatimTextOutput("practiceSummary")
                             )
                         )
                     ),
@@ -87,6 +83,7 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                 tabItem(tabName = "tab2",
                         
                       fillPage(
+                        
                         ## ROW 1 ##
                         fluidRow(
                           tabBox(width = 12,
@@ -115,38 +112,41 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                 
                 ## TAB 3 - Player ##
                 tabItem(tabName = "tab3",
-                        
-                    ## ROW 1 ##
-                    fluidRow(
-                        column(3,
-                            pickerInput("player", "Player", choices = NULL, options = pickerOptions(actionsBox = TRUE))
-                        )
-                    ),
+                   fillPage(
+                     
+                     ## ROW 1 ##
+                     fluidRow(
+                       column(3,
+                              pickerInput("player", "Player", choices = NULL, options = pickerOptions(actionsBox = TRUE))
+                       )
+                     ),
+                     
+                     ## ROW 2 ##
+                     fluidRow(
+                       tabBox(width = 12,
+                              tabPanel("Player Load",
+                                       withSpinner(plotlyOutput("PlayerLoadChrono", height = "27vh"), type = 7, color = "#FFCC00", size = 2)
+                              ),
+                              tabPanel("Max Velocity",
+                                       withSpinner(plotlyOutput("PlayerVelocityChrono", height = "27vh"), type = 7, color = "#FFCC00", size = 2)
+                              )
+                       )
+                     ),
+                     br(),
+                     
+                     ## ROW 3 ##
+                     fluidRow(
+                       tabBox(width = 12,
+                              tabPanel("Player Load",
+                                       withSpinner(plotlyOutput("PlayerLoadCode", height = "27vh"), type = 7, color = "#FFCC00", size = 2)
+                              ),
+                              tabPanel("Max Velocity",
+                                       withSpinner(plotlyOutput("PlayerVelocityCode", height = "27vh"), type = 7, color = "#FFCC00", size = 2)
+                              )
+                       )
+                     )
+                   )     
                     
-                    ## ROW 2 ##
-                    fluidRow(
-                      tabBox(width = 12,
-                             tabPanel("Player Load",
-                                      withSpinner(plotlyOutput("PlayerLoadChrono", height = "275px"), type = 7, color = "#FFCC00", size = 2)
-                             ),
-                             tabPanel("Max Velocity",
-                                      withSpinner(plotlyOutput("PlayerVelocityChrono", height = "275px"), type = 7, color = "#FFCC00", size = 2)
-                             )
-                      )
-                    ),
-                    br(),
-                    
-                    ## ROW 3 ##
-                    fluidRow(
-                      tabBox(width = 12,
-                             tabPanel("Player Load",
-                                      withSpinner(plotlyOutput("PlayerLoadCode", height = "275px"), type = 7, color = "#FFCC00", size = 2)
-                             ),
-                             tabPanel("Max Velocity",
-                                      withSpinner(plotlyOutput("PlayerVelocityCode", height = "275px"), type = 7, color = "#FFCC00", size = 2)
-                             )
-                      )
-                    )
                 )
             )
         )
@@ -230,64 +230,18 @@ server <- function(input, output, session) {
         paste(numPractice(), "Practices")
     })
     
-    # Game Minimum
-    minGame <- reactive({
-        Data() %>% select(Activity, playerLoad) %>% filter(Activity=="Game") %>% 
-            summarise(minLoad = min(playerLoad)) %>% round(digits = 2)
-    })
-    output$minGame <- renderText({
+    # Game Summary
+    output$gameSummary <- renderPrint({
         req(input$files)
-        paste0("Min: ", minGame())
+        gs <- Data() %>% filter(Activity == "Game") %>% select(Distance, playerLoad, maxVelocity) 
+        summary(gs)
     })
     
-    # Practice Minimum
-    minPractice <- reactive({
-        Data() %>% select(Activity, playerLoad) %>% filter(Activity=="Practice") %>% 
-            summarise(minLoad = min(playerLoad)) %>% round(digits = 2)
-    })
-    output$minPractice <- renderText({
+    # Practice Summary
+    output$practiceSummary <- renderPrint({
         req(input$files)
-        paste0("Min: ", minPractice())
-    })
-    
-    # Game Average
-    avgGame <- reactive({
-        Data() %>% select(Activity, playerLoad) %>% filter(Activity=="Game") %>% 
-            summarise(avgLoad = mean(playerLoad)) %>% round(digits = 2)
-    })
-    output$avgGame <- renderText({
-        req(input$files)
-        paste0("Mean: ", avgGame())
-    })
-    
-    # Practice Average
-    avgPractice <- reactive({
-        Data() %>% select(Activity, playerLoad) %>% filter(Activity=="Practice") %>% 
-            summarise(avgLoad = mean(playerLoad)) %>% round(digits = 2)
-    })
-    output$avgPractice <- renderText({
-        req(input$files)
-        paste0("Mean: ", avgPractice())
-    })
-    
-    # Game Max
-    maxGame <- reactive({
-        Data() %>% select(Activity, playerLoad) %>% filter(Activity=="Game") %>% 
-            summarise(maxLoad = max(playerLoad)) %>% round(digits = 2)
-    })
-    output$maxGame <- renderText({
-        req(input$files)
-        paste0("Max: ", maxGame())
-    })
-    
-    # Practice Max
-    maxPractice <- reactive({
-        Data() %>% select(Activity, playerLoad) %>% filter(Activity=="Practice") %>% 
-            summarise(maxLoad = max(playerLoad)) %>% round(digits = 2)
-    })
-    output$maxPractice <- renderText({
-        req(input$files)
-        paste0("Max: ", maxPractice())
+        ps <- Data() %>% filter(Activity == "Practice") %>% select(Distance, playerLoad, maxVelocity)  
+        summary(ps)
     })
     
     # Data Table Output
