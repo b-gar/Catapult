@@ -59,7 +59,7 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                             br(),
                             h3(id = "numGame", textOutput("numGame"))
                         ),
-                        tabBox(width = 5, title = "Player Load Statistics",
+                        tabBox(width = 5, title = "Variable Summary",
                             tabPanel("Games",
                                 verbatimTextOutput("gameSummary")
                             ),
