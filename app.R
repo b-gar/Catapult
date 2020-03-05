@@ -226,14 +226,14 @@ server <- function(input, output, session) {
     # Game Summary
     output$gameSummary <- renderPrint({
         req(input$files)
-        gs <- Data() %>% filter(Activity == "Game") %>% select(Distance, playerLoad, maxVelocity) 
+        gs <- Data() %>% filter(Activity == "Game") %>% select(Duration, Distance, playerLoad, maxVelocity) 
         summary(gs)
     })
     
     # Practice Summary
     output$practiceSummary <- renderPrint({
         req(input$files)
-        ps <- Data() %>% filter(Activity == "Practice") %>% select(Distance, playerLoad, maxVelocity)  
+        ps <- Data() %>% filter(Activity == "Practice") %>% select(Duration, Distance, playerLoad, maxVelocity)  
         summary(ps)
     })
     
