@@ -252,7 +252,7 @@ server <- function(input, output, session) {
                    text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "averagePlayerLoad: ", round(averagePlayerLoad, 2)))) + 
         geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() +
         theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
-        scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Average Load Over Time")
+        scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Average Player Load Over Time")
       ggplotly(p1, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
     
@@ -275,7 +275,7 @@ server <- function(input, output, session) {
         group_by(gameCode) %>% mutate(averagePlayerLoad = mean(playerLoad)) %>% select(-playerLoad) %>% 
         ggplot(aes(x = gameCode, y = averagePlayerLoad, group = 1)) + geom_point(aes(color = Activity), size = 4) + geom_line() + 
         theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
-        scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Average Load by Game Code")
+        scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Average Player Load by Game Code")
       ggplotly(p3) %>% config(displayModeBar = FALSE)
     })
     
