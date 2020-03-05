@@ -82,71 +82,64 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                 ## TAB 2 - Team ##
                 tabItem(tabName = "tab2",
                         
-                      fillPage(
-                        
-                        ## ROW 1 ##
-                        fluidRow(
-                          tabBox(width = 12,
-                                 tabPanel("Player Load",
-                                          withSpinner(plotlyOutput("TeamLoadChrono", height = "30vh"), type = 7, color = "#FFCC00", size = 2)
-                                 ),
-                                 tabPanel("Max Velocity",
-                                          withSpinner(plotlyOutput("TeamVelocityChrono", height = "30vh"), type = 7, color = "#FFCC00", size = 2)
-                                 )
-                          )
-                        ),
-                        
-                        ## ROW 2 ##
-                        fluidRow(
-                          tabBox(width = 12,
-                                 tabPanel("Player Load",
-                                          withSpinner(plotlyOutput("TeamLoadCode", height = "30vh"), type = 7, color = "#FFCC00", size = 2)
-                                 ),
-                                 tabPanel("Max Velocity",
-                                          withSpinner(plotlyOutput("TeamVelocityCode", height = "30vh"), type = 7, color = "#FFCC00", size = 2)
-                                 )
-                          )
+                      ## ROW 1 ##
+                      fluidRow(
+                        tabBox(width = 12,
+                               tabPanel("Player Load",
+                                        withSpinner(plotlyOutput("TeamLoadChrono", height = "32vh"), type = 7, color = "#FFCC00", size = 2)
+                               ),
+                               tabPanel("Max Velocity",
+                                        withSpinner(plotlyOutput("TeamVelocityChrono", height = "32vh"), type = 7, color = "#FFCC00", size = 2)
+                               )
+                        )
+                      ),
+                      
+                      ## ROW 2 ##
+                      fluidRow(
+                        tabBox(width = 12,
+                               tabPanel("Player Load",
+                                        withSpinner(plotlyOutput("TeamLoadCode", height = "32vh"), type = 7, color = "#FFCC00", size = 2)
+                               ),
+                               tabPanel("Max Velocity",
+                                        withSpinner(plotlyOutput("TeamVelocityCode", height = "32vh"), type = 7, color = "#FFCC00", size = 2)
+                               )
                         )
                       )
                 ),
                 
                 ## TAB 3 - Player ##
                 tabItem(tabName = "tab3",
-                   fillPage(
                      
-                     ## ROW 1 ##
-                     fluidRow(
-                       column(3,
-                              pickerInput("player", "Player", choices = NULL, options = pickerOptions(actionsBox = TRUE))
-                       )
-                     ),
-                     
-                     ## ROW 2 ##
-                     fluidRow(
-                       tabBox(width = 12,
-                              tabPanel("Player Load",
-                                       withSpinner(plotlyOutput("PlayerLoadChrono", height = "27vh"), type = 7, color = "#FFCC00", size = 2)
-                              ),
-                              tabPanel("Max Velocity",
-                                       withSpinner(plotlyOutput("PlayerVelocityChrono", height = "27vh"), type = 7, color = "#FFCC00", size = 2)
-                              )
-                       )
-                     ),
-                     br(),
-                     
-                     ## ROW 3 ##
-                     fluidRow(
-                       tabBox(width = 12,
-                              tabPanel("Player Load",
-                                       withSpinner(plotlyOutput("PlayerLoadCode", height = "27vh"), type = 7, color = "#FFCC00", size = 2)
-                              ),
-                              tabPanel("Max Velocity",
-                                       withSpinner(plotlyOutput("PlayerVelocityCode", height = "27vh"), type = 7, color = "#FFCC00", size = 2)
-                              )
-                       )
+                   ## ROW 1 ##
+                   fluidRow(
+                     column(3,
+                            pickerInput("player", "Player", choices = NULL, options = pickerOptions(actionsBox = TRUE))
                      )
-                   )     
-                    
+                   ),
+                   
+                   ## ROW 2 ##
+                   fluidRow(
+                     tabBox(width = 12,
+                            tabPanel("Player Load",
+                                     withSpinner(plotlyOutput("PlayerLoadChrono", height = "28vh"), type = 7, color = "#FFCC00", size = 2)
+                            ),
+                            tabPanel("Max Velocity",
+                                     withSpinner(plotlyOutput("PlayerVelocityChrono", height = "28vh"), type = 7, color = "#FFCC00", size = 2)
+                            )
+                     )
+                   ),
+                   
+                   ## ROW 3 ##
+                   fluidRow(
+                     tabBox(width = 12,
+                            tabPanel("Player Load",
+                                     withSpinner(plotlyOutput("PlayerLoadCode", height = "28vh"), type = 7, color = "#FFCC00", size = 2)
+                            ),
+                            tabPanel("Max Velocity",
+                                     withSpinner(plotlyOutput("PlayerVelocityCode", height = "28vh"), type = 7, color = "#FFCC00", size = 2)
+                            )
+                     )
+                   )
                 )
             )
         )
