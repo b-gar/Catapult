@@ -86,28 +86,29 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                 ## TAB 2 - Team ##
                 tabItem(tabName = "tab2",
                         
-                      ## ROW 1 ##
-                      fluidRow(
-                        tabBox(width = 12,
-                                tabPanel("Player Load",
-                                        withSpinner(plotlyOutput("TeamLoadChrono", height = "275px"), type = 7, color = "#FFCC00", size = 2)
-                                ),
-                                tabPanel("Max Velocity",
-                                        withSpinner(plotlyOutput("TeamVelocityChrono", height = "275px"), type = 7, color = "#FFCC00", size = 2)
-                                )
-                              )
-                      ),
-                      br(),
-                      
-                      ## ROW 2 ##
-                      fluidRow(
-                        tabBox(width = 12,
-                               tabPanel("Player Load",
-                                        withSpinner(plotlyOutput("TeamLoadCode", height = "275px"), type = 7, color = "#FFCC00", size = 2)
-                               ),
-                               tabPanel("Max Velocity",
-                                        withSpinner(plotlyOutput("TeamVelocityCode", height = "275px"), type = 7, color = "#FFCC00", size = 2)
-                               )
+                      fillPage(
+                        ## ROW 1 ##
+                        fluidRow(
+                          tabBox(width = 12,
+                                 tabPanel("Player Load",
+                                          withSpinner(plotlyOutput("TeamLoadChrono", height = "30vh"), type = 7, color = "#FFCC00", size = 2)
+                                 ),
+                                 tabPanel("Max Velocity",
+                                          withSpinner(plotlyOutput("TeamVelocityChrono", height = "30vh"), type = 7, color = "#FFCC00", size = 2)
+                                 )
+                          )
+                        ),
+                        
+                        ## ROW 2 ##
+                        fluidRow(
+                          tabBox(width = 12,
+                                 tabPanel("Player Load",
+                                          withSpinner(plotlyOutput("TeamLoadCode", height = "30vh"), type = 7, color = "#FFCC00", size = 2)
+                                 ),
+                                 tabPanel("Max Velocity",
+                                          withSpinner(plotlyOutput("TeamVelocityCode", height = "30vh"), type = 7, color = "#FFCC00", size = 2)
+                                 )
+                          )
                         )
                       )
                 ),
