@@ -177,17 +177,17 @@ server <- function(input, output, session) {
         
             # Add Game Day Coding
             dfCombined$nextdate <- lag(dfCombined$date)
-            dfCombined$days_between <- dfCombined$nextdate -dfCombined$date 
+            dfCombined$days_between <- dfCombined$nextdate - dfCombined$date 
             dfCombined$gdays <- NA
         
         
-            for( i in 1:nrow(dfCombined)){
+            for(i in 1:nrow(dfCombined)){
                 if (dfCombined$activity[[i]] == "Game")
                     dfCombined$gdays[[i]] <- 0
                 else {
                     if (i>1)
                         dfCombined$gdays[[i]] <- dfCombined$gdays[[i-1]] + dfCombined$days_between[[i]]
-                    else dfCombined$gdays[[i]] = NA
+                    else dfCombined$gdays[[i]] <- NA
                 
             }
             
