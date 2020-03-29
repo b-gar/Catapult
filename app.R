@@ -156,8 +156,9 @@ server <- function(input, output, session) {
         # Empty DF for Loop
         dfCombined <- data.frame()
         
+        # Combine Files Inputted
         for (i in 1:length(input$files$name)) {
-            # Read File
+            
             df1 <- read.csv(input$files$datapath[i], skip = 9)
             
             # Get Date From File Name
@@ -180,7 +181,6 @@ server <- function(input, output, session) {
             dfCombined$days_between <- dfCombined$nextdate - dfCombined$date 
             dfCombined$gdays <- NA
         
-        
             for(i in 1:nrow(dfCombined)){
                 if (dfCombined$activity[[i]] == "Game")
                     dfCombined$gdays[[i]] <- 0
@@ -189,15 +189,16 @@ server <- function(input, output, session) {
                         dfCombined$gdays[[i]] <- dfCombined$gdays[[i-1]] + dfCombined$days_between[[i]]
                     else dfCombined$gdays[[i]] <- NA
                 
-            }
+                }
             
-        } 
+            } 
         
             dfCombined$gcode <- ifelse(dfCombined$gdays>0,paste0("G-",dfCombined$gdays),"G")
         
             dfCombined <- arrange(dfCombined,date)
             dfCombined <- dfCombined %>% select(1:8,12)
-            colnames(dfCombined) <- c("Name", "Position", "Duration", "Distance", "playerLoad", "maxVelocity", "Date", "Activity", "gameCode")
+            colnames(dfCombined) <- c("Name", "Position", "Duration", "Distance", "playerLoad", "maxVelocity", "Date", 
+                                      "Activity", "gameCode")
             dfCombined <- dfCombined %>% filter(Duration != 0, Distance != 0, playerLoad != 0, maxVelocity != 0)
             
         return(dfCombined)
