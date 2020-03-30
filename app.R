@@ -200,7 +200,7 @@ server <- function(input, output, session) {
             colnames(dfCombined) <- c("Name", "Position", "Duration", "Distance", "playerLoad", "maxVelocity", "Date", 
                                       "Activity", "gameCode")
             dfCombined <- dfCombined %>% filter(Duration != 0, Distance != 0, playerLoad != 0, maxVelocity != 0)
-            
+         
         return(dfCombined)
     })
     
@@ -242,7 +242,6 @@ server <- function(input, output, session) {
     output$table <- renderDT(Data(), extensions = c('Buttons', 'FixedHeader', 'Responsive'), rownames = FALSE, filter = 'top',
                              options = list(dom = 'Brtip', fixedHeader = TRUE, scroller = TRUE, bPaginate = FALSE, 
                                             buttons = c('csv', 'excel')))
-    ## PLOTLY VISUALS ##
     ## Team Tab ##
     
     # Plotly Average Load Over Time
@@ -289,6 +288,10 @@ server <- function(input, output, session) {
         theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
         scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Average Max Velocity by Game Code")
       ggplotly(p4) %>% config(displayModeBar = FALSE)
+    })
+    
+    output$TeamACWR <- renderPlotly({
+      tACWR <- Data() %>% select(playerLoad)
     })
     
     ## Player Tab ##
@@ -341,6 +344,8 @@ server <- function(input, output, session) {
         scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Average Max Velocity by Game Code")
       ggplotly(p8) %>% config(displayModeBar = FALSE)
     })
+    
+    ## ACWR ##
     
 }
 # Run the application 
