@@ -17,9 +17,7 @@ test <- df %>% group_by(Date) %>% summarise(playerLoad = sum(playerLoad)) %>%
 # Turn DF Long to Plot in ggplot2
 library(reshape2)
 
-testLong <- melt(test)
-testLong$Date <- as.Date(testLong$Date)
-colnames(testLong) <- c("Date", "Variable", "Value")
+testLong <- test %>% melt() %>% transmute(Date= as.Date(Date), Variable = variable, Value = value)
 g <- ggplot(testLong, aes(Date, Value, color = Variable)) + geom_line(group = 1, alpha = 0.9) + 
   scale_color_manual(name = "", values = c("black", "#1b9e77", "#7570b3")) + 
   ggtitle("Player Load Acute/Chronic") + xlab("") + ylab("Player Load") + theme_bw() + theme(plot.title = element_text(hjust = 0.5))
