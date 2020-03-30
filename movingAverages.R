@@ -7,15 +7,12 @@ library(plotly)
 df <- read.csv("catapultValues.csv")
 df$X <- NULL
 
-# Team EWMA by Summation of Player Load
-test <- df %>% group_by(Date) %>% summarise(playerLoad = sum(playerLoad))
+# Team EWMA by Summation of Player Load Using TTR Package
+test <- df %>% group_by(Date) %>% summarise(playerLoad = sum(playerLoad)) %>% 
+  mutate(Acute = EMA(test$playerLoad, 7), Chronic = EMA(test$playerLoad, 28))
 
 # EMA: lambda*valueToday + 1-lambda * EWMABefore
 # lambda = 2/n+1
-
-# EWMA Using TTR Package
-test$Acute <- EMA(test$playerLoad, 7)
-test$Chronic <- EMA(test$playerLoad, 28)
 
 # Turn DF Long to Plot in ggplot2
 library(reshape2)
