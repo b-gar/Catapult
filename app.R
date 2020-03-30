@@ -290,8 +290,27 @@ server <- function(input, output, session) {
       ggplotly(p4) %>% config(displayModeBar = FALSE)
     })
     
-    output$TeamACWR <- renderPlotly({
-      tACWR <- Data() %>% select(playerLoad)
+    # Team EWMA
+    teamEWMA <- reactive({
+      te <- Data() %>% group_by(Date) %>% summarise(playerLoadSum = sum(playerLoad))
+      te$ewma <- NA
+      te$sma <- SMA(te$playerLoadSum, 7)
+      
+      for(i in 1:nrow(te)){
+        if(i < 7){
+          te$ewma[[i]] <- NA
+        }
+        else{
+          if(i == 7){
+            te$ewma[[i]] <- te$sma[[i]]
+          }
+          else{
+            te$ewma[[i]] <- te$playerLoadSum[[i]] * (2/8) + te$ewma[[i-1]]
+          }
+        }
+        
+      }
+        
     })
     
     ## Player Tab ##
@@ -344,9 +363,6 @@ server <- function(input, output, session) {
         scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Average Max Velocity by Game Code")
       ggplotly(p8) %>% config(displayModeBar = FALSE)
     })
-    
-    ## ACWR ##
-    
 }
 # Run the application 
 shinyApp(ui = ui, server = server)
