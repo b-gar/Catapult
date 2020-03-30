@@ -8,14 +8,14 @@ df <- read.csv("catapultValues.csv")
 df$X <- NULL
 
 # Team EWMA by Summation of Player Load
-test <- df %>% group_by(Date) %>% summarise(PlayerLoad = sum(playerLoad))
+test <- df %>% group_by(Date) %>% summarise(playerLoad = sum(playerLoad))
 
 # EMA: lambda*valueToday + 1-lambda * EWMABefore
 # lambda = 2/n+1
 
 # EWMA Using TTR Package
-test$Acute <- EMA(test$PlayerLoad, 7)
-test$Chronic <- EMA(test$PlayerLoad, 28)
+test$Acute <- EMA(test$playerLoad, 7)
+test$Chronic <- EMA(test$playerLoad, 28)
 
 # Turn DF Long to Plot in ggplot2
 library(reshape2)
@@ -33,8 +33,9 @@ ggplotly(g)
 library(tidyquant)
 
 test$Date <- as.Date(test$Date)
-ggplot(test, aes(Date, PlayerLoad)) + geom_line(aes(color = "Values"), alpha = 0.5) + 
-  geom_ma(aes(color = "Acute"), ma_fun = EMA, n = 7, show.legend = TRUE, linetype = 1) + 
-  geom_ma(aes(color = "Chronic"), ma_fun = EMA, n = 28, show.legend = TRUE, linetype = 1) +
+ggplot(test, aes(Date, playerLoad)) + geom_line(aes(color = "Values")) + 
+  geom_ma(aes(color = "Acute"), ma_fun = EMA, n = 7, show.legend = TRUE, linetype = 1, size = 1) + 
+  geom_ma(aes(color = "Chronic"), ma_fun = EMA, n = 28, show.legend = TRUE, linetype = 1, size = 1) +
   scale_color_manual(name = "", breaks = c("Values", "Acute", "Chronic"), 
-                     values = c("Values" = "black", "Acute" = "#1b9e77", "Chronic" = "#7570b3"))
+                     values = c("Values" = "black", "Acute" = "#1b9e77", "Chronic" = "#7570b3")) + 
+  ggtitle("Player Load Acute/Chronic") + xlab("") + ylab("Player Load") + theme_bw() + theme(plot.title = element_text(hjust = 0.5))
