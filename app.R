@@ -10,6 +10,8 @@ library(data.table)
 library(stringr)
 library(plotly)
 library(ggplot2)
+library(reshape2)
+library(TTR)
 
 # Specify CSS For Error Messsage/Font
 CSS <- ".shiny-output-error { visibility: hidden; }
@@ -290,27 +292,13 @@ server <- function(input, output, session) {
       ggplotly(p4) %>% config(displayModeBar = FALSE)
     })
     
-    # Team EWMA
-    teamEWMA <- reactive({
-      te <- Data() %>% group_by(Date) %>% summarise(playerLoadSum = sum(playerLoad))
-      te$ewma <- NA
-      te$sma <- SMA(te$playerLoadSum, 7)
-      
-      for(i in 1:nrow(te)){
-        if(i < 7){
-          te$ewma[[i]] <- NA
-        }
-        else{
-          if(i == 7){
-            te$ewma[[i]] <- te$sma[[i]]
-          }
-          else{
-            te$ewma[[i]] <- te$playerLoadSum[[i]] * (2/8) + te$ewma[[i-1]]
-          }
-        }
-        
-      }
-        
+    # Team EWMA DF Prep
+    teamEWMA1 <- reactive({
+      Data() %>% group_by(Date) %>% summarise(playerLoad = sum(playerLoad)) %>% 
+        mutate(Acute = EMA(test$playerLoad, 7), Chronic = EMA(test$playerLoad, 28))
+    })
+    teamEWMA2 <- reactive({
+      teamEWMA1() %>% melt() %>% transmute(Date = as.Date(Date), Variable = variable, Value = value)
     })
     
     ## Player Tab ##
