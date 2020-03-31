@@ -15,8 +15,9 @@ library(TTR)
 
 # Specify CSS For Error Messsage/Font
 CSS <- "
-.shiny-output-error-fileUpload{
-  border-left: solid red;
+.shiny-output-error-fileUpload {
+  border-left-style: solid;
+  border-left-color: red;
   background-color: #ffcccb;
   color: black;
 }
