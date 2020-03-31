@@ -149,13 +149,23 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
 
 # Server #
 server <- function(input, output, session) {
-    
+  
+  # Validation Function for csv Input
+  csvOnly <- function(input) {
+    if (input == "") {
+      "Please upload csv file(s)"
+    } else if (input!= "" & input$type == "csv" | input$type == ".csv") {
+      NULL
+    } else {
+      "Please upload only csv"
+    }
+  }
     # Reactive expression to get DF from file input
     Data <- reactive({
         
         validate(
-          need(input$files != "", "Please upload csv file(s)"),
-          need(input$files$type == ".csv", paste("Please only use csv files as listed"), tags$a(href="www.rstudio.com", "here!"))
+          csvOnly(input$files)
+          
         )
         
         # Empty DF for Loop
