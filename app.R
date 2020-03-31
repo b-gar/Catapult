@@ -283,10 +283,6 @@ server <- function(input, output, session) {
     
     # Plotly Average Max Velocity by Game Code
     output$TeamVelocityCode <- renderPlotly({
-      validate(
-        need(as.numeric(Data() %>% filter(Name == input$player) %>% tally()) > 28, 
-             "This player does not have enough data for a chronic player load of 28-days")
-      )
       p4 <- Data() %>% select(maxVelocity, Activity, gameCode) %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7")) %>% 
         mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>%
         group_by(gameCode) %>% mutate(averageMaxVelocity = mean(maxVelocity)) %>% select(-maxVelocity) %>% 
@@ -325,8 +321,13 @@ server <- function(input, output, session) {
       ggplotly(p6, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
     
-    # Plotly Player EWMA Over Time/Player
+    # Plotly Player EWMA Over Time/Player with Validation for chronic
     output$PlayerEWMA <- renderPlotly({
+      validate(
+        need(as.numeric(Data() %>% filter(Name == input$player) %>% tally()) > 28, 
+             "This player does not have enough data for a chronic player load of 28-days")
+      )
+      
       p7 <- Data() %>% filter(Name == input$player) %>%
         mutate(Acute = EMA(playerLoad, 7), Chronic = EMA(playerLoad, 28)) %>% 
         select(Date, playerLoad, Acute, Chronic) %>%
