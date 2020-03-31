@@ -326,9 +326,10 @@ server <- function(input, output, session) {
     
     # Plotly Player EWMA Over Time/Player
     output$PlayerEWMA <- renderPlotly({
-      p7 <- Data() %>% filter(Name == input$player) %>% select(Date, playerLoad) %>%
+      p7 <- Data() %>% filter(Name == input$player) %>%
         mutate(Acute = EMA(playerLoad, 7), Chronic = EMA(playerLoad, 28)) %>% 
-        melt() %>% transmute(Date = as.Date(Date), Variable = variable, Value = value) %>%
+        select(Date, playerLoad, Acute, Chronic) %>%
+        reshape2::melt(id.vars = "Date") %>% transmute(Date = as.Date(Date), Variable = variable, Value = value) %>%
         ggplot(aes(Date, Value, color = Variable)) + geom_line(group = 1, alpha = 0.9) + 
         scale_color_manual(name = "", values = c("black", "#1b9e77", "#7570b3")) + 
         ggtitle("Player Load Acute/Chronic") + xlab("") + ylab("Player Load") + theme_bw() + theme(plot.title = element_text(hjust = 0.5))
