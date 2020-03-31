@@ -295,10 +295,8 @@ server <- function(input, output, session) {
     # Team EWMA DF Prep
     teamEWMA1 <- reactive({
       Data() %>% group_by(Date) %>% summarise(playerLoad = sum(playerLoad)) %>% 
-        mutate(Acute = EMA(test$playerLoad, 7), Chronic = EMA(test$playerLoad, 28))
-    })
-    teamEWMA2 <- reactive({
-      teamEWMA1() %>% melt() %>% transmute(Date = as.Date(Date), Variable = variable, Value = value)
+        mutate(Acute = EMA(playerLoad, 7), Chronic = EMA(playerLoad, 28)) %>% 
+        melt() %>% transmute(Date = as.Date(Date), Variable = variable, Value = value)
     })
     
     ## Player Tab ##
