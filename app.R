@@ -292,13 +292,6 @@ server <- function(input, output, session) {
       ggplotly(p4) %>% config(displayModeBar = FALSE)
     })
     
-    # Team EWMA DF Prep
-    teamEWMA1 <- reactive({
-      Data() %>% group_by(Date) %>% summarise(playerLoad = sum(playerLoad)) %>% 
-        mutate(Acute = EMA(playerLoad, 7), Chronic = EMA(playerLoad, 28)) %>% 
-        melt() %>% transmute(Date = as.Date(Date), Variable = variable, Value = value)
-    })
-    
     ## Player Tab ##
     
     # Update Player Selector Input
@@ -328,26 +321,37 @@ server <- function(input, output, session) {
       ggplotly(p6, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
     
+    # Plotly Player EWMA Over Time/Player
+    output$PlayerEWMA <- renderPlotly({
+      p7 <- Data() %>% select(Name, Date, playerLoad) %>% filter(Name == input$player) %>%
+        mutate(Acute = EMA(playerLoad, 7), Chronic = EMA(playerLoad, 28)) %>% 
+        melt() %>% transmute(Date = as.Date(Date), Variable = variable, Value = value) %>%
+        ggplot(aes(Date, Value, color = Variable)) + geom_line(group = 1, alpha = 0.9) + 
+        scale_color_manual(name = "", values = c("black", "#1b9e77", "#7570b3")) + 
+        ggtitle("Player Load Acute/Chronic") + xlab("") + ylab("Player Load") + theme_bw() + theme(plot.title = element_text(hjust = 0.5))
+      ggplotly(p7)
+    })
+    
     # Plotly Average Player Load/gameCode
     output$PlayerLoadCode <- renderPlotly({
-      p7 <- Data() %>% select(Name, playerLoad, Activity, gameCode) %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7")) %>% 
+      p8 <- Data() %>% select(Name, playerLoad, Activity, gameCode) %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7")) %>% 
         mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>% filter(Name == input$player) %>%
         group_by(gameCode) %>% mutate(averagePlayerLoad = mean(playerLoad)) %>% select(-playerLoad) %>% 
         ggplot(aes(x = gameCode, y = averagePlayerLoad, group = 1)) + geom_point(aes(color = Activity), size = 4) + geom_line() + 
         theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
         scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Average Player Load by Game Code")
-      ggplotly(p7) %>% config(displayModeBar = FALSE)
+      ggplotly(p8) %>% config(displayModeBar = FALSE)
     })
     
     # Plotly Average Max Velocity/gameCode
     output$PlayerVelocityCode <- renderPlotly({
-      p8 <- Data() %>% select(Name, maxVelocity, Activity, gameCode) %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7")) %>% 
+      p9 <- Data() %>% select(Name, maxVelocity, Activity, gameCode) %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7")) %>% 
         mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>% 
         filter(Name == input$player, maxVelocity < 20) %>% group_by(gameCode) %>% mutate(averageMaxVelocity = mean(maxVelocity)) %>% 
         select(-maxVelocity) %>% ggplot(aes(x = gameCode, y = averageMaxVelocity, group = 1)) + geom_point(aes(color = Activity), size = 4) + 
         geom_line() + theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
         scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Average Max Velocity by Game Code")
-      ggplotly(p8) %>% config(displayModeBar = FALSE)
+      ggplotly(p9) %>% config(displayModeBar = FALSE)
     })
 }
 # Run the application 
