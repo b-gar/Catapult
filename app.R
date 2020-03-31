@@ -127,6 +127,9 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                             ),
                             tabPanel("Max Velocity",
                                      withSpinner(plotlyOutput("PlayerVelocityChrono", height = "28vh"), type = 7, color = "#FFCC00", size = 2)
+                            ),
+                            tabPanel("EWMA",
+                                     withSpinner(plotlyOutput("PlayerEWMA", height = "28vh"), type = 7, color = "#FFCC00", size = 2)
                             )
                      )
                    ),
