@@ -14,10 +14,9 @@ library(reshape2)
 library(TTR)
 
 # Specify CSS For Error Messsage/Font
-CSS <- "
-.shiny-output-error-fileUpload {
+CSS <- ".shiny-output-error-fileUpload {
   background-color: red;
-  color: black;
+  color: green;
 }
 #numGame {
   text-align: center;}
