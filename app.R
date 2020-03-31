@@ -284,8 +284,21 @@ server <- function(input, output, session) {
       ggplotly(p3) %>% config(displayModeBar = FALSE)
     })
     
+    # Validation Function
+    chronicCheck <- function(input) {
+      req(Data())
+      if (as.numeric(Data() %>% filter(Name == input) %>% tally())<28) {
+        "This player does not have enough data for a chronic player load of 28-days"
+      } else {
+        NULL
+      }
+    }
+    
     # Plotly Average Max Velocity by Game Code
     output$TeamVelocityCode <- renderPlotly({
+      validate(
+        chronicCheck(input$player)
+      )
       p4 <- Data() %>% select(maxVelocity, Activity, gameCode) %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7")) %>% 
         mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>%
         group_by(gameCode) %>% mutate(averageMaxVelocity = mean(maxVelocity)) %>% select(-maxVelocity) %>% 
