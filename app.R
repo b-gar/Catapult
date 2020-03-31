@@ -17,9 +17,6 @@ library(TTR)
 CSS <- "
 .shiny-output-error-fileUpload {
   border-left-style: solid;
-  border-left-color: red;
-  background-color: #ffcccb;
-  color: black;
 }
 #numGame {
   text-align: center;}
