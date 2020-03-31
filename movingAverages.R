@@ -9,7 +9,7 @@ df$X <- NULL
 
 # Team EWMA by Summation of Player Load Using TTR Package
 test <- df %>% group_by(Date) %>% summarise(playerLoad = sum(playerLoad)) %>% 
-  mutate(Acute = EMA(test$playerLoad, 7), Chronic = EMA(test$playerLoad, 28))
+  mutate(Acute = EMA(playerLoad, 7), Chronic = EMA(playerLoad, 28))
 
 # EMA: lambda*valueToday + 1-lambda * EWMABefore
 # lambda = 2/n+1
@@ -21,7 +21,7 @@ testLong <- test %>% melt() %>% transmute(Date= as.Date(Date), Variable = variab
 g <- ggplot(testLong, aes(Date, Value, color = Variable)) + geom_line(group = 1, alpha = 0.9) + 
   scale_color_manual(name = "", values = c("black", "#1b9e77", "#7570b3")) + 
   ggtitle("Player Load Acute/Chronic") + xlab("") + ylab("Player Load") + theme_bw() + theme(plot.title = element_text(hjust = 0.5))
-ggplotly(g)
+ggplotly(g) #%>% api_create(filename = "Acute vs. Chronic Player Load")
 
 # Easier - Using Tidyqant
 # Can't Use Plotly with geom_ma so Above Would Need to be Used
