@@ -15,7 +15,6 @@ library(TTR)
 
 # Specify CSS For Error Messsage/Font
 CSS <- ".shiny-output-error-fileUpload {
-  border-left: solid red;
   color: black;
 }
 #numGame {
