@@ -15,6 +15,11 @@ library(TTR)
 
 # Specify CSS For Error Messsage/Font
 CSS <- "
+.shiny-output-error-fileUpload{
+  border-left: solid red;
+  background-color: #ffcccb;
+  color: black;
+}
 #numGame {
   text-align: center;}
 #numPractice {
@@ -150,23 +155,12 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
 # Server #
 server <- function(input, output, session) {
   
-  # Validation Function for csv Input
-  csvOnly <- function(input) {
-    if (input == "") {
-      "Please upload csv file(s)"
-    } else if (input!= "" & input$type == "csv" | input$type == ".csv") {
-      NULL
-    } else {
-      "Please upload only csv"
-    }
-  }
     # Reactive expression to get DF from file input
     Data <- reactive({
         
-        validate(
-          csvOnly(input$files)
-          
-        )
+      validate(
+        need(input$files != "", "Please upload csv file(s)"), errorClass = "fileUpload"
+      )
         
         # Empty DF for Loop
         dfCombined <- data.frame()
