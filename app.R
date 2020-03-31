@@ -14,10 +14,7 @@ library(reshape2)
 library(TTR)
 
 # Specify CSS For Error Messsage/Font
-CSS <- ".shiny-output-error { visibility: hidden; }
-.shiny-output-error:before {
-    visibility: visible;
-    content: 'Check that your uploaded file is formatted properly'; }
+CSS <- "
 #numGame {
   text-align: center;}
 #numPractice {
