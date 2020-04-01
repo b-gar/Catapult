@@ -9,7 +9,6 @@ library(dplyr)
 library(stringr)
 library(plotly)
 library(ggplot2)
-library(reshape2)
 library(TTR)
 
 # Specify CSS For Error Messsage/Font
