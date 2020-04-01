@@ -205,7 +205,7 @@ server <- function(input, output, session) {
             dfCombined <- dfCombined %>% select(1:8,12)
             colnames(dfCombined) <- c("Name", "Position", "Duration", "Distance", "playerLoad", "maxVelocity", "Date", 
                                       "Activity", "gameCode")
-            dfCombined <- dfCombined %>% filter(Duration != 0, Distance != 0, playerLoad != 0, maxVelocity != 0)
+            dfCombined <- dfCombined %>% filter(Distance != 0 & playerLoad != 0)
          
         return(dfCombined)
     })
