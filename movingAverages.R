@@ -53,9 +53,10 @@ ggplotly(g2) #%>% api_create(filename = "Acute vs. Chronic Player Load")
 # ACWR w/o playerLoad
 acwr <- df %>% filter(Name == Name[2]) %>% select(Date, playerLoad) %>%
   mutate(Acute = EMA(playerLoad, 7), Chronic = EMA(playerLoad, 28), ACWR = round(Acute/Chronic, 3)) %>%
-  transmute(Date = as.Date(Date), ACWR = ACWR)
+  transmute(Date = as.Date(Date), ACWR = ACWR) %>% filter(!is.na(ACWR))
 
 # Plot ACWR Only
-g3 <- ggplot(acwr, aes(Date, ACWR)) + geom_line(group=1) + scale_y_continuous(breaks = seq(0,2,0.5), limits = c(0,2)) +
+g3 <- ggplot(acwr, aes(Date, ACWR)) + geom_line(group=1) + scale_y_continuous(breaks = seq(0,2,0.5), limits = c(0,2)) + 
+  geom_hline(yintercept = 0.8, color = "orange", alpha = 0.5) + geom_hline(yintercept = 1.2, color = "red", alpha = 0.5) + 
   ggtitle("Player Acute/Chronic Workload Ratio") + xlab("") + ylab("ACWR") + theme_bw() + theme(plot.title = element_text(hjust = 0.5))
 ggplotly(g3) #%>% api_create(filename = "ACWR")
