@@ -17,6 +17,7 @@ CSS <- ".shiny-output-error-fileUpload {
 }
 .nav-tabs-custom .nav-tabs li.active {
     border-top-color: #003366;
+    background-color: #E8E8E8;
 }
 #numGame {
   text-align: center;}
