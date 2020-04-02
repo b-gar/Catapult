@@ -15,6 +15,9 @@ library(TTR)
 CSS <- ".shiny-output-error-fileUpload {
   color: black;
 }
+.nav-tabs-custom .nav-tabs li.active {
+    border-top-color: #FFCC00;
+}
 #numGame {
   text-align: center;}
 #numPractice {
