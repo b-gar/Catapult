@@ -338,7 +338,7 @@ server <- function(input, output, session) {
         filter(!is.na(Chronic)) %>%
         ggplot(aes(Date, ACWR, text = paste0("Date: ", Date, "\n", "Acute: ", Acute, "\n", "Chronic: ", Chronic, "\n", "ACWR: ", ACWR))) + 
         geom_line(group = 1) + scale_y_continuous(breaks = seq(0, 2, 1), limits = c(0, 2)) + 
-        geom_hline(input$acwr[1]) + geom_hline(yintercept = input$acwr[2]) + ggtitle("Player Acute/Chronic Workload Ratio") + 
+        geom_hline(aes(input$acwr[1])) + geom_hline(aes(yintercept = input$acwr[2])) + ggtitle("Player Acute/Chronic Workload Ratio") + 
         xlab("") + ylab("ACWR") + theme_bw() + theme(plot.title = element_text(hjust = 0.5))
       ggplotly(p7, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
