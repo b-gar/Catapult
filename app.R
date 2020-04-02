@@ -115,7 +115,7 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                             pickerInput("player", "Player", choices = NULL, options = pickerOptions(actionsBox = TRUE))
                      ),
                      column(3,
-                            sliderInput("acwr", "ACWR Warnings", min = 0.5, max = 1.5, value = c(0.8, 1.2))
+                            sliderInput("acwr", "ACWR Warnings", min = 0.6, max = 1.4, value = c(0.8, 1.2))
                      )
                    ),
                    
@@ -337,7 +337,7 @@ server <- function(input, output, session) {
         mutate(Acute = round(EMA(playerLoad, 7), 2), Chronic = round(EMA(playerLoad, 28), 2), ACWR = round(Acute/Chronic, 2)) %>%
         filter(!is.na(Chronic)) %>%
         ggplot(aes(Date, ACWR, text = paste0("Date: ", Date, "\n", "Acute: ", Acute, "\n", "Chronic: ", Chronic, "\n", "ACWR: ", ACWR))) + 
-        geom_line(group = 1) + scale_y_continuous(breaks = seq(0, 2, 1), limits = c(0, 2)) + 
+        geom_line(group = 1) + scale_y_continuous(breaks = seq(0.5, 1.5, 0.5), limits = c(0.5, 1.5)) + 
         geom_hline(aes(yintercept = input$acwr[1]), color = "#d95f02", alpha = 0.5) + 
         geom_hline(aes(yintercept = input$acwr[2]), color = "#f03b20", alpha = 0.5) + ggtitle("Player Acute/Chronic Workload Ratio") + 
         xlab("") + ylab("ACWR") + theme_bw() + theme(plot.title = element_text(hjust = 0.5))
