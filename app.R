@@ -332,6 +332,7 @@ server <- function(input, output, session) {
       
       p7 <- Data() %>% filter(Name == input$player) %>%
         mutate(Acute = EMA(playerLoad, 7), Chronic = EMA(playerLoad, 28), ACWR = round(Acute/Chronic, 3)) %>%
+        filter(!is.na(Chronic)) %>%
         ggplot(aes(Date, ACWR, text = paste0("Date: ", Date, "\n", "Acute: ", round(Acute, 3), "\n", "Chronic: ", round(Chronic, 3), "\n", "ACWR: ", ACWR))) + 
         geom_line(group = 1) + scale_y_continuous(breaks = seq(0.5,1.5,0.5), limits = c(0.5,1.5)) +
         ggtitle("Player Acute/Chronic Workload Ratio") + xlab("") + ylab("ACWR") + theme_bw() + 
