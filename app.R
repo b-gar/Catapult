@@ -254,9 +254,9 @@ server <- function(input, output, session) {
     # Plotly Average Load Over Time
     output$TeamLoadChrono <- renderPlotly({
         p1 <- Data() %>% select(playerLoad, Date, Activity, gameCode) %>% group_by(Date) %>% 
-        mutate(averagePlayerLoad = mean(playerLoad)) %>% distinct(Date, .keep_all = TRUE) %>% select(-playerLoad) %>%
+        mutate(averagePlayerLoad = round(mean(playerLoad), 2)) %>% distinct(Date, .keep_all = TRUE) %>% select(-playerLoad) %>%
         ggplot(aes(x = Date, y = averagePlayerLoad, group = 1, 
-                   text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "averagePlayerLoad: ", round(averagePlayerLoad, 2)))) + 
+                   text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "averagePlayerLoad: ", averagePlayerLoad))) + 
         geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() +
         theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
         scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Average Player Load Over Time")
@@ -266,9 +266,9 @@ server <- function(input, output, session) {
     # Plotly Average Max Velocity Over Time
     output$TeamVelocityChrono <- renderPlotly({
       p2 <- Data() %>% select(maxVelocity, Date, Activity, gameCode) %>% group_by(Date) %>% filter(maxVelocity < 20) %>%
-        mutate(averageMaxVelocity = mean(maxVelocity)) %>% distinct(Date, .keep_all = TRUE) %>% select(-maxVelocity) %>%
+        mutate(averageMaxVelocity = round(mean(maxVelocity), 2)) %>% distinct(Date, .keep_all = TRUE) %>% select(-maxVelocity) %>%
         ggplot(aes(x = Date, y = averageMaxVelocity, group = 1, 
-                   text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "averageMaxVelocity: ", round(averageMaxVelocity, 2)))) + 
+                   text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "averageMaxVelocity: ", averageMaxVelocity))) + 
         geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() +
         theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
         scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Average Max Velocity Over Time")
@@ -279,7 +279,7 @@ server <- function(input, output, session) {
     output$TeamLoadCode <- renderPlotly({
       p3 <- Data() %>% select(playerLoad, Activity, gameCode) %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7")) %>% 
         mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>%
-        group_by(gameCode) %>% mutate(averagePlayerLoad = mean(playerLoad)) %>% select(-playerLoad) %>% 
+        group_by(gameCode) %>% mutate(averagePlayerLoad = round(mean(playerLoad), 2)) %>% select(-playerLoad) %>% 
         ggplot(aes(x = gameCode, y = averagePlayerLoad, group = 1)) + geom_point(aes(color = Activity), size = 4) + geom_line() + 
         theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
         scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Average Player Load by Game Code")
@@ -290,7 +290,7 @@ server <- function(input, output, session) {
     output$TeamVelocityCode <- renderPlotly({
       p4 <- Data() %>% select(maxVelocity, Activity, gameCode) %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7")) %>% 
         mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>%
-        group_by(gameCode) %>% mutate(averageMaxVelocity = mean(maxVelocity)) %>% select(-maxVelocity) %>% 
+        group_by(gameCode) %>% mutate(averageMaxVelocity = round(mean(maxVelocity), 2)) %>% select(-maxVelocity) %>% 
         ggplot(aes(x = gameCode, y = averageMaxVelocity, group = 1)) + geom_point(aes(color = Activity), size = 4) + geom_line() + 
         theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
         scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Average Max Velocity by Game Code")
@@ -308,7 +308,7 @@ server <- function(input, output, session) {
     output$PlayerLoadChrono <- renderPlotly({
       p5 <- Data() %>% select(Name, playerLoad, Date, Activity, gameCode) %>% filter(Name == input$player) %>%
         ggplot(aes(x = Date, y = playerLoad, group = 1, 
-                   text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "playerLoad: ", round(playerLoad, 2)))) + 
+                   text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "playerLoad: ", playerLoad))) + 
         geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() +
         theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
         scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Player Load Over Time")
@@ -319,7 +319,7 @@ server <- function(input, output, session) {
     output$PlayerVelocityChrono <- renderPlotly({
       p6 <- Data() %>% select(Name, maxVelocity, Date, Activity, gameCode) %>% filter(Name == input$player, maxVelocity < 20) %>%
         ggplot(aes(x = Date, y = maxVelocity, group = 1, 
-                   text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "maxVelocity: ", round(maxVelocity, 2)))) + 
+                   text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "maxVelocity: ", maxVelocity))) + 
         geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() +
         theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
         scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Max Velocity Over Time")
@@ -348,7 +348,7 @@ server <- function(input, output, session) {
     output$PlayerLoadCode <- renderPlotly({
       p8 <- Data() %>% select(Name, playerLoad, Activity, gameCode) %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7")) %>% 
         mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>% filter(Name == input$player) %>%
-        group_by(gameCode) %>% mutate(averagePlayerLoad = mean(playerLoad)) %>% select(-playerLoad) %>% 
+        group_by(gameCode) %>% mutate(averagePlayerLoad = round(mean(playerLoad), 2)) %>% select(-playerLoad) %>% 
         ggplot(aes(x = gameCode, y = averagePlayerLoad, group = 1)) + geom_point(aes(color = Activity), size = 4) + geom_line() + 
         theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
         scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Average Player Load by Game Code")
@@ -359,9 +359,11 @@ server <- function(input, output, session) {
     output$PlayerVelocityCode <- renderPlotly({
       p9 <- Data() %>% select(Name, maxVelocity, Activity, gameCode) %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7")) %>% 
         mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>% 
-        filter(Name == input$player, maxVelocity < 20) %>% group_by(gameCode) %>% mutate(averageMaxVelocity = mean(maxVelocity)) %>% 
-        select(-maxVelocity) %>% ggplot(aes(x = gameCode, y = averageMaxVelocity, group = 1)) + geom_point(aes(color = Activity), size = 4) + 
-        geom_line() + theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
+        filter(Name == input$player, maxVelocity < 20) %>% group_by(gameCode) %>% 
+        mutate(averageMaxVelocity = round(mean(maxVelocity), 2)) %>% 
+        select(-maxVelocity) %>% ggplot(aes(x = gameCode, y = averageMaxVelocity, group = 1)) + 
+        geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() + 
+        theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
         scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Average Max Velocity by Game Code")
       ggplotly(p9) %>% config(displayModeBar = FALSE)
     })
