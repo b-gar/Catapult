@@ -18,8 +18,8 @@ CSS <- ".shiny-output-error-fileUpload {
 .nav-tabs-custom .nav-tabs li.active {
     border-top-color: #003366;
 }
-.tabs-above > .nav > li > a {
-    border-top-color: #FFCC00;
+.tabbable > .nav > li > a{
+    background-color: grey;
 }
 #numGame {
   text-align: center;}
