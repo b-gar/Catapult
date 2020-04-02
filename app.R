@@ -200,9 +200,9 @@ server <- function(input, output, session) {
             
             } 
         
-            dfCombined$gcode <- ifelse(dfCombined$gdays>0,paste0("G-",dfCombined$gdays),"G")
+            dfCombined$gcode <- ifelse(dfCombined$gdays > 0, paste0("G-", dfCombined$gdays), "G")
         
-            dfCombined <- arrange(dfCombined,date)
+            dfCombined <- arrange(dfCombined, date)
             dfCombined <- dfCombined %>% select(1:8,12)
             colnames(dfCombined) <- c("Name", "Position", "Duration", "Distance", "playerLoad", "maxVelocity", "Date", 
                                       "Activity", "gameCode")
