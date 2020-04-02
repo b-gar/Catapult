@@ -15,13 +15,12 @@ library(TTR)
 CSS <- ".shiny-output-error-fileUpload {
   color: black;
 }
-.nav-tabs-custom .nav-tabs li.active:hover a, .nav-tabs-custom .nav-tabs li.active a {
-     background-color: transparent;
-     border-color: transparent;
+.nav-tabs-custom .nav-tabs {
+     background-color: grey;
 }
 
 .nav-tabs-custom .nav-tabs li.active {
-     border-top-color: #FFF;
+     border-top-color: #003366;
 }
 #numGame {
   text-align: center;}
