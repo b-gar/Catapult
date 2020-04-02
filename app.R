@@ -18,9 +18,6 @@ CSS <- ".shiny-output-error-fileUpload {
 .nav-tabs-custom .nav-tabs li.active {
     border-top-color: #003366;
 }
-.nav-tabs-custom .nav-tabs li.a {
-    border-top-color: #FFCC00;
-}
 #numGame {
   text-align: center;}
 #numPractice {
