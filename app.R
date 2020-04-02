@@ -113,6 +113,9 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                    fluidRow(
                      column(3,
                             pickerInput("player", "Player", choices = NULL, options = pickerOptions(actionsBox = TRUE))
+                     ),
+                     column(3,
+                            sliderInput("acwr", "ACWR Warnings", min = 0.5, max = 1.5, value = c(0.8, 1.2))
                      )
                    ),
                    
