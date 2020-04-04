@@ -269,7 +269,7 @@ server <- function(input, output, session) {
         dropdownMenu(type = "notifications", .list = notifMessageL, badgeStatus = "warning")
       }
       else(
-        dropdownMenu(notificationItem(text = "There is not enough data for ACWR", icon = icon("info")), badgeStatus = "info")
+        dropdownMenu(notificationItem(text = "There are no low ACWR values", icon = icon("info")), badgeStatus = "info")
       )
       
       
@@ -286,7 +286,7 @@ server <- function(input, output, session) {
         dropdownMenu(type = "notifications", .list = notifMessageH, badgeStatus = "danger")
       }
       else(
-        dropdownMenu(notificationItem(text = "There is not enough data for ACWR", icon = icon("info")), badgeStatus = "info")
+        dropdownMenu(notificationItem(text = "There are no high ACWR values", icon = icon("info")), badgeStatus = "info")
       )
       
       
