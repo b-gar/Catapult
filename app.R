@@ -249,7 +249,7 @@ server <- function(input, output, session) {
     
     ## Notification Menu ##
     output$notification <- renderMenu({
-      notifMessage <- dataACWR() %>% filter(!is.na(Warning)) %>% select(Warning) %>% as.list()
+      notifMessage <- notificationItem(text = (dataACWR() %>% filter(!is.na(Warning)) %>% select(Warning) %>% as.list()))
       dropdownMenu(type = "notifications", .list = notifMessage)
     })
     
