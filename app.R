@@ -225,7 +225,7 @@ server <- function(input, output, session) {
     
     ## DF with All Player's ACWR ##
     dataACWR <- reactive({
-    
+      
       allPlayers <- data.frame()
       
       for (athlete in levels(Data()$Name)) {
@@ -245,11 +245,11 @@ server <- function(input, output, session) {
         msgs <- allPlayers %>% 
           mutate(WarningMessage = case_when(ACWR < input$acwr[1] ~ paste(Name, "has a low ACWR on", Date), 
                                             ACWR > input$acwr[2] ~ paste(Name, "has a high ACWR on", Date)
-                                            )
+          )
           ) %>%
           mutate(Warning = case_when(ACWR < input$acwr[1] ~ "Low", 
                                      ACWR > input$acwr[2] ~ "High"
-                                    )
+          )
           )
       }
       else(msgs <- data.frame())
@@ -262,7 +262,7 @@ server <- function(input, output, session) {
       
       nmLow <- dataACWR() %>% filter(Warning == "Low")
       
-      if (nrow(dataACWR()) > 0) {
+      if (nrow(nmLow) > 0) {
         notifMessageL <- apply(nmLow, 1, function(row) {
           notificationItem(text = row[["WarningMessage"]], icon = icon("exclamation-triangle"))
         })
@@ -279,7 +279,7 @@ server <- function(input, output, session) {
     output$notificationHigh <- renderMenu({
       
       nmHigh <- dataACWR() %>% filter(Warning == "High")
-      if (nrow(dataACWR()) > 0) {
+      if (nrow(nmHigh) > 0) {
         notifMessageH <- apply(nmHigh, 1, function(row) {
           notificationItem(text = row[["WarningMessage"]], icon = icon("exclamation-triangle"))
         })
