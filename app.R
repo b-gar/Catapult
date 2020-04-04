@@ -63,7 +63,7 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                         box(title = "Upload Catapult File(s)", width = 3, background = "black", align = "center",
                             fileInput("files", "Select CSV File(s)", multiple = TRUE, accept = c(".csv")),
                             tags$h5("Missing Catapult data and want to test out the app?"),
-                            actionButton("demoFiles", "Get Files", onclick = "window.open('https://github.com/blg-uwm/Catapult/tree/master/Catapult%20Demo%20Files', '_blank')")
+                            actionButton("demoFiles", "Get Files", onclick = "window.open('https://panthers-my.sharepoint.com/:f:/g/personal/blgarski_uwm_edu/EvDzPKJryPNNvuPbTdKUX2kBGsYM1hZytX1Ok4Ms6Kh0PQ?e=9OxkLe', '_blank')")
                         ),
                         gradientBox(width = 2, title = "Overview", footer = 
                             h3(id = "numPractice", textOutput("numPractice")),
