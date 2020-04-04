@@ -28,7 +28,7 @@ CSS <- ".shiny-output-error-fileUpload {
 }
 
 .navbar-custom-menu>.navbar-nav>li>.dropdown-menu {
-  width:900px;
+  width:500px;
   }
 
 #numGame {
@@ -240,7 +240,7 @@ server <- function(input, output, session) {
         else({
           player <- Data() %>% filter(Name == athlete) %>% 
             transmute(Name = athlete, Date = as.Date(Date), Acute = EMA(playerLoad, 7), Chronic = EMA(playerLoad, 28), ACWR = Acute/Chronic) %>%
-            mutate_if(is.numeric, round, 2)
+            mutate_if(is.numeric, round, 2) %>% arrange(desc(Date))
           allPlayers <- rbind(player, allPlayers)
         })
         
