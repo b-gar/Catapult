@@ -257,6 +257,7 @@ server <- function(input, output, session) {
     ## Notification Menu for Low ACWR ##
     output$notificationLow <- renderMenu({
       
+      req(dataACWR())
       validate(need(nrow(dataACWR()) > 0), "")
       
       nmLow <- dataACWR() %>% filter(Warning == "Low")
@@ -271,6 +272,7 @@ server <- function(input, output, session) {
     ## Notification Menu for High ACWR ##
     output$notificationHigh <- renderMenu({
       
+      req(dataACWR())
       validate(need(nrow(dataACWR()) > 0), "")
       
       nmHigh <- dataACWR() %>% filter(Warning == "High")
