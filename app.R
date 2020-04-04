@@ -263,12 +263,13 @@ server <- function(input, output, session) {
         notifMessageL <- apply(nmLow, 1, function(row) {
           notificationItem(text = row[["WarningMessage"]], icon = icon("exclamation-triangle"))
         })
+        dropdownMenu(type = "notifications", .list = notifMessageL, badgeStatus = "warning")
       }
       else(
-        notifMessageL <- notificationItem(text = "There is not enough data for ACWR")
+        dropdownMenu(notificationItem(text = "There is not enough data for ACWR", icon = icon("info")), badgeStatus = "info")
       )
       
-      dropdownMenu(type = "notifications", .list = notifMessageL, badgeStatus = "warning")
+      
     })
     
     ## Notification Menu for High ACWR ##
@@ -279,12 +280,13 @@ server <- function(input, output, session) {
         notifMessageH <- apply(nmHigh, 1, function(row) {
           notificationItem(text = row[["WarningMessage"]], icon = icon("exclamation-triangle"))
         })
+        dropdownMenu(type = "notifications", .list = notifMessageH, badgeStatus = "danger")
       }
       else(
-        notifMessageH <- notificationItem(text = "There is not enough data for ACWR")
+        dropdownMenu(notificationItem(text = "There is not enough data for ACWR", icon = icon("info")), badgeStatus = "info")
       )
       
-      dropdownMenu(type = "notifications", .list = notifMessageH, badgeStatus = "danger")
+      
     })
     ## HOME SCREEN SUMMARY ##
     
