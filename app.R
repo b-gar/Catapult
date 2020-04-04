@@ -36,7 +36,7 @@ CSS <- ".shiny-output-error-fileUpload {
 ui <- dashboardPage(skin = "black", title = "Catapult",
                     
         ## HEADER ##
-        dashboardHeader(title = strong("Catapult"), dropdownMenuOutput("notification")),
+        dashboardHeader(title = strong("Catapult"), dropdownMenuOutput("notificationLow"), dropdownMenuOutput("notificationHigh")),
 
         ## SIDEBAR ##
         dashboardSidebar(
@@ -241,24 +241,42 @@ server <- function(input, output, session) {
         })
         
       }
+      
       msgs <- allPlayers %>% 
-        mutate(Warning = case_when(ACWR < input$acwr[1] ~ paste(Name, "has a low ACWR on", Date), 
-                                   ACWR > input$acwr[2] ~ paste(Name, "has a high ACWR on", Date)))
+        mutate(WarningMessage = case_when(ACWR < input$acwr[1] ~ paste(Name, "has a low ACWR on", Date), 
+                                   ACWR > input$acwr[2] ~ paste(Name, "has a high ACWR on", Date)
+                                   )
+               ) %>%
+        mutate(Warning = case_when(ACWR < input$acwr[1] ~ "Low", 
+                                   ACWR > input$acwr[2] ~ "High"
+                                   )
+               )
       return(msgs)
     })
     
-    ## Notification Menu ##
-    output$notification <- renderMenu({
+    ## Notification Menu for Low ACWR ##
+    output$notificationLow <- renderMenu({
       
-      nm <- dataACWR() %>% filter(!is.na(Warning))
+      nmLow <- dataACWR() %>% filter(Warning == "Low")
       
-      notifMessage <- apply(nm, 1, function(row) {
-        notificationItem(text = row[["Warning"]])
+      notifMessage <- apply(nmLow, 1, function(row) {
+        notificationItem(text = row[["WarningMessage"]], icon = icon("exclamation-triangle"))
       })
       
-      dropdownMenu(type = "notifications", .list = notifMessage)
+      dropdownMenu(type = "notifications", .list = notifMessage, badgeStatus = "warning")
     })
     
+    ## Notification Menu for High ACWR ##
+    output$notificationHigh <- renderMenu({
+      
+      nmHigh <- dataACWR() %>% filter(Warning == "High")
+      
+      notifMessage <- apply(nmHigh, 1, function(row) {
+        notificationItem(text = row[["WarningMessage"]], icon = icon("exclamation-triangle"))
+      })
+      
+      dropdownMenu(type = "notifications", .list = notifMessage, badgeStatus = "danger")
+    })
     ## HOME SCREEN SUMMARY ##
     
     # Number of Games
