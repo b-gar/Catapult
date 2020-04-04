@@ -38,6 +38,13 @@ for (athlete in levels(df$Name)) {
   
 }
 
+# Make a DF with Text Based on ACWR Status
+msgs <- allPlayers %>% 
+  mutate(warning = case_when(ACWR < 0.8 ~ paste(Name, "has a low ACWR on", Date), ACWR > 1.2 ~ paste(Name, "has a high ACWR on", Date)))
+
+# Return List of Warning Text
+msgs %>% filter(!is.na(warning)) %>% select(warning) %>% as.list()
+
 # Turn DF Long to Plot in ggplot2
 teamLong <- team %>% melt() %>% transmute(Date= as.Date(Date), Variable = variable, Value = value)
 
