@@ -27,6 +27,10 @@ CSS <- ".shiny-output-error-fileUpload {
   
 }
 
+.navbar-custom-menu>.navbar-nav>li>.dropdown-menu {
+  width:900px;
+  }
+
 #numGame {
   text-align: center;}
 #numPractice {
