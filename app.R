@@ -223,11 +223,34 @@ server <- function(input, output, session) {
         return(dfCombined)
     })
     
+    ## DF with All Player's ACWR ##
+    dataACWR <- reactive({
+    
+      allPlayers <- data.frame()
+      
+      for (athlete in levels(Data()$Name)) {
+        if (as.numeric(Data() %>% filter(Name==athlete) %>% tally() < 28)) {
+          next
+        }
+        
+        else({
+          player <- Data() %>% filter(Name == athlete) %>% 
+            transmute(Name = athlete, Date = as.Date(Date), Acute = EMA(playerLoad, 7), Chronic = EMA(playerLoad, 28), ACWR = Acute/Chronic) %>%
+            mutate_if(is.numeric, round, 2)
+          allPlayers <- rbind(player, allPlayers)
+        })
+        
+      }
+      msgs <- allPlayers %>% 
+        mutate(Warning = case_when(ACWR < input$acwr[1] ~ paste(Name, "has a low ACWR on", Date), 
+                                   ACWR > input$acwr[2] ~ paste(Name, "has a high ACWR on", Date)))
+      return(msgs)
+    })
+    
     ## Notification Menu ##
     output$notification <- renderMenu({
-      
-      msgs <- somethingHere
-      dropdownMenu(type = "notifications", .list = msgs)
+      notifMessage <- dataACWR() %>% filter(!is.na(Warning)) %>% select(Warning) %>% as.list()
+      dropdownMenu(type = "notifications", .list = notifMessage)
     })
     
     ## HOME SCREEN SUMMARY ##
