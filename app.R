@@ -36,7 +36,7 @@ CSS <- ".shiny-output-error-fileUpload {
 ui <- dashboardPage(skin = "black", title = "Catapult",
                     
         ## HEADER ##
-        dashboardHeader(title = strong("Catapult")),
+        dashboardHeader(title = strong("Catapult"), dropdownMenuOutput("notification")),
 
         ## SIDEBAR ##
         dashboardSidebar(
@@ -221,6 +221,13 @@ server <- function(input, output, session) {
             dfCombined <- dfCombined %>% filter(Distance != 0 & playerLoad != 0) %>% mutate_if(is.numeric, round, 2)
          
         return(dfCombined)
+    })
+    
+    ## Notification Menu ##
+    output$notification <- renderMenu({
+      
+      msgs <- somethingHere
+      dropdownMenu(type = "notifications", .list = msgs)
     })
     
     ## HOME SCREEN SUMMARY ##
