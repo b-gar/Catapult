@@ -18,6 +18,26 @@ df$X <- NULL
 team <- df %>% group_by(Date) %>% summarise(playerLoad = sum(playerLoad)) %>% 
   mutate(Acute = EMA(playerLoad, 7), Chronic = EMA(playerLoad, 28))
 
+# Get All Players ACWR into DF
+df$Name <- as.character(df$Name)
+df$Date <- as.Date(df$Date)
+
+allPlayers <- data.frame()
+
+for (athlete in levels(df$Name)) {
+  if (as.numeric(df %>% filter(Name==athlete) %>% tally() < 28)) {
+    next
+  }
+  
+  else({
+    player <- df %>% filter(Name == athlete) %>% 
+      transmute(Name = athlete, Date = as.Date(Date), Acute = EMA(playerLoad, 7), Chronic = EMA(playerLoad, 28), ACWR = Acute/Chronic) %>%
+      mutate_if(is.numeric, round, 2)
+    allPlayers <- rbind(player, allPlayers)
+  })
+  
+}
+
 # Turn DF Long to Plot in ggplot2
 teamLong <- team %>% melt() %>% transmute(Date= as.Date(Date), Variable = variable, Value = value)
 
