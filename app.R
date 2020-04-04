@@ -245,11 +245,11 @@ server <- function(input, output, session) {
         msgs <- allPlayers %>% 
           mutate(WarningMessage = case_when(ACWR < input$acwr[1] ~ paste(Name, "has a low ACWR on", Date), 
                                             ACWR > input$acwr[2] ~ paste(Name, "has a high ACWR on", Date)
-          )
+                                            )
           ) %>%
           mutate(Warning = case_when(ACWR < input$acwr[1] ~ "Low", 
                                      ACWR > input$acwr[2] ~ "High"
-          )
+                                    )
           )
       }
       else(msgs <- data.frame())
