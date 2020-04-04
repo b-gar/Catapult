@@ -262,7 +262,7 @@ server <- function(input, output, session) {
       
       nmLow <- dataACWR() %>% filter(Warning == "Low")
       
-      if (nrow(nmLow) > 0) {
+      if (nrow(dataACWR()) > 0) {
         notifMessageL <- apply(nmLow, 1, function(row) {
           notificationItem(text = row[["WarningMessage"]], icon = icon("exclamation-triangle"))
         })
@@ -279,7 +279,7 @@ server <- function(input, output, session) {
     output$notificationHigh <- renderMenu({
       
       nmHigh <- dataACWR() %>% filter(Warning == "High")
-      if (nrow(nmHigh) > 0) {
+      if (nrow(dataACWR()) > 0) {
         notifMessageH <- apply(nmHigh, 1, function(row) {
           notificationItem(text = row[["WarningMessage"]], icon = icon("exclamation-triangle"))
         })
