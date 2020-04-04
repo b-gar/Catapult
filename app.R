@@ -257,31 +257,34 @@ server <- function(input, output, session) {
     ## Notification Menu for Low ACWR ##
     output$notificationLow <- renderMenu({
       
-      req(dataACWR())
-      validate(need(nrow(dataACWR()) > 0), "")
-      
       nmLow <- dataACWR() %>% filter(Warning == "Low")
       
-      notifMessage <- apply(nmLow, 1, function(row) {
-        notificationItem(text = row[["WarningMessage"]], icon = icon("exclamation-triangle"))
-      })
+      if (nrow(nmLow) > 0) {
+        notifMessageL <- apply(nmLow, 1, function(row) {
+          notificationItem(text = row[["WarningMessage"]], icon = icon("exclamation-triangle"))
+        })
+      }
+      else(
+        notifMessageL <- notificationItem(text = "There is not enough data for ACWR")
+      )
       
-      dropdownMenu(type = "notifications", .list = notifMessage, badgeStatus = "warning")
+      dropdownMenu(type = "notifications", .list = notifMessageL, badgeStatus = "warning")
     })
     
     ## Notification Menu for High ACWR ##
     output$notificationHigh <- renderMenu({
       
-      req(dataACWR())
-      validate(need(nrow(dataACWR()) > 0), "")
-      
       nmHigh <- dataACWR() %>% filter(Warning == "High")
+      if (nrow(nmHigh) > 0) {
+        notifMessageH <- apply(nmHigh, 1, function(row) {
+          notificationItem(text = row[["WarningMessage"]], icon = icon("exclamation-triangle"))
+        })
+      }
+      else(
+        notifMessageH <- notificationItem(text = "There is not enough data for ACWR")
+      )
       
-      notifMessage <- apply(nmHigh, 1, function(row) {
-        notificationItem(text = row[["WarningMessage"]], icon = icon("exclamation-triangle"))
-      })
-      
-      dropdownMenu(type = "notifications", .list = notifMessage, badgeStatus = "danger")
+      dropdownMenu(type = "notifications", .list = notifMessageH, badgeStatus = "danger")
     })
     ## HOME SCREEN SUMMARY ##
     
