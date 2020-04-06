@@ -268,7 +268,7 @@ server <- function(input, output, session) {
       
       if (nrow(nmLow) > 0) {
         notifMessageL <- apply(nmLow, 1, function(row) {
-          notificationItem(text = row[["WarningMessage"]], icon = icon("exclamation-triangle"))
+          notificationItem(text = row[["WarningMessage"]], icon = icon("exclamation-triangle"), status = "warning")
         })
         dropdownMenu(type = "notifications", .list = notifMessageL, icon = icon("long-arrow-alt-down fa-2x"), badgeStatus = "warning")
       }
@@ -285,7 +285,7 @@ server <- function(input, output, session) {
       nmHigh <- dataACWR() %>% filter(Warning == "High")
       if (nrow(nmHigh) > 0) {
         notifMessageH <- apply(nmHigh, 1, function(row) {
-          notificationItem(text = row[["WarningMessage"]], icon = icon("exclamation-triangle"))
+          notificationItem(text = row[["WarningMessage"]], icon = icon("exclamation-triangle"), status = "danger")
         })
         dropdownMenu(type = "notifications", .list = notifMessageH, icon = icon("long-arrow-alt-up fa-2x"), badgeStatus = "danger")
       }
