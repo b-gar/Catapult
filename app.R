@@ -240,7 +240,7 @@ server <- function(input, output, session) {
         else({
           player <- Data() %>% filter(Name == athlete) %>% 
             transmute(Name = athlete, Date = as.Date(Date), Acute = EMA(playerLoad, 7), Chronic = EMA(playerLoad, 28), ACWR = Acute/Chronic) %>%
-            mutate_if(is.numeric, round, 2) %>% arrange(desc(Date))
+            mutate_if(is.numeric, round, 2)
           allPlayers <- rbind(player, allPlayers)
         })
         
@@ -254,7 +254,7 @@ server <- function(input, output, session) {
           mutate(Warning = case_when(ACWR < input$acwr[1] ~ "Low", 
                                      ACWR > input$acwr[2] ~ "High"
                                     )
-          )
+          ) %>% arrange(desc(Date))
       }
       else(msgs <- data.frame())
       
