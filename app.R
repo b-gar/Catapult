@@ -270,7 +270,7 @@ server <- function(input, output, session) {
         notifMessageL <- apply(nmLow, 1, function(row) {
           notificationItem(text = row[["WarningMessage"]], icon = icon("exclamation-triangle"))
         })
-        dropdownMenu(type = "notifications", .list = notifMessageL, badgeStatus = "warning")
+        dropdownMenu(type = "notifications", .list = notifMessageL, icon = icon("long-arrow-alt-down"), badgeStatus = "warning")
       }
       else(
         dropdownMenu(notificationItem(text = "There are no low ACWR values", icon = icon("info")), badgeStatus = "info")
@@ -287,7 +287,7 @@ server <- function(input, output, session) {
         notifMessageH <- apply(nmHigh, 1, function(row) {
           notificationItem(text = row[["WarningMessage"]], icon = icon("exclamation-triangle"))
         })
-        dropdownMenu(type = "notifications", .list = notifMessageH, badgeStatus = "danger")
+        dropdownMenu(type = "notifications", .list = notifMessageH, icon = icon("long-arrow-alt-up"), badgeStatus = "danger")
       }
       else(
         dropdownMenu(notificationItem(text = "There are no high ACWR values", icon = icon("info")), badgeStatus = "info")
