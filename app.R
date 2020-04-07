@@ -135,7 +135,6 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                      ),
                      column(1,
                             br(),
-                            br(),
                        actionButton("reset", "Reset", width = "80%")
                      )
                    ),
