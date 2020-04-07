@@ -131,8 +131,10 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                             pickerInput("player", "Player", choices = NULL, options = pickerOptions(actionsBox = TRUE))
                      ),
                      column(3,
-                            sliderInput("acwr", "ACWR Warnings", min = 0.6, max = 1.4, value = c(0.8, 1.2)),
-                            actionButton("reset", "Reset to Default")
+                            sliderInput("acwr", "ACWR Warnings", min = 0.6, max = 1.4, value = c(0.8, 1.2))
+                     ),
+                     box(width = 2, align = "left",
+                       actionButton("reset", "Reset")
                      )
                    ),
                    
