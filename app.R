@@ -37,7 +37,7 @@ CSS <- ".shiny-output-error-fileUpload {
   text-align: center;}"
 
 # UI #
-ui <- dashboardPage(skin = "black", title = "Catapult", useShinyjs(),
+ui <- dashboardPage(skin = "black", title = "Catapult",
                     
         ## HEADER ##
         dashboardHeader(title = strong("Catapult"), dropdownMenuOutput("notificationLow"), dropdownMenuOutput("notificationHigh")),
@@ -123,7 +123,7 @@ ui <- dashboardPage(skin = "black", title = "Catapult", useShinyjs(),
                 ),
                 
                 ## TAB 3 - Player ##
-                tabItem(tabName = "tab3",
+                tabItem(tabName = "tab3", useShinyjs(),
                      
                    ## ROW 1 ##
                    fluidRow(
