@@ -301,13 +301,12 @@ server <- function(input, output, session) {
     
     # Number of Games
     numGame <- reactive({
-      validate(
-        need(input$files != "", "Please upload csv file(s)"), errorClass = "fileUpload"
-      )
         Data() %>% select(Date, Activity) %>% filter(Activity=="Game") %>% group_by(Date) %>% n_distinct()
     })
     output$numGame <- renderText({
-        req(input$files)
+      validate(
+        need(input$files != "", "Please upload csv file(s)"), errorClass = "fileUpload"
+      )
         paste(numGame(), "Games")
     })
     
@@ -316,20 +315,17 @@ server <- function(input, output, session) {
         Data() %>% select(Date, Activity) %>% filter(Activity=="Practice") %>% group_by(Date) %>% n_distinct()
     })
     output$numPractice <- renderText({
-        req(input$files)
         paste(numPractice(), "Practices")
     })
     
     # Game Summary
     output$gameSummary <- renderPrint({
-        req(input$files)
         gs <- Data() %>% filter(Activity == "Game") %>% select(Distance, playerLoad, maxVelocity) 
         summary(gs)
     })
     
     # Practice Summary
     output$practiceSummary <- renderPrint({
-        req(input$files)
         ps <- Data() %>% filter(Activity == "Practice") %>% select(Distance, playerLoad, maxVelocity)  
         summary(ps)
     })
