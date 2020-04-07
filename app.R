@@ -175,6 +175,8 @@ server <- function(input, output, session) {
   
     # Reactive expression to get DF from file input
     Data <- reactive({
+      
+      req(input$files)
         
         # Empty DF for Loop
         dfCombined <- data.frame()
@@ -299,6 +301,9 @@ server <- function(input, output, session) {
     
     # Number of Games
     numGame <- reactive({
+      validate(
+        need(input$files != "", "Please upload csv file(s)"), errorClass = "fileUpload"
+      )
         Data() %>% select(Date, Activity) %>% filter(Activity=="Game") %>% group_by(Date) %>% n_distinct()
     })
     output$numGame <- renderText({
