@@ -176,10 +176,6 @@ server <- function(input, output, session) {
     # Reactive expression to get DF from file input
     Data <- reactive({
         
-      validate(
-        need(input$files != "", "Please upload csv file(s)"), errorClass = "fileUpload"
-      )
-        
         # Empty DF for Loop
         dfCombined <- data.frame()
         
