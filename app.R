@@ -134,6 +134,8 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                             sliderInput("acwr", "ACWR Warnings", min = 0.6, max = 1.4, value = c(0.8, 1.2))
                      ),
                      column(1,
+                            br(),
+                            br(),
                        actionButton("reset", "Reset", width = "80%")
                      )
                    ),
