@@ -37,7 +37,7 @@ CSS <- ".shiny-output-error-fileUpload {
   text-align: center;}"
 
 # UI #
-ui <- dashboardPage(skin = "black", title = "Catapult",
+ui <- dashboardPage(skin = "black", title = "Catapult", useShinyjs(),
                     
         ## HEADER ##
         dashboardHeader(title = strong("Catapult"), dropdownMenuOutput("notificationLow"), dropdownMenuOutput("notificationHigh")),
@@ -131,7 +131,8 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                             pickerInput("player", "Player", choices = NULL, options = pickerOptions(actionsBox = TRUE))
                      ),
                      column(3,
-                            sliderInput("acwr", "ACWR Warnings", min = 0.6, max = 1.4, value = c(0.8, 1.2))
+                            sliderInput("acwr", "ACWR Warnings", min = 0.6, max = 1.4, value = c(0.8, 1.2)),
+                            actionButton("reset", "Reset to Default")
                      )
                    ),
                    
@@ -386,6 +387,11 @@ server <- function(input, output, session) {
     # Update Player Selector Input
     observe({
         updatePickerInput(session, inputId = "player", choices = Data() %>% mutate(Name = as.character(Name)) %>% distinct(Name))
+    })
+    
+    # Reset ACWR Limits to Default
+    observeEvent(input$reset, {
+      reset("acwr")
     })
     
     # Plotly Player Load Over Time/Player
