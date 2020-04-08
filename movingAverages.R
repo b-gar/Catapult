@@ -14,6 +14,15 @@ library(tidyquant)
 df <- read.csv("catapultValues.csv")
 df$X <- NULL
 
+# Show Variance by Game Code Options
+df %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7")) %>% 
+  mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>%
+  ggplot(aes(x=gameCode, y=playerLoad)) + geom_line()
+
+df %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7")) %>% 
+  mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>%
+  ggplot(aes(x=gameCode, y=playerLoad)) + geom_boxplot()
+
 # Team EWMA by Summation of Player Load Using TTR Package
 team <- df %>% group_by(Date) %>% summarise(playerLoad = sum(playerLoad)) %>% 
   mutate(Acute = EMA(playerLoad, 7), Chronic = EMA(playerLoad, 28))
