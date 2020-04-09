@@ -36,16 +36,16 @@ CSS <- ".shiny-output-error-fileUpload {
 #numPractice {
   text-align: center;}
 #TeamLoadChrono{
-  height: calc(100vh - 80px) !important;
+  height: calc(100vh - 50px) !important;
 }
 #TeamVelocityChrono{
-  height: calc(100vh - 80px) !important;
+  height: calc(100vh - 50px) !important;
 }
 #TeamLoadCode{
-  height: calc(100vh - 80px) !important;
+  height: calc(100vh - 50px) !important;
 }
 #TeamVelocityCode{
-  height: calc(100vh - 80px) !important;
+  height: calc(100vh - 50px) !important;
 } 
 "
 
