@@ -27,7 +27,7 @@ CSS <- ".shiny-output-error-fileUpload {
   
 }
 
-.navbar-custom-menu .navbar-nav li.dropdown-menu {
+.navbar-custom-menu .navbar-nav li dropdown-menu {
   width:500px;
   }
 
