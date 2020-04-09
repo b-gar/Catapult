@@ -367,7 +367,7 @@ server <- function(input, output, session) {
         ggplot(aes(x=gameCode, y=playerLoad)) + geom_jitter(width = 0.1, alpha = 0.4, size = 3, color = "#003366") +
         stat_summary(fun.y=mean, colour="#FFCC00", size = 2, geom="line", aes(group = 1, shape = "Mean")) + theme_minimal() + 
         ggtitle("Player Load by Game Code") + scale_shape_manual("", values=c("Mean"="x")) +
-        + theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5))
+        theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5))
       ggplotly(p3) %>% config(displayModeBar = FALSE)
     })
     
