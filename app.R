@@ -27,7 +27,7 @@ CSS <- ".shiny-output-error-fileUpload {
   
 }
 
-.navbar-custom-menu>.navbar-nav>li>.dropdown-menu {
+.navbar-custom-menu .navbar-nav li.dropdown-menu {
   width:500px;
   }
 
@@ -35,18 +35,7 @@ CSS <- ".shiny-output-error-fileUpload {
   text-align: center;}
 #numPractice {
   text-align: center;}
-#TeamLoadChrono{
-  height: calc(100vh - 50px) !important;
-}
-#TeamVelocityChrono{
-  height: calc(100vh - 50px) !important;
-}
-#TeamLoadCode{
-  height: calc(100vh - 50px) !important;
-}
-#TeamVelocityCode{
-  height: calc(100vh - 50px) !important;
-} 
+
 "
 
 # UI #
