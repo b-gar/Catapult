@@ -35,7 +35,18 @@ CSS <- ".shiny-output-error-fileUpload {
   text-align: center;}
 #numPractice {
   text-align: center;}
-  
+#TeamLoadChrono{
+  height: calc(100vh - 80px) !important;
+}
+#TeamVelocityChrono{
+  height: calc(100vh - 80px) !important;
+}
+#TeamLoadCode{
+  height: calc(100vh - 80px) !important;
+}
+#TeamVelocityCode{
+  height: calc(100vh - 80px) !important;
+} 
 "
 
 # UI #
@@ -107,13 +118,7 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                                ),
                                tabPanel("Max Velocity",
                                         withSpinner(plotlyOutput("TeamVelocityChrono", height = "100%", width = "100%"), type = 7, color = "#FFCC00", size = 2)
-                               )
-                        )
-                      ),
-                      
-                      ## ROW 2 ##
-                      fluidRow(
-                        tabBox(width = 12,
+                               ),
                                tabPanel("Player Load",
                                         withSpinner(plotlyOutput("TeamLoadCode", height = "100%", width = "100%"), type = 7, color = "#FFCC00", size = 2)
                                ),
