@@ -23,6 +23,15 @@ df %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7")) %>
   mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>%
   ggplot(aes(x=gameCode, y=playerLoad)) + geom_boxplot()
 
+df %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7")) %>% 
+  mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>%
+  ggplot(aes(x=gameCode, y=playerLoad)) + geom_point(alpha = 0.8, size = 4, color = "#66c2a5") + 
+  stat_summary(fun.y=mean, colour="#fc8d62", size = 2, geom="line", aes(group = 1)) + theme_minimal()
+
+df %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7")) %>% 
+  mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>%
+  ggplot(aes(playerLoad)) + geom_histogram(binwidth = 50) + facet_wrap(~gameCode)
+
 # Team EWMA by Summation of Player Load Using TTR Package
 team <- df %>% group_by(Date) %>% summarise(playerLoad = sum(playerLoad)) %>% 
   mutate(Acute = EMA(playerLoad, 7), Chronic = EMA(playerLoad, 28))
