@@ -26,7 +26,7 @@ df %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7")) %>
 g <- df %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7")) %>% 
   mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>%
   ggplot(aes(x=gameCode, y=playerLoad)) + geom_jitter(width = 0.1, alpha = 0.4, size = 3, color = "#003366") +
-  stat_summary(fun.y=mean, colour="#FFCC00", size = 2, geom="line", aes(group = 1, shape = "mean")) + theme_minimal() +
+  stat_summary(fun.y=mean, colour="#FFCC00", size = 2, geom="line", aes(group = 1, shape = "Mean")) + theme_minimal() +
   scale_shape_manual("", values=c("Mean"="x"))
 ggplotly(g)
 
