@@ -35,18 +35,6 @@ CSS <- ".shiny-output-error-fileUpload {
   text-align: center;}
 #numPractice {
   text-align: center;}
-#TeamLoadChrono{
-  height: calc(40vh - 80px) !important;
-}
-#TeamVelocityChrono{
-  height: calc(40vh - 80px) !important;
-}
-#TeamLoadCode{
-  height: calc(40vh - 80px) !important;
-}
-#TeamVelocityCode{
-  height: calc(40vh - 80px) !important;
-}
   
 "
 
@@ -115,10 +103,10 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                       fluidRow(
                         tabBox(width = 12,
                                tabPanel("Player Load",
-                                        withSpinner(plotlyOutput("TeamLoadChrono"), type = 7, color = "#FFCC00", size = 2)
+                                        withSpinner(plotlyOutput("TeamLoadChrono", height = "100%", width = "100%"), type = 7, color = "#FFCC00", size = 2)
                                ),
                                tabPanel("Max Velocity",
-                                        withSpinner(plotlyOutput("TeamVelocityChrono"), type = 7, color = "#FFCC00", size = 2)
+                                        withSpinner(plotlyOutput("TeamVelocityChrono", height = "100%", width = "100%"), type = 7, color = "#FFCC00", size = 2)
                                )
                         )
                       ),
@@ -127,10 +115,10 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                       fluidRow(
                         tabBox(width = 12,
                                tabPanel("Player Load",
-                                        withSpinner(plotlyOutput("TeamLoadCode"), type = 7, color = "#FFCC00", size = 2)
+                                        withSpinner(plotlyOutput("TeamLoadCode", height = "100%", width = "100%"), type = 7, color = "#FFCC00", size = 2)
                                ),
                                tabPanel("Max Velocity",
-                                        withSpinner(plotlyOutput("TeamVelocityCode"), type = 7, color = "#FFCC00", size = 2)
+                                        withSpinner(plotlyOutput("TeamVelocityCode", height = "100%", width = "100%"), type = 7, color = "#FFCC00", size = 2)
                                )
                         )
                       )
