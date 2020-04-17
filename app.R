@@ -143,20 +143,14 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                             tabPanel("Max Velocity",
                                      withSpinner(plotlyOutput("PlayerVelocityChrono", height = "28vh"), type = 7, color = "#FFCC00", size = 2)
                             ),
-                            tabPanel("ACWR",
-                                     withSpinner(plotlyOutput("PlayerEWMA", height = "28vh"), type = 7, color = "#FFCC00", size = 2)
-                            )
-                     )
-                   ),
-                   
-                   ## ROW 3 ##
-                   fluidRow(
-                     tabBox(width = 12,
-                            tabPanel("Player Load",
+                            tabPanel("Player Load by Game Code",
                                      withSpinner(plotlyOutput("PlayerLoadCode", height = "28vh"), type = 7, color = "#FFCC00", size = 2)
                             ),
-                            tabPanel("Max Velocity",
+                            tabPanel("Max Velocity by Game Code",
                                      withSpinner(plotlyOutput("PlayerVelocityCode", height = "28vh"), type = 7, color = "#FFCC00", size = 2)
+                            ),
+                            tabPanel("ACWR",
+                                     withSpinner(plotlyOutput("PlayerEWMA", height = "28vh"), type = 7, color = "#FFCC00", size = 2)
                             )
                      )
                    )
@@ -367,7 +361,7 @@ server <- function(input, output, session) {
       ggplotly(p3, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
     
-    # Plotly Average Max Velocity by Game Code
+    # Plotly Max Velocity by Game Code
     output$TeamVelocityCode <- renderPlotly({
       p4 <- Data() %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7")) %>% 
         mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>%
@@ -413,24 +407,6 @@ server <- function(input, output, session) {
       ggplotly(p6, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
     
-    # Plotly Player EWMA Over Time/Player with Validation for chronic
-    output$PlayerEWMA <- renderPlotly({
-      validate(
-        need(as.numeric(Data() %>% filter(Name == input$player) %>% tally()) > 28, 
-             "This player does not have enough data for a chronic player load of 28-days")
-      )
-      
-      p7 <- Data() %>% filter(Name == input$player) %>%
-        mutate(Acute = round(EMA(playerLoad, 7), 2), Chronic = round(EMA(playerLoad, 28), 2), ACWR = round(Acute/Chronic, 2)) %>%
-        filter(!is.na(Chronic)) %>%
-        ggplot(aes(Date, ACWR, text = paste0("Date: ", Date, "\n", "Acute: ", Acute, "\n", "Chronic: ", Chronic, "\n", "ACWR: ", ACWR))) + 
-        geom_line(group = 1) + scale_y_continuous(breaks = seq(0.5, 1.5, 0.5), limits = c(0.5, 1.5)) + 
-        geom_hline(aes(yintercept = input$acwr[1]), color = "#d95f02", alpha = 0.5) + 
-        geom_hline(aes(yintercept = input$acwr[2]), color = "#f03b20", alpha = 0.5) + ggtitle("ACWR Using Exponentially Weighted Moving Average") + 
-        xlab("") + ylab("ACWR") + theme_bw() + theme(plot.title = element_text(hjust = 0.5))
-      ggplotly(p7, tooltip = "text") %>% config(displayModeBar = FALSE)
-    })
-    
     # Plotly Average Player Load/gameCode
     output$PlayerLoadCode <- renderPlotly({
       p8 <- Data() %>% select(Name, playerLoad, Activity, gameCode) %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7")) %>% 
@@ -453,6 +429,24 @@ server <- function(input, output, session) {
         theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
         scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Average Max Velocity by Game Code")
       ggplotly(p9) %>% config(displayModeBar = FALSE)
+    })
+    
+    # Plotly Player EWMA Over Time/Player with Validation for Enough Data
+    output$PlayerEWMA <- renderPlotly({
+      validate(
+        need(as.numeric(Data() %>% filter(Name == input$player) %>% tally()) > 28, 
+             "This player does not have enough data for a chronic player load of 28-days")
+      )
+      
+      p7 <- Data() %>% filter(Name == input$player) %>%
+        mutate(Acute = round(EMA(playerLoad, 7), 2), Chronic = round(EMA(playerLoad, 28), 2), ACWR = round(Acute/Chronic, 2)) %>%
+        filter(!is.na(Chronic)) %>%
+        ggplot(aes(Date, ACWR, text = paste0("Date: ", Date, "\n", "Acute: ", Acute, "\n", "Chronic: ", Chronic, "\n", "ACWR: ", ACWR))) + 
+        geom_line(group = 1) + scale_y_continuous(breaks = seq(0.5, 1.5, 0.5), limits = c(0.5, 1.5)) + 
+        geom_hline(aes(yintercept = input$acwr[1]), color = "#d95f02", alpha = 0.5) + 
+        geom_hline(aes(yintercept = input$acwr[2]), color = "#f03b20", alpha = 0.5) + ggtitle("ACWR Using Exponentially Weighted Moving Average") + 
+        xlab("") + ylab("ACWR") + theme_bw() + theme(plot.title = element_text(hjust = 0.5))
+      ggplotly(p7, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
 }
 # Run the application 
