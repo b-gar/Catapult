@@ -219,9 +219,9 @@ server <- function(input, output, session) {
     
     # Observe Notifications for Outliers
     observe({
-      for (row in 1:nrow(Data())) {
-        if (Data()$Distance[row] == 0 & Data()$playerLoad[row] ==0) {
-          notif <- paste0("No GPS Data on ", Data()$Date[row])
+      for (row in 1:nrow(d())) {
+        if (d()$Distance[row] == 0 & d()$playerLoad[row] ==0) {
+          notif <- paste0("No GPS Data on ", d()$Date[row])
           showNotification(notif)
         }
       }
