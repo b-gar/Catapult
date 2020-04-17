@@ -163,7 +163,7 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
 server <- function(input, output, session) {
   
     # Reactive expression to get DF from file input
-    Data <- reactive({
+    d <- reactive({
       
       req(input$files)
         
@@ -210,12 +210,27 @@ server <- function(input, output, session) {
             dfCombined$gcode <- ifelse(dfCombined$gdays > 0, paste0("G-", dfCombined$gdays), "G")
         
             dfCombined <- arrange(dfCombined, date)
-            dfCombined <- dfCombined %>% select(1:8,12)
+            dfCombined <- dfCombined %>% select(1:8,12) %>% mutate_if(is.numeric, round, 2)
             colnames(dfCombined) <- c("Name", "Position", "Duration", "Distance", "playerLoad", "maxVelocity", "Date", 
                                       "Activity", "gameCode")
-            dfCombined <- dfCombined %>% filter(Distance != 0 | playerLoad != 0) %>% mutate_if(is.numeric, round, 2)
          
         return(dfCombined)
+    })
+    
+    # Observe Notifications for Outliers
+    observe({
+      for (row in 1:nrow(Data())) {
+        if (Data()$Distance == 0 & Data()$playerLoad ==0) {
+          notif <- paste0("No GPS Data on ", Data()$Date[row])
+          showNotification(notif)
+        }
+      }
+    })
+    
+    # Filtered DF Used for Everything
+    Data <- reactive({
+      d() %>%
+      filter(Distance != 0 | playerLoad != 0)
     })
     
     ## DF with All Player's ACWR ##
