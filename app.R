@@ -138,19 +138,19 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                    fluidRow(
                      tabBox(width = 12,
                             tabPanel("Player Load",
-                                     withSpinner(plotlyOutput("PlayerLoadChrono", height = "28vh"), type = 7, color = "#FFCC00", size = 2)
+                                     withSpinner(plotlyOutput("PlayerLoadChrono", height = "100%", width = "100%"), type = 7, color = "#FFCC00", size = 2)
                             ),
                             tabPanel("Max Velocity",
-                                     withSpinner(plotlyOutput("PlayerVelocityChrono", height = "28vh"), type = 7, color = "#FFCC00", size = 2)
+                                     withSpinner(plotlyOutput("PlayerVelocityChrono", height = "100%", width = "100%"), type = 7, color = "#FFCC00", size = 2)
                             ),
                             tabPanel("Player Load by Game Code",
-                                     withSpinner(plotlyOutput("PlayerLoadCode", height = "28vh"), type = 7, color = "#FFCC00", size = 2)
+                                     withSpinner(plotlyOutput("PlayerLoadCode", height = "100%", width = "100%"), type = 7, color = "#FFCC00", size = 2)
                             ),
                             tabPanel("Max Velocity by Game Code",
-                                     withSpinner(plotlyOutput("PlayerVelocityCode", height = "28vh"), type = 7, color = "#FFCC00", size = 2)
+                                     withSpinner(plotlyOutput("PlayerVelocityCode", height = "100%", width = "100%"), type = 7, color = "#FFCC00", size = 2)
                             ),
                             tabPanel("ACWR",
-                                     withSpinner(plotlyOutput("PlayerEWMA", height = "28vh"), type = 7, color = "#FFCC00", size = 2)
+                                     withSpinner(plotlyOutput("PlayerEWMA", height = "100%", width = "100%"), type = 7, color = "#FFCC00", size = 2)
                             )
                      )
                    )
@@ -427,6 +427,7 @@ server <- function(input, output, session) {
                     maxVelocity))) + geom_jitter(width = 0.1, alpha = 0.4, size = 3, color = "#003366") +
         stat_summary(fun=mean, colour="#FFCC00", size = 2, geom="line", aes(group = 1, shape = "Mean")) + theme_minimal() + 
         xlab("") + scale_shape_manual("", values=c("Mean"="x")) +
+        theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5))
       ggplotly(p9, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
     
