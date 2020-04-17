@@ -102,16 +102,16 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                       fluidRow(
                         tabBox(width = 12,
                                tabPanel("Player Load",
-                                        withSpinner(plotlyOutput("TeamLoadChrono", height = "100%", width = "100%"), type = 7, color = "#FFCC00", size = 2)
+                                        withSpinner(plotlyOutput("TeamLoadChrono", height = "100%"), type = 7, color = "#FFCC00", size = 2)
                                ),
                                tabPanel("Max Velocity",
-                                        withSpinner(plotlyOutput("TeamVelocityChrono", height = "100%", width = "100%"), type = 7, color = "#FFCC00", size = 2)
+                                        withSpinner(plotlyOutput("TeamVelocityChrono", height = "100%"), type = 7, color = "#FFCC00", size = 2)
                                ),
                                tabPanel("Player Load by Game Code",
-                                        withSpinner(plotlyOutput("TeamLoadCode", height = "100%", width = "100%"), type = 7, color = "#FFCC00", size = 2)
+                                        withSpinner(plotlyOutput("TeamLoadCode", height = "100%"), type = 7, color = "#FFCC00", size = 2)
                                ),
                                tabPanel("Max Velocity by Game Code",
-                                        withSpinner(plotlyOutput("TeamVelocityCode", height = "100%", width = "100%"), type = 7, color = "#FFCC00", size = 2)
+                                        withSpinner(plotlyOutput("TeamVelocityCode", height = "100%"), type = 7, color = "#FFCC00", size = 2)
                                )
                         )
                       )
@@ -138,19 +138,19 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                    fluidRow(
                      tabBox(width = 12,
                             tabPanel("Player Load",
-                                     withSpinner(plotlyOutput("PlayerLoadChrono", height = "100%", width = "100%"), type = 7, color = "#FFCC00", size = 2)
+                                     withSpinner(plotlyOutput("PlayerLoadChrono", height = "100%"), type = 7, color = "#FFCC00", size = 2)
                             ),
                             tabPanel("Max Velocity",
-                                     withSpinner(plotlyOutput("PlayerVelocityChrono", height = "100%", width = "100%"), type = 7, color = "#FFCC00", size = 2)
+                                     withSpinner(plotlyOutput("PlayerVelocityChrono", height = "100%"), type = 7, color = "#FFCC00", size = 2)
                             ),
                             tabPanel("Player Load by Game Code",
-                                     withSpinner(plotlyOutput("PlayerLoadCode", height = "100%", width = "100%"), type = 7, color = "#FFCC00", size = 2)
+                                     withSpinner(plotlyOutput("PlayerLoadCode", height = "100%"), type = 7, color = "#FFCC00", size = 2)
                             ),
                             tabPanel("Max Velocity by Game Code",
-                                     withSpinner(plotlyOutput("PlayerVelocityCode", height = "100%", width = "100%"), type = 7, color = "#FFCC00", size = 2)
+                                     withSpinner(plotlyOutput("PlayerVelocityCode", height = "100%"), type = 7, color = "#FFCC00", size = 2)
                             ),
                             tabPanel("ACWR",
-                                     withSpinner(plotlyOutput("PlayerEWMA", height = "100%", width = "100%"), type = 7, color = "#FFCC00", size = 2)
+                                     withSpinner(plotlyOutput("PlayerEWMA", height = "100%"), type = 7, color = "#FFCC00", size = 2)
                             )
                      )
                    )
