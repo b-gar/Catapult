@@ -407,27 +407,26 @@ server <- function(input, output, session) {
       ggplotly(p6, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
     
-    # Plotly Average Player Load/gameCode
+    # Plotly Player Load/gameCode
     output$PlayerLoadCode <- renderPlotly({
-      p8 <- Data() %>% select(Name, playerLoad, Activity, gameCode) %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7")) %>% 
-        mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>% filter(Name == input$player) %>%
-        group_by(gameCode) %>% mutate(averagePlayerLoad = round(mean(playerLoad), 2)) %>% select(-playerLoad) %>% 
-        ggplot(aes(x = gameCode, y = averagePlayerLoad, group = 1)) + geom_point(aes(color = Activity), size = 4) + geom_line() + 
-        theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
-        scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Average Player Load by Game Code")
+      p8 <- Data() %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7"), Name == input$player) %>% 
+        mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>%
+        ggplot(aes(x=gameCode, y=playerLoad, text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "playerLoad: ", 
+                    playerLoad))) + geom_jitter(width = 0.1, alpha = 0.4, size = 3, color = "#003366") +
+        stat_summary(fun=mean, colour="#FFCC00", size = 2, geom="line", aes(group = 1, shape = "Mean")) + theme_minimal() + 
+        xlab("") + scale_shape_manual("", values=c("Mean"="x")) +
+        theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5))
       ggplotly(p8) %>% config(displayModeBar = FALSE)
     })
     
-    # Plotly Average Max Velocity/gameCode
+    # Plotly Max Velocity/gameCode
     output$PlayerVelocityCode <- renderPlotly({
-      p9 <- Data() %>% select(Name, maxVelocity, Activity, gameCode) %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7")) %>% 
+      p9 <- Data() %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7"), Name == input$player) %>% 
         mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>% 
-        filter(Name == input$player, maxVelocity < 20) %>% group_by(gameCode) %>% 
-        mutate(averageMaxVelocity = round(mean(maxVelocity), 2)) %>% 
-        select(-maxVelocity) %>% ggplot(aes(x = gameCode, y = averageMaxVelocity, group = 1)) + 
-        geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() + 
-        theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
-        scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Average Max Velocity by Game Code")
+        ggplot(aes(x=gameCode, y=playerLoad, text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "maxVelocity: ", 
+                    maxVelocity))) + geom_jitter(width = 0.1, alpha = 0.4, size = 3, color = "#003366") +
+        stat_summary(fun=mean, colour="#FFCC00", size = 2, geom="line", aes(group = 1, shape = "Mean")) + theme_minimal() + 
+        xlab("") + scale_shape_manual("", values=c("Mean"="x")) +
       ggplotly(p9) %>% config(displayModeBar = FALSE)
     })
     
