@@ -131,6 +131,9 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                      column(1, style = "float: left;",
                             br(),
                        actionButton("reset", "Reset", width = "80%")
+                     ),
+                     column(3,
+                       selectInput("acute", "ACWR Acute Timeframe", choices = c(3,4,5,6,7), selected = 7)
                      )
                    ),
                    
@@ -238,13 +241,13 @@ server <- function(input, output, session) {
       allPlayers <- data.frame()
       
       for (athlete in levels(Data()$Name)) {
-        if (as.numeric(Data() %>% filter(Name==athlete) %>% tally() < 28)) {
+        if (as.numeric(Data() %>% filter(Name==athlete) %>% tally() < input$acute*4)) {
           next
         }
         
         else({
           player <- Data() %>% filter(Name == athlete) %>% 
-            transmute(Name = athlete, Date = as.Date(Date), Acute = EMA(playerLoad, 7), Chronic = EMA(playerLoad, 28), ACWR = Acute/Chronic) %>%
+            transmute(Name = athlete, Date = as.Date(Date), Acute = EMA(playerLoad, input$acute), Chronic = EMA(playerLoad, input$acute*4), ACWR = Acute/Chronic) %>%
             mutate_if(is.numeric, round, 2)
           allPlayers <- rbind(player, allPlayers)
         })
