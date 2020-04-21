@@ -452,12 +452,12 @@ server <- function(input, output, session) {
     # Plotly Player EWMA Over Time/Player with Validation for Enough Data
     output$PlayerEWMA <- renderPlotly({
       validate(
-        need(as.numeric(Data() %>% filter(Name == input$player) %>% tally()) > 28, 
+        need(as.numeric(Data() %>% filter(Name == input$player) %>% tally()) > as.integer(input$acute)*4, 
              "This player does not have enough data for a chronic player load of 28-days")
       )
       
       p7 <- Data() %>% filter(Name == input$player) %>%
-        mutate(Acute = round(EMA(playerLoad, 7), 2), Chronic = round(EMA(playerLoad, 28), 2), ACWR = round(Acute/Chronic, 2)) %>%
+        mutate(Acute = round(EMA(playerLoad, as.integer(input$acute)), 2), Chronic = round(EMA(playerLoad, as.integer(input$acute)*4), 2), ACWR = round(Acute/Chronic, 2)) %>%
         filter(!is.na(Chronic)) %>%
         ggplot(aes(Date, ACWR, text = paste0("Date: ", Date, "\n", "Acute: ", Acute, "\n", "Chronic: ", Chronic, "\n", "ACWR: ", ACWR))) + 
         geom_line(group = 1) + scale_y_continuous(breaks = seq(0.5, 1.5, 0.5), limits = c(0.5, 1.5)) + 
