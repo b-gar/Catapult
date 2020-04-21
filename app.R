@@ -241,13 +241,13 @@ server <- function(input, output, session) {
       allPlayers <- data.frame()
       
       for (athlete in levels(Data()$Name)) {
-        if (as.numeric(Data() %>% filter(Name==athlete) %>% tally() < input$acute*4)) {
+        if (as.numeric(Data() %>% filter(Name==athlete) %>% tally() < as.integer(input$acute*4))) {
           next
         }
         
         else({
           player <- Data() %>% filter(Name == athlete) %>% 
-            transmute(Name = athlete, Date = as.Date(Date), Acute = EMA(playerLoad, input$acute), Chronic = EMA(playerLoad, input$acute*4), ACWR = Acute/Chronic) %>%
+            transmute(Name = athlete, Date = as.Date(Date), Acute = EMA(playerLoad, as.integer(input$acute)), Chronic = EMA(playerLoad, as.integer(input$acute*4)), ACWR = Acute/Chronic) %>%
             mutate_if(is.numeric, round, 2)
           allPlayers <- rbind(player, allPlayers)
         })
