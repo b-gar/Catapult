@@ -276,7 +276,7 @@ server <- function(input, output, session) {
         dropdownMenu(type = "notifications", .list = notifMessageH, icon = icon("arrow-up", lib = "glyphicon"), badgeStatus = "danger")
       }
       else(
-        dropdownMenu(notificationItem(text = "There are no high ACWR values", icon = icon("info")), badgeStatus = "info")
+        dropdownMenu(notificationItem(text = "There are no high ACWR values", icon = icon("arrow-up", lib = "glyphicon")), badgeStatus = "success")
       )
     })
     
@@ -292,7 +292,7 @@ server <- function(input, output, session) {
         dropdownMenu(type = "notifications", .list = notifMessageL, icon = icon("arrow-down", lib = "glyphicon"), badgeStatus = "warning")
       }
       else(
-        dropdownMenu(notificationItem(text = "There are no low ACWR values", icon = icon("info")), badgeStatus = "info")
+        dropdownMenu(notificationItem(text = "There are no low ACWR values", icon = icon("arrow-down", lib = "glyphicon")), badgeStatus = "success")
       )
     })
     
@@ -310,7 +310,7 @@ server <- function(input, output, session) {
         dropdownMenu(type = "notifications", .list = notifMessageMaxV, icon = icon("tachometer-alt"), badgeStatus = "info")
       }
       else(
-        dropdownMenu(notificationItem(text = ""))
+        dropdownMenu(notificationItem(text = "No max velocity errors detected", icon = icon("tachometer-alt")), badgeStatus = "success")
       )
     })
     
@@ -328,7 +328,7 @@ server <- function(input, output, session) {
         dropdownMenu(type = "notifications", .list = notifMessageGPS, icon = icon("satellite-dish"), badgeStatus = "info")
       }
       else(
-        dropdownMenu(notificationItem(text = ""))
+        dropdownMenu(notificationItem(text = "No GPS errors detected", icon = icon("satellite-dish")), badgeStatus = "success")
       )
     })
     
