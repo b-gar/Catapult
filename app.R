@@ -276,7 +276,10 @@ server <- function(input, output, session) {
         dropdownMenu(type = "notifications", .list = notifMessageH, icon = icon("arrow-up", lib = "glyphicon"), badgeStatus = "danger")
       }
       else(
-        dropdownMenu(notificationItem(text = "There are no high ACWR values", icon = icon("arrow-up", lib = "glyphicon")), badgeStatus = "success")
+        dropdownMenu(
+          notificationItem(text = "There are no high ACWR values", icon = icon("thumbs-up"), status = "success"), 
+          badgeStatus = "success", icon = icon("arrow-up", lib = "glyphicon")
+        )
       )
     })
     
@@ -292,7 +295,10 @@ server <- function(input, output, session) {
         dropdownMenu(type = "notifications", .list = notifMessageL, icon = icon("arrow-down", lib = "glyphicon"), badgeStatus = "warning")
       }
       else(
-        dropdownMenu(notificationItem(text = "There are no low ACWR values", icon = icon("arrow-down", lib = "glyphicon")), badgeStatus = "success")
+        dropdownMenu(
+          notificationItem(text = "There are no low ACWR values", icon = icon("thumbs-up"), status = "success"), 
+          badgeStatus = "success", icon = icon("arrow-down", lib = "glyphicon")
+        )
       )
     })
     
@@ -310,7 +316,10 @@ server <- function(input, output, session) {
         dropdownMenu(type = "notifications", .list = notifMessageMaxV, icon = icon("tachometer-alt"), badgeStatus = "info")
       }
       else(
-        dropdownMenu(notificationItem(text = "No max velocity errors detected", icon = icon("tachometer-alt")), badgeStatus = "success")
+        dropdownMenu(
+          notificationItem(text = "No max velocity errors detected", icon = icon("thumbs-up"), status = "success"), 
+          badgeStatus = "success", icon = icon("tachometer-alt")
+        )
       )
     })
     
@@ -328,7 +337,10 @@ server <- function(input, output, session) {
         dropdownMenu(type = "notifications", .list = notifMessageGPS, icon = icon("satellite"), badgeStatus = "info")
       }
       else(
-        dropdownMenu(notificationItem(text = "No GPS errors detected", icon = icon("satellite")), badgeStatus = "success")
+        dropdownMenu(
+          notificationItem(text = "No GPS errors detected", icon = icon("thumbs-up"), status = "success"), badgeStatus = "success",
+          icon = icon("satellite")
+        )
       )
     })
     
