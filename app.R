@@ -107,22 +107,22 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                       fluidRow(
                         tabBox(width = 12,
                                tabPanel("Player Load",
-                                        withSpinner(plotlyOutput("TeamLoadChrono", height = "70vh"), type = 7, color = "#FFCC00", size = 2)
+                                        withSpinner(plotlyOutput("TeamLoadChrono", height = "75vh"), type = 7, color = "#FFCC00", size = 2)
                                ),
                                tabPanel("Max Velocity",
-                                        withSpinner(plotlyOutput("TeamVelocityChrono", height = "70vh"), type = 7, color = "#FFCC00", size = 2)
+                                        withSpinner(plotlyOutput("TeamVelocityChrono", height = "75vh"), type = 7, color = "#FFCC00", size = 2)
                                ),
                                tabPanel("HSR",
-                                        withSpinner(plotlyOutput("TeamHSRChrono", height = "70vh"), type = 7, color = "#FFCC00", size = 2)
+                                        withSpinner(plotlyOutput("TeamHSRChrono", height = "75vh"), type = 7, color = "#FFCC00", size = 2)
                                ),
                                tabPanel("Player Load by Game Code",
-                                        withSpinner(plotlyOutput("TeamLoadCode", height = "70vh"), type = 7, color = "#FFCC00", size = 2)
+                                        withSpinner(plotlyOutput("TeamLoadCode", height = "75vh"), type = 7, color = "#FFCC00", size = 2)
                                ),
                                tabPanel("Max Velocity by Game Code",
-                                        withSpinner(plotlyOutput("TeamVelocityCode", height = "70vh"), type = 7, color = "#FFCC00", size = 2)
+                                        withSpinner(plotlyOutput("TeamVelocityCode", height = "75vh"), type = 7, color = "#FFCC00", size = 2)
                                ),
                                tabPanel("HSR by Game code",
-                                        withSpinner(plotlyOutput("TeamHSRCode", height = "70vh"), type = 7, color = "#FFCC00", size = 2)
+                                        withSpinner(plotlyOutput("TeamHSRCode", height = "75vh"), type = 7, color = "#FFCC00", size = 2)
                                )
                         )
                       )
@@ -152,25 +152,25 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                    fluidRow(
                      tabBox(width = 12,
                             tabPanel("Player Load",
-                                     withSpinner(plotlyOutput("PlayerLoadChrono", height = "100%"), type = 7, color = "#FFCC00", size = 2)
+                                     withSpinner(plotlyOutput("PlayerLoadChrono", height = "70vh"), type = 7, color = "#FFCC00", size = 2)
                             ),
                             tabPanel("Max Velocity",
-                                     withSpinner(plotlyOutput("PlayerVelocityChrono", height = "100%"), type = 7, color = "#FFCC00", size = 2)
+                                     withSpinner(plotlyOutput("PlayerVelocityChrono", height = "70vh"), type = 7, color = "#FFCC00", size = 2)
                             ),
                             tabPanel("HSR",
-                                     withSpinner(plotlyOutput("PlayerHSRChrono", height = "100%"), type = 7, color = "#FFCC00", size = 2)
+                                     withSpinner(plotlyOutput("PlayerHSRChrono", height = "70vh"), type = 7, color = "#FFCC00", size = 2)
                             ),
                             tabPanel("Player Load by Game Code",
-                                     withSpinner(plotlyOutput("PlayerLoadCode", height = "100%"), type = 7, color = "#FFCC00", size = 2)
+                                     withSpinner(plotlyOutput("PlayerLoadCode", height = "70vh"), type = 7, color = "#FFCC00", size = 2)
                             ),
                             tabPanel("Max Velocity by Game Code",
-                                     withSpinner(plotlyOutput("PlayerVelocityCode", height = "100%"), type = 7, color = "#FFCC00", size = 2)
+                                     withSpinner(plotlyOutput("PlayerVelocityCode", height = "70vh"), type = 7, color = "#FFCC00", size = 2)
                             ),
                             tabPanel("HSR by Game Code",
-                                     withSpinner(plotlyOutput("PlayerHSRCode", height = "100%"), type = 7, color = "#FFCC00", size = 2)
+                                     withSpinner(plotlyOutput("PlayerHSRCode", height = "70vh"), type = 7, color = "#FFCC00", size = 2)
                             ),
                             tabPanel("ACWR",
-                                     withSpinner(plotlyOutput("PlayerEWMA", height = "100%"), type = 7, color = "#FFCC00", size = 2)
+                                     withSpinner(plotlyOutput("PlayerEWMA", height = "70vh"), type = 7, color = "#FFCC00", size = 2)
                             )
                      )
                    )
