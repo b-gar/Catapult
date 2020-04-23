@@ -300,7 +300,7 @@ server <- function(input, output, session) {
     output$notificationMaxV <- renderMenu({
       
       maxV <- d() %>% mutate(WarningMessage = case_when(maxVelocity > 25 ~ paste("Max velocity error detected on", Date))) %>% 
-        arrange(desc(Date))
+        arrange(desc(Date)) %>% filter(!is.na(WarningMessage))
       
       if(nrow(maxV) > 0){
         notifMessageMaxV <- apply(maxV, 1, function(row) {
@@ -318,7 +318,7 @@ server <- function(input, output, session) {
     output$notificationGPS <- renderMenu({
       
       GPS <- d() %>% mutate(WarningMessage = case_when(Distance == 0 & playerLoad > 0 ~ paste("No GPS data on", Date))) %>% 
-        arrange(desc(Date))
+        arrange(desc(Date)) %>% filter(!is.na(WarningMessage))
       
       if(nrow(GPS) > 0){
         notifMessageGPS <- apply(GPS, 1, function(row) {
