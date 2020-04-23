@@ -112,11 +112,17 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                                tabPanel("Max Velocity",
                                         withSpinner(plotlyOutput("TeamVelocityChrono", height = "100%"), type = 7, color = "#FFCC00", size = 2)
                                ),
+                               tabPanel("HSR",
+                                        withSpinner(plotlyOutput("TeamHSRChrono", height = "100%"), type = 7, color = "#FFCC00", size = 2)
+                               ),
                                tabPanel("Player Load by Game Code",
                                         withSpinner(plotlyOutput("TeamLoadCode", height = "100%"), type = 7, color = "#FFCC00", size = 2)
                                ),
                                tabPanel("Max Velocity by Game Code",
                                         withSpinner(plotlyOutput("TeamVelocityCode", height = "100%"), type = 7, color = "#FFCC00", size = 2)
+                               ),
+                               tabPanel("HSR by Game code",
+                                        withSpinner(plotlyOutput("TeamHSRCode", height = "100%"), type = 7, color = "#FFCC00", size = 2)
                                )
                         )
                       )
@@ -151,11 +157,17 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                             tabPanel("Max Velocity",
                                      withSpinner(plotlyOutput("PlayerVelocityChrono", height = "100%"), type = 7, color = "#FFCC00", size = 2)
                             ),
+                            tabPanel("HSR",
+                                     withSpinner(plotlyOutput("PlayerHSRChrono", height = "100%"), type = 7, color = "#FFCC00", size = 2)
+                            ),
                             tabPanel("Player Load by Game Code",
                                      withSpinner(plotlyOutput("PlayerLoadCode", height = "100%"), type = 7, color = "#FFCC00", size = 2)
                             ),
                             tabPanel("Max Velocity by Game Code",
                                      withSpinner(plotlyOutput("PlayerVelocityCode", height = "100%"), type = 7, color = "#FFCC00", size = 2)
+                            ),
+                            tabPanel("HSR by Game Code",
+                                     withSpinner(plotlyOutput("PlayerHSRCode", height = "100%"), type = 7, color = "#FFCC00", size = 2)
                             ),
                             tabPanel("ACWR",
                                      withSpinner(plotlyOutput("PlayerEWMA", height = "100%"), type = 7, color = "#FFCC00", size = 2)
@@ -217,9 +229,8 @@ server <- function(input, output, session) {
             } 
         
             dfCombined$gcode <- ifelse(dfCombined$gdays > 0, paste0("G-", dfCombined$gdays), "G")
-        
             dfCombined <- dfCombined %>% select(1:4,9,5:8,13) %>% mutate_if(is.numeric, round, 2) %>% arrange(date)
-            colnames(dfCombined) <- c("Name", "Position", "Duration", "Distance", "DistanceHSR", "playerLoad", "maxVelocity", "Date", 
+            colnames(dfCombined) <- c("Name", "Position", "Duration", "Distance", "distanceHSR", "playerLoad", "maxVelocity", "Date", 
                                       "Activity", "gameCode")
          
         return(dfCombined)
@@ -403,30 +414,53 @@ server <- function(input, output, session) {
       ggplotly(p2, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
     
+    # Plotly Average Total HSR Over Time
+    output$TeamHSRChrono <- renderPlotly({
+      p3 <- Data() %>% select(distanceHSR, Date, Activity, gameCode) %>% group_by(Date) %>% filter(maxVelocity < 20, maxVelocity != 0) %>%
+        mutate(averageHSR = round(mean(distanceHSR), 2)) %>% distinct(Date, .keep_all = TRUE) %>%
+        ggplot(aes(x = Date, y = averageHSR, group = 1, 
+                   text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "averageTotalHSR: ", averageHSR))) + 
+        geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() +
+        theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
+        scale_color_manual(values = c("#FFCC00", "#003366")) + xlab("")
+      ggplotly(p3, tooltip = "text") %>% config(displayModeBar = FALSE)
+    })
+    
     # Plotly Player Load by Game Code
     output$TeamLoadCode <- renderPlotly({
-      p3 <- Data() %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7")) %>% 
+      p4 <- Data() %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7")) %>% 
         mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>%
         ggplot(aes(x=gameCode, y=playerLoad, text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "playerLoad: ", 
                     playerLoad))) + geom_jitter(width = 0.1, alpha = 0.4, size = 3, color = "#003366") +
         stat_summary(fun=mean, colour="#FFCC00", size = 2, geom="line", aes(group = 1, shape = "Mean")) + theme_bw() + 
         xlab("") + scale_shape_manual("", values=c("Mean"="x")) +
         theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5))
-      ggplotly(p3, tooltip = "text") %>% config(displayModeBar = FALSE)
+      ggplotly(p4, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
     
     # Plotly Max Velocity by Game Code
     output$TeamVelocityCode <- renderPlotly({
-      p4 <- Data() %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7"), maxVelocity < 20, maxVelocity != 0) %>% 
+      p5 <- Data() %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7"), maxVelocity < 20, maxVelocity != 0) %>% 
         mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>%
         ggplot(aes(x=gameCode, y=maxVelocity, text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "maxVelocity: ", 
                     maxVelocity))) + geom_jitter(width = 0.1, alpha = 0.4, size = 3, color = "#003366") +
         stat_summary(fun=mean, colour="#FFCC00", size = 2, geom="line", aes(group = 1, shape = "Mean")) + theme_bw() + 
         xlab("") + scale_shape_manual("", values=c("Mean"="x")) +
         theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5))
-      ggplotly(p4, tooltip = "text") %>% config(displayModeBar = FALSE)
+      ggplotly(p5, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
     
+    # Plotly Total HSR by Game Code
+    output$TeamHSRCode <- renderPlotly({
+      p6 <- Data() %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7"), maxVelocity < 20, maxVelocity != 0) %>% 
+        mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>%
+        ggplot(aes(x=gameCode, y=distanceHSR, text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "distanceHSR: ", 
+              distanceHSR))) + geom_jitter(width = 0.1, alpha = 0.4, size = 3, color = "#003366") +
+        stat_summary(fun=mean, colour="#FFCC00", size = 2, geom="line", aes(group = 1, shape = "Mean")) + theme_bw() + 
+        xlab("") + scale_shape_manual("", values=c("Mean"="x")) +
+        theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5))
+      ggplotly(p6, tooltip = "text") %>% config(displayModeBar = FALSE)
+    })
     ## Player Tab ##
     
     # Update Player Selector Input
@@ -441,41 +475,52 @@ server <- function(input, output, session) {
     
     # Plotly Player Load Over Time/Player
     output$PlayerLoadChrono <- renderPlotly({
-      p5 <- Data() %>% select(Name, playerLoad, Date, Activity, gameCode) %>% filter(Name == input$player) %>%
+      p7 <- Data() %>% select(Name, playerLoad, Date, Activity, gameCode) %>% filter(Name == input$player) %>%
         ggplot(aes(x = Date, y = playerLoad, group = 1, 
                    text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "playerLoad: ", playerLoad))) + 
         geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() +
         theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
         scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Player Load Over Time")
-      ggplotly(p5, tooltip = "text") %>% config(displayModeBar = FALSE)
+      ggplotly(p7, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
     
     # Plotly Player Max Velocity Over Time/Player
     output$PlayerVelocityChrono <- renderPlotly({
-      p6 <- Data() %>% select(Name, maxVelocity, Date, Activity, gameCode) %>% 
+      p8 <- Data() %>% select(Name, maxVelocity, Date, Activity, gameCode) %>% 
         filter(Name == input$player, maxVelocity < 20, maxVelocity != 0) %>% ggplot(aes(x = Date, y = maxVelocity, group = 1, 
                    text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "maxVelocity: ", maxVelocity))) + 
         geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() +
         theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
         scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Max Velocity Over Time")
-      ggplotly(p6, tooltip = "text") %>% config(displayModeBar = FALSE)
+      ggplotly(p8, tooltip = "text") %>% config(displayModeBar = FALSE)
+    })
+    
+    # Plotly Player HSR Over Time/Player
+    output$PlayerHSRChrono <- renderPlotly({
+      p8 <- Data() %>% select(Name, distanceHSR, Date, Activity, gameCode) %>% 
+        filter(Name == input$player, maxVelocity < 20, maxVelocity != 0) %>% ggplot(aes(x = Date, y = distanceHSR, group = 1, 
+              text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "maxVelocity: ", maxVelocity))) + 
+        geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() +
+        theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
+        scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Max Velocity Over Time")
+      ggplotly(p8, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
     
     # Plotly Player Load/gameCode
     output$PlayerLoadCode <- renderPlotly({
-      p8 <- Data() %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7"), Name == input$player) %>% 
+      p9 <- Data() %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7"), Name == input$player) %>% 
         mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>%
         ggplot(aes(x=gameCode, y=playerLoad, text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "playerLoad: ", 
                     playerLoad))) + geom_jitter(width = 0.1, alpha = 0.4, size = 3, color = "#003366") +
         stat_summary(fun=mean, colour="#FFCC00", size = 2, geom="line", aes(group = 1, shape = "Mean")) + theme_bw() + 
         xlab("") + scale_shape_manual("", values=c("Mean"="x")) +
         theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5))
-      ggplotly(p8, tooltip = "text") %>% config(displayModeBar = FALSE)
+      ggplotly(p9, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
     
     # Plotly Player Max Velocity/gameCode
     output$PlayerVelocityCode <- renderPlotly({
-      p9 <- Data() %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7"), 
+      p10 <- Data() %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7"), 
                               Name == input$player, maxVelocity < 20, maxVelocity != 0) %>% 
         mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>% 
         ggplot(aes(x=gameCode, y=maxVelocity, text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "maxVelocity: ", 
@@ -483,7 +528,20 @@ server <- function(input, output, session) {
         stat_summary(fun=mean, colour="#FFCC00", size = 2, geom="line", aes(group = 1, shape = "Mean")) + theme_bw() + 
         xlab("") + scale_shape_manual("", values=c("Mean"="x")) +
         theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5))
-      ggplotly(p9, tooltip = "text") %>% config(displayModeBar = FALSE)
+      ggplotly(p10, tooltip = "text") %>% config(displayModeBar = FALSE)
+    })
+    
+    # Plotly Player HSR/gameCode
+    output$PlayerVelocityCode <- renderPlotly({
+      p11 <- Data() %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7"), 
+                               Name == input$player, maxVelocity < 20, maxVelocity != 0) %>% 
+        mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>% 
+        ggplot(aes(x=gameCode, y=distanceHSR, text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "distanceHSR: ", 
+              distanceHSR))) + geom_jitter(width = 0.1, alpha = 0.4, size = 3, color = "#003366") +
+        stat_summary(fun=mean, colour="#FFCC00", size = 2, geom="line", aes(group = 1, shape = "Mean")) + theme_bw() + 
+        xlab("") + scale_shape_manual("", values=c("Mean"="x")) +
+        theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5))
+      ggplotly(p11, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
     
     # Plotly Player ACWR Over Time/Player with Validation for Enough Data
@@ -493,7 +551,7 @@ server <- function(input, output, session) {
              "This player does not have enough data for a chronic player load of 28-days")
       )
       
-      p7 <- Data() %>% filter(Name == input$player) %>%
+      p12 <- Data() %>% filter(Name == input$player) %>%
         mutate(Acute = round(EMA(playerLoad, as.integer(input$acute)), 2), Chronic = round(EMA(playerLoad, as.integer(input$acute)*4), 2), ACWR = round(Acute/Chronic, 2)) %>%
         filter(!is.na(Chronic)) %>%
         ggplot(aes(Date, ACWR, text = paste0("Date: ", Date, "\n", "Acute: ", Acute, "\n", "Chronic: ", Chronic, "\n", "ACWR: ", ACWR))) + 
@@ -502,7 +560,7 @@ server <- function(input, output, session) {
         geom_hline(aes(yintercept = 1), color = "#308446", alpha = 0.5) +
         geom_hline(aes(yintercept = input$acwr[2]), color = "#f03b20", alpha = 0.5) + ggtitle("ACWR Using Exponentially Weighted Moving Average") + 
         xlab("") + ylab("ACWR") + theme_bw() + theme(plot.title = element_text(hjust = 0.5))
-      ggplotly(p7, tooltip = "text") %>% config(displayModeBar = FALSE)
+      ggplotly(p12, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
 }
 # Run the application 
