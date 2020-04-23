@@ -277,7 +277,7 @@ server <- function(input, output, session) {
       }
       else(
         dropdownMenu(
-          notificationItem(text = "There are no high ACWR values", icon = icon("thumbs-up"), status = "success"), 
+          notificationItem(text = "There are no high ACWR values", icon = icon("thumbs-up")), 
           badgeStatus = "success", icon = icon("arrow-up", lib = "glyphicon")
         )
       )
@@ -296,7 +296,7 @@ server <- function(input, output, session) {
       }
       else(
         dropdownMenu(
-          notificationItem(text = "There are no low ACWR values", icon = icon("thumbs-up"), status = "success"), 
+          notificationItem(text = "There are no low ACWR values", icon = icon("thumbs-up")), 
           badgeStatus = "success", icon = icon("arrow-down", lib = "glyphicon")
         )
       )
@@ -317,7 +317,7 @@ server <- function(input, output, session) {
       }
       else(
         dropdownMenu(
-          notificationItem(text = "No max velocity errors detected", icon = icon("thumbs-up"), status = "success"), 
+          notificationItem(text = "No max velocity errors detected", icon = icon("thumbs-up")), 
           badgeStatus = "success", icon = icon("tachometer-alt")
         )
       )
@@ -338,7 +338,7 @@ server <- function(input, output, session) {
       }
       else(
         dropdownMenu(
-          notificationItem(text = "No GPS errors detected", icon = icon("thumbs-up"), status = "success"), badgeStatus = "success",
+          notificationItem(text = "No GPS errors detected", icon = icon("thumbs-up")), badgeStatus = "success",
           icon = icon("satellite")
         )
       )
