@@ -390,10 +390,10 @@ server <- function(input, output, session) {
                                             buttons = c('csv', 'excel')))
     ## Team Tab ##
     
-    # Plotly Average Load Over Time
+    # Plotly Team Average Player Load Over Time
     output$TeamLoadChrono <- renderPlotly({
-        p1 <- Data() %>% select(playerLoad, Date, Activity, gameCode) %>% group_by(Date) %>% 
-        mutate(averagePlayerLoad = round(mean(playerLoad), 2)) %>% distinct(Date, .keep_all = TRUE) %>% select(-playerLoad) %>%
+        p1 <- Data() %>% group_by(Date) %>% 
+        mutate(averagePlayerLoad = round(mean(playerLoad), 2)) %>%
         ggplot(aes(x = Date, y = averagePlayerLoad, group = 1, 
                    text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "averagePlayerLoad: ", averagePlayerLoad))) + 
         geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() +
@@ -402,10 +402,10 @@ server <- function(input, output, session) {
       ggplotly(p1, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
     
-    # Plotly Average Max Velocity Over Time
+    # Plotly Team Average Max Velocity Over Time
     output$TeamVelocityChrono <- renderPlotly({
-      p2 <- Data() %>% select(maxVelocity, Date, Activity, gameCode) %>% group_by(Date) %>% filter(maxVelocity < 20, maxVelocity != 0) %>%
-        mutate(averageMaxVelocity = round(mean(maxVelocity), 2)) %>% distinct(Date, .keep_all = TRUE) %>% select(-maxVelocity) %>%
+      p2 <- Data() %>% filter(maxVelocity < 20, maxVelocity != 0) group_by(Date) %>%
+        mutate(averageMaxVelocity = round(mean(maxVelocity), 2)) %>%
         ggplot(aes(x = Date, y = averageMaxVelocity, group = 1, 
                    text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "averageMaxVelocity: ", averageMaxVelocity))) + 
         geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() +
@@ -414,9 +414,9 @@ server <- function(input, output, session) {
       ggplotly(p2, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
     
-    # Plotly Average Total HSR Over Time
+    # Plotly Team Average Total HSR Over Time
     output$TeamHSRChrono <- renderPlotly({
-      p3 <- Data() %>% select(distanceHSR, Date, Activity, gameCode) %>% group_by(Date) %>% filter(maxVelocity < 20, maxVelocity != 0) %>%
+      p3 <- Data() %>% group_by(Date) %>% filter(maxVelocity < 20, maxVelocity != 0) %>%
         mutate(averageHSR = round(mean(distanceHSR), 2)) %>% distinct(Date, .keep_all = TRUE) %>%
         ggplot(aes(x = Date, y = averageHSR, group = 1, 
                    text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "averageTotalHSR: ", averageHSR))) + 
@@ -475,7 +475,7 @@ server <- function(input, output, session) {
     
     # Plotly Player Load Over Time/Player
     output$PlayerLoadChrono <- renderPlotly({
-      p7 <- Data() %>% select(Name, playerLoad, Date, Activity, gameCode) %>% filter(Name == input$player) %>%
+      p7 <- Data() %>% filter(Name == input$player) %>%
         ggplot(aes(x = Date, y = playerLoad, group = 1, 
                    text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "playerLoad: ", playerLoad))) + 
         geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() +
@@ -486,8 +486,8 @@ server <- function(input, output, session) {
     
     # Plotly Player Max Velocity Over Time/Player
     output$PlayerVelocityChrono <- renderPlotly({
-      p8 <- Data() %>% select(Name, maxVelocity, Date, Activity, gameCode) %>% 
-        filter(Name == input$player, maxVelocity < 20, maxVelocity != 0) %>% ggplot(aes(x = Date, y = maxVelocity, group = 1, 
+      p8 <- Data() %>% filter(Name == input$player, maxVelocity < 20, maxVelocity != 0) %>% 
+        ggplot(aes(x = Date, y = maxVelocity, group = 1, 
                    text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "maxVelocity: ", maxVelocity))) + 
         geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() +
         theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
@@ -497,9 +497,9 @@ server <- function(input, output, session) {
     
     # Plotly Player HSR Over Time/Player
     output$PlayerHSRChrono <- renderPlotly({
-      p8 <- Data() %>% select(Name, distanceHSR, Date, Activity, gameCode) %>% 
-        filter(Name == input$player, maxVelocity < 20, maxVelocity != 0) %>% ggplot(aes(x = Date, y = distanceHSR, group = 1, 
-              text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "maxVelocity: ", maxVelocity))) + 
+      p8 <- Data() %>% filter(Name == input$player, maxVelocity < 20, maxVelocity != 0) %>% 
+        ggplot(aes(x = Date, y = distanceHSR, group = 1, 
+                   text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "distanceHSR: ", distanceHSR))) + 
         geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() +
         theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
         scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Max Velocity Over Time")
