@@ -128,9 +128,9 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                      column(3,
                             sliderInput("acwr", "ACWR Warnings", min = 0.6, max = 1.4, value = c(0.8, 1.2))
                      ),
-                     column(1, style = "float: left;",
+                     column(1,
                             br(),
-                       actionButton("reset", "Reset", width = "80%")
+                       actionButton("reset", "Reset ACWR Warnings", width = "80%")
                      ),
                      column(3,
                        selectInput("acute", "ACWR Acute Timeframe", choices = c(3,4,5,6,7), selected = 7)
