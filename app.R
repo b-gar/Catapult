@@ -419,7 +419,7 @@ server <- function(input, output, session) {
       p3 <- Data() %>% group_by(Date) %>% filter(maxVelocity < 20, maxVelocity != 0) %>%
         mutate(averageHSR = round(mean(distanceHSR), 2)) %>% distinct(Date, .keep_all = TRUE) %>%
         ggplot(aes(x = Date, y = averageHSR, group = 1, 
-                   text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "averageTotalHSR: ", averageHSR))) + 
+                   text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "averageHSR: ", averageHSR))) + 
         geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() +
         theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
         scale_color_manual(values = c("#FFCC00", "#003366")) + xlab("")
@@ -532,7 +532,7 @@ server <- function(input, output, session) {
     })
     
     # Plotly Player HSR/gameCode
-    output$PlayerVelocityCode <- renderPlotly({
+    output$PlayerHSRCode <- renderPlotly({
       p11 <- Data() %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7"), 
                                Name == input$player, maxVelocity < 20, maxVelocity != 0) %>% 
         mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>% 
