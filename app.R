@@ -192,8 +192,9 @@ server <- function(input, output, session) {
             df1$activity[df1$activity == "Activity"] <- "practice"
             df1$activity <- str_to_title(df1$activity)
             
-            # Filter and Combine
-            df1 <- df1 %>% filter(Period.Name == "Session") %>% select(1,4,7:9,16, date, activity)
+            # Filter, Select Columns, and Combine
+            df1 <- df1 %>% filter(Period.Name == "Session") %>% select(1,4,7:9,16,22:24, date, activity) %>% 
+              mutate(DistanceHSR = .[[7]] + .[[8]] + .[[9]]) %>% select(1:6,10:12)
             dfCombined <- rbind(df1, dfCombined)
             
         }
@@ -217,9 +218,8 @@ server <- function(input, output, session) {
         
             dfCombined$gcode <- ifelse(dfCombined$gdays > 0, paste0("G-", dfCombined$gdays), "G")
         
-            dfCombined <- arrange(dfCombined, date)
-            dfCombined <- dfCombined %>% select(1:8,12) %>% mutate_if(is.numeric, round, 2)
-            colnames(dfCombined) <- c("Name", "Position", "Duration", "Distance", "playerLoad", "maxVelocity", "Date", 
+            dfCombined <- dfCombined %>% select(1:4,9,5:8,13) %>% mutate_if(is.numeric, round, 2) %>% arrange(date)
+            colnames(dfCombined) <- c("Name", "Position", "Duration", "Distance", "DistanceHSR", "playerLoad", "maxVelocity", "Date", 
                                       "Activity", "gameCode")
          
         return(dfCombined)
