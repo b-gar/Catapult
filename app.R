@@ -299,7 +299,7 @@ server <- function(input, output, session) {
     ## Notification Menu for High Max Velocity ##
     output$notificationMaxV <- renderMenu({
       
-      maxV <- d() %>% mutate(WarningMessage = case_when(maxVelocity > 25 ~ paste("Max velocity error detected on", Date))) %>% 
+      maxV <- d() %>% mutate(WarningMessage = case_when(maxVelocity > 25 ~ paste("Max velocity error detected on", Date, "for", Name))) %>% 
         arrange(desc(Date)) %>% filter(!is.na(WarningMessage))
       
       if(nrow(maxV) > 0){
@@ -318,17 +318,17 @@ server <- function(input, output, session) {
     output$notificationGPS <- renderMenu({
       
       GPS <- d() %>% mutate(WarningMessage = case_when(Distance == 0 & playerLoad > 0 ~ paste("No GPS data on", Date))) %>% 
-        arrange(desc(Date)) %>% filter(!is.na(WarningMessage))
+        arrange(desc(Date)) %>% filter(!is.na(WarningMessage)) %>% distinct(WarningMessage)
       
       if(nrow(GPS) > 0){
         notifMessageGPS <- apply(GPS, 1, function(row) {
           notificationItem(text = row[["WarningMessage"]], icon = icon("exclamation-triangle"), status = "info")
         })
         
-        dropdownMenu(type = "notifications", .list = notifMessageGPS, icon = icon("satellite-dish"), badgeStatus = "info")
+        dropdownMenu(type = "notifications", .list = notifMessageGPS, icon = icon("satellite"), badgeStatus = "info")
       }
       else(
-        dropdownMenu(notificationItem(text = "No GPS errors detected", icon = icon("satellite-dish")), badgeStatus = "success")
+        dropdownMenu(notificationItem(text = "No GPS errors detected", icon = icon("satellite")), badgeStatus = "success")
       )
     })
     
