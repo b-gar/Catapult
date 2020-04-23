@@ -41,7 +41,12 @@ CSS <- ".shiny-output-error-fileUpload {
 ui <- dashboardPage(skin = "black", title = "Catapult",
                     
         ## HEADER ##
-        dashboardHeader(title = strong("Catapult"), dropdownMenuOutput("notificationLow"), dropdownMenuOutput("notificationHigh")),
+        dashboardHeader(title = strong("Catapult"),
+                        dropdownMenuOutput("notificationHigh"),
+                        dropdownMenuOutput("notificationLow"),
+                        dropdownMenuOutput("notificationMaxV"),
+                        dropdownMenuOutput("notificationGPS")
+                        ),
 
         ## SIDEBAR ##
         dashboardSidebar(
@@ -220,15 +225,6 @@ server <- function(input, output, session) {
         return(dfCombined)
     })
     
-    # Observe Notifications for Outliers
-    observe({
-      for (row in 1:nrow(d())) {
-        if (d()$Distance[row] == 0 & d()$playerLoad[row] > 0) {
-          showNotification(paste0("No GPS data on ", d()$Date[row]), duration = 10)
-        }
-      }
-    })
-    
     # Filtered DF Used for Everything
     Data <- reactive({
       d() %>%
@@ -269,6 +265,21 @@ server <- function(input, output, session) {
       return(msgs)
     })
     
+    ## Notification Menu for High ACWR ##
+    output$notificationHigh <- renderMenu({
+      
+      nmHigh <- dataACWR() %>% filter(Warning == "High")
+      if (nrow(nmHigh) > 0) {
+        notifMessageH <- apply(nmHigh, 1, function(row) {
+          notificationItem(text = row[["WarningMessage"]], icon = icon("exclamation-triangle"), status = "danger")
+        })
+        dropdownMenu(type = "notifications", .list = notifMessageH, icon = icon("arrow-up", lib = "glyphicon"), badgeStatus = "danger")
+      }
+      else(
+        dropdownMenu(notificationItem(text = "There are no high ACWR values", icon = icon("info")), badgeStatus = "info")
+      )
+    })
+    
     ## Notification Menu for Low ACWR ##
     output$notificationLow <- renderMenu({
       
@@ -283,26 +294,44 @@ server <- function(input, output, session) {
       else(
         dropdownMenu(notificationItem(text = "There are no low ACWR values", icon = icon("info")), badgeStatus = "info")
       )
-      
-      
     })
     
-    ## Notification Menu for High ACWR ##
-    output$notificationHigh <- renderMenu({
+    ## Notification Menu for High Max Velocity ##
+    output$notificationMaxV <- renderMenu({
       
-      nmHigh <- dataACWR() %>% filter(Warning == "High")
-      if (nrow(nmHigh) > 0) {
-        notifMessageH <- apply(nmHigh, 1, function(row) {
-          notificationItem(text = row[["WarningMessage"]], icon = icon("exclamation-triangle"), status = "danger")
+      maxV <- d() %>% mutate(WarningMessage = case_when(maxVelocity > 25 ~ paste("Max velocity error detected on", Date))) %>% 
+        arrange(desc(Date))
+      
+      if(nrow(maxV) > 0){
+        notifMessageMaxV <- apply(maxV, 1, function(row) {
+          notificationItem(text = row[["WarningMessage"]], icon = icon("exclamation-triangle"), status = "info")
         })
-        dropdownMenu(type = "notifications", .list = notifMessageH, icon = icon("arrow-up", lib = "glyphicon"), badgeStatus = "danger")
+        
+        dropdownMenu(type = "notifications", .list = notifMessageMaxV, icon = icon("tachometer-alt"), badgeStatus = "info")
       }
       else(
-        dropdownMenu(notificationItem(text = "There are no high ACWR values", icon = icon("info")), badgeStatus = "info")
+        dropdownMenu(notificationItem(text = ""))
       )
-      
-      
     })
+    
+    ## Notification Menu for GPS Data
+    output$notificationGPS <- renderMenu({
+      
+      GPS <- d() %>% mutate(WarningMessage = case_when(Distance == 0 & playerLoad > 0 ~ paste("No GPS data on", Date))) %>% 
+        arrange(desc(Date))
+      
+      if(nrow(GPS) > 0){
+        notifMessageGPS <- apply(GPS, 1, function(row) {
+          notificationItem(text = row[["WarningMessage"]], icon = icon("exclamation-triangle"), status = "info")
+        })
+        
+        dropdownMenu(type = "notifications", .list = notifMessageGPS, icon = icon("satellite-dish"), badgeStatus = "info")
+      }
+      else(
+        dropdownMenu(notificationItem(text = ""))
+      )
+    })
+    
     ## HOME SCREEN SUMMARY ##
     
     # Number of Games
@@ -449,7 +478,7 @@ server <- function(input, output, session) {
       ggplotly(p9, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
     
-    # Plotly Player EWMA Over Time/Player with Validation for Enough Data
+    # Plotly Player ACWR Over Time/Player with Validation for Enough Data
     output$PlayerEWMA <- renderPlotly({
       validate(
         need(as.numeric(Data() %>% filter(Name == input$player) %>% tally()) > as.integer(input$acute)*4, 
