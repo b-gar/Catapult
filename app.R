@@ -404,7 +404,7 @@ server <- function(input, output, session) {
     
     # Plotly Team Average Max Velocity Over Time
     output$TeamVelocityChrono <- renderPlotly({
-      p2 <- Data() %>% filter(maxVelocity < 20, maxVelocity != 0) group_by(Date) %>%
+      p2 <- Data() %>% filter(maxVelocity < 20, maxVelocity != 0) %>% group_by(Date) %>%
         mutate(averageMaxVelocity = round(mean(maxVelocity), 2)) %>%
         ggplot(aes(x = Date, y = averageMaxVelocity, group = 1, 
                    text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "averageMaxVelocity: ", averageMaxVelocity))) + 
