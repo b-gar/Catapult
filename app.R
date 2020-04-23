@@ -130,7 +130,7 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                      ),
                      column(3,
                             br(),
-                       actionButton("reset", "Reset ACWR Warnings", width = "80%")
+                       actionButton("reset", "Reset ACWR Warnings", width = "50%")
                      ),
                      column(3,
                        selectInput("acute", "ACWR Acute Timeframe", choices = c(3,4,5,6,7), selected = 7)
