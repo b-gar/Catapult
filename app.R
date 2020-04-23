@@ -317,7 +317,7 @@ server <- function(input, output, session) {
     ## Notification Menu for GPS Data
     output$notificationGPS <- renderMenu({
       
-      GPS <- d() %>% mutate(WarningMessage = case_when(Distance == 0 & playerLoad > 0 ~ paste("No GPS data on", Date))) %>% 
+      GPS <- d() %>% mutate(WarningMessage = case_when(Distance == 0 & playerLoad > 0 ~ paste("Possible GPS issue on", Date))) %>% 
         arrange(desc(Date)) %>% filter(!is.na(WarningMessage)) %>% distinct(WarningMessage)
       
       if(nrow(GPS) > 0){
