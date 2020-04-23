@@ -331,11 +331,11 @@ server <- function(input, output, session) {
           notificationItem(text = row[["WarningMessage"]], icon = icon("exclamation-triangle"), status = "info")
         })
         
-        dropdownMenu(type = "notifications", .list = notifMessageGPS, icon = icon("satellite-dish fa-lg"), badgeStatus = "info")
+        dropdownMenu(type = "notifications", .list = notifMessageGPS, icon = icon("satellite-dish"), badgeStatus = "info")
       }
       else(
         dropdownMenu(
-          badgeStatus = "success", icon = icon("satellite-dish fa-lg")
+          badgeStatus = "success", icon = icon("satellite-dish")
         )
       )
     })
