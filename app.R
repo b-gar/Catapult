@@ -462,7 +462,7 @@ server <- function(input, output, session) {
         ggplot(aes(Date, ACWR, text = paste0("Date: ", Date, "\n", "Acute: ", Acute, "\n", "Chronic: ", Chronic, "\n", "ACWR: ", ACWR))) + 
         geom_line(group = 1) + scale_y_continuous(breaks = seq(0.5, 1.5, 0.5), limits = c(0.5, 1.5)) + 
         geom_hline(aes(yintercept = input$acwr[1]), color = "#d95f02", alpha = 0.5) + 
-        geom_hline(aes(yintercept = 1), color = "green", alpha = 0.5) +
+        geom_hline(aes(yintercept = 1), color = "#308446", alpha = 0.5) +
         geom_hline(aes(yintercept = input$acwr[2]), color = "#f03b20", alpha = 0.5) + ggtitle("ACWR Using Exponentially Weighted Moving Average") + 
         xlab("") + ylab("ACWR") + theme_bw() + theme(plot.title = element_text(hjust = 0.5))
       ggplotly(p7, tooltip = "text") %>% config(displayModeBar = FALSE)
