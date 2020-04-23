@@ -478,7 +478,7 @@ server <- function(input, output, session) {
       p7 <- Data() %>% filter(Name == input$player) %>%
         ggplot(aes(x = Date, y = playerLoad, group = 1, 
                    text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "playerLoad: ", playerLoad))) + 
-        geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() +
+        geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() + xlab("") +
         theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
         scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Player Load Over Time")
       ggplotly(p7, tooltip = "text") %>% config(displayModeBar = FALSE)
@@ -489,7 +489,7 @@ server <- function(input, output, session) {
       p8 <- Data() %>% filter(Name == input$player, maxVelocity < 20, maxVelocity != 0) %>% 
         ggplot(aes(x = Date, y = maxVelocity, group = 1, 
                    text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "maxVelocity: ", maxVelocity))) + 
-        geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() +
+        geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() + xlab("") +
         theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
         scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Max Velocity Over Time")
       ggplotly(p8, tooltip = "text") %>% config(displayModeBar = FALSE)
@@ -500,7 +500,7 @@ server <- function(input, output, session) {
       p8 <- Data() %>% filter(Name == input$player, maxVelocity < 20, maxVelocity != 0) %>% 
         ggplot(aes(x = Date, y = distanceHSR, group = 1, 
                    text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "distanceHSR: ", distanceHSR))) + 
-        geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() +
+        geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() + xlab("") +
         theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
         scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Max Velocity Over Time")
       ggplotly(p8, tooltip = "text") %>% config(displayModeBar = FALSE)
