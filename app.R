@@ -28,8 +28,8 @@ CSS <- ".shiny-output-error-fileUpload {
 }
 
 .navbar-custom-menu>.navbar-nav>li>.dropdown-menu {
-  width:500px;
-  }
+  width: 475px;
+}
 
 #numGame {
   text-align: center;}
@@ -271,12 +271,12 @@ server <- function(input, output, session) {
       nmHigh <- dataACWR() %>% filter(Warning == "High")
       if (nrow(nmHigh) > 0) {
         notifMessageH <- apply(nmHigh, 1, function(row) {
-          notificationItem(text = row[["WarningMessage"]], icon = icon("exclamation-triangle"), status = "danger")
+          notificationItem(text = row[["WarningMessage"]], icon("exclamation-triangle"), status = "danger")
         })
-        dropdownMenu(type = "notifications", .list = notifMessageH, icon = icon("arrow-up", lib = "glyphicon"), badgeStatus = "danger")
+        dropdownMenu(type = "notifications", .list = notifMessageH, icon("arrow-up", lib = "glyphicon"), badgeStatus = "danger")
       }
       else(
-        dropdownMenu(notificationItem(text = "There are no high ACWR values", icon = icon("arrow-up", lib = "glyphicon")), badgeStatus = "success")
+        dropdownMenu(notificationItem(text = "There are no high ACWR values", icon("arrow-up", lib = "glyphicon")), badgeStatus = "success")
       )
     })
     
@@ -287,12 +287,12 @@ server <- function(input, output, session) {
       
       if (nrow(nmLow) > 0) {
         notifMessageL <- apply(nmLow, 1, function(row) {
-          notificationItem(text = row[["WarningMessage"]], icon = icon("exclamation-triangle"), status = "warning")
+          notificationItem(text = row[["WarningMessage"]], icon("exclamation-triangle"), status = "warning")
         })
-        dropdownMenu(type = "notifications", .list = notifMessageL, icon = icon("arrow-down", lib = "glyphicon"), badgeStatus = "warning")
+        dropdownMenu(type = "notifications", .list = notifMessageL, icon("arrow-down", lib = "glyphicon"), badgeStatus = "warning")
       }
       else(
-        dropdownMenu(notificationItem(text = "There are no low ACWR values", icon = icon("arrow-down", lib = "glyphicon")), badgeStatus = "success")
+        dropdownMenu(notificationItem(text = "There are no low ACWR values", icon("arrow-down", lib = "glyphicon")), badgeStatus = "success")
       )
     })
     
@@ -304,13 +304,13 @@ server <- function(input, output, session) {
       
       if(nrow(maxV) > 0){
         notifMessageMaxV <- apply(maxV, 1, function(row) {
-          notificationItem(text = row[["WarningMessage"]], icon = icon("exclamation-triangle"), status = "info")
+          notificationItem(text = row[["WarningMessage"]], icon("exclamation-triangle"), status = "info")
         })
         
-        dropdownMenu(type = "notifications", .list = notifMessageMaxV, icon = icon("tachometer-alt"), badgeStatus = "info")
+        dropdownMenu(type = "notifications", .list = notifMessageMaxV, icon("tachometer-alt"), badgeStatus = "info")
       }
       else(
-        dropdownMenu(notificationItem(text = "No max velocity errors detected", icon = icon("tachometer-alt")), badgeStatus = "success")
+        dropdownMenu(notificationItem(text = "No max velocity errors detected", icon("tachometer-alt")), badgeStatus = "success")
       )
     })
     
@@ -322,13 +322,13 @@ server <- function(input, output, session) {
       
       if(nrow(GPS) > 0){
         notifMessageGPS <- apply(GPS, 1, function(row) {
-          notificationItem(text = row[["WarningMessage"]], icon = icon("exclamation-triangle"), status = "info")
+          notificationItem(text = row[["WarningMessage"]], icon("exclamation-triangle"), status = "info")
         })
         
-        dropdownMenu(type = "notifications", .list = notifMessageGPS, icon = icon("satellite"), badgeStatus = "info")
+        dropdownMenu(type = "notifications", .list = notifMessageGPS, icon("satellite"), badgeStatus = "info")
       }
       else(
-        dropdownMenu(notificationItem(text = "No GPS errors detected", icon = icon("satellite")), badgeStatus = "success")
+        dropdownMenu(notificationItem(text = "No GPS errors detected", icon("satellite")), badgeStatus = "success")
       )
     })
     
