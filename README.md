@@ -14,4 +14,6 @@ This app is for visualizing past practice and game positioning systems data from
 
 ACWR: Acute-Chronic Workload Ratio is used in this app to monitor injury risk of athletes and to give notifications when they are most susceptible. Exponentially weighted moving average (EWMA) is used to better account for the effects of training on an athlete.
 
+<br>
+
 _See: [Catapult](https://www.catapultsports.com/) for more information on the wearable technology_
