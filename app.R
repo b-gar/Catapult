@@ -141,7 +141,7 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                      ),
                      column(3,
                             br(),
-                       actionButton("reset", "Reset ACWR Warnings", width = "50%")
+                       actionButton("reset", "Reset ACWR Warnings", width = "60%")
                      ),
                      column(3,
                        selectInput("acute", "ACWR Acute Timeframe", choices = c(3,4,5,6,7), selected = 7)
@@ -396,9 +396,8 @@ server <- function(input, output, session) {
         mutate(averagePlayerLoad = round(mean(playerLoad), 2)) %>%
         ggplot(aes(x = Date, y = averagePlayerLoad, group = 1, 
                    text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "averagePlayerLoad: ", averagePlayerLoad))) + 
-        geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
-        scale_color_manual(values = c("#FFCC00", "#003366")) + xlab("")
+        geom_point(aes(color = Activity), size = 4) + geom_line() + scale_color_manual(values = c("#FFCC00", "#003366")) + xlab("") +
+        theme(axis.text.x = element_text(angle = 45, hjust = 1)) + theme_bw()
       ggplotly(p1, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
     
@@ -408,9 +407,8 @@ server <- function(input, output, session) {
         mutate(averageMaxVelocity = round(mean(maxVelocity), 2)) %>%
         ggplot(aes(x = Date, y = averageMaxVelocity, group = 1, 
                    text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "averageMaxVelocity: ", averageMaxVelocity))) + 
-        geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
-        scale_color_manual(values = c("#FFCC00", "#003366")) + xlab("")
+        geom_point(aes(color = Activity), size = 4) + geom_line() + scale_color_manual(values = c("#FFCC00", "#003366")) + xlab("") +
+        theme(axis.text.x = element_text(angle = 45, hjust = 1)) + theme_bw()
       ggplotly(p2, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
     
@@ -420,9 +418,8 @@ server <- function(input, output, session) {
         mutate(averageHSR = round(mean(distanceHSR), 2)) %>% distinct(Date, .keep_all = TRUE) %>%
         ggplot(aes(x = Date, y = averageHSR, group = 1, 
                    text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "averageHSR: ", averageHSR))) + 
-        geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
-        scale_color_manual(values = c("#FFCC00", "#003366")) + xlab("")
+        geom_point(aes(color = Activity), size = 4) + geom_line() + scale_color_manual(values = c("#FFCC00", "#003366")) + xlab("") +
+        theme(axis.text.x = element_text(angle = 45, hjust = 1)) + theme_bw()
       ggplotly(p3, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
     
@@ -432,9 +429,9 @@ server <- function(input, output, session) {
         mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>%
         ggplot(aes(x=gameCode, y=playerLoad, text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "playerLoad: ", 
                     playerLoad))) + geom_jitter(width = 0.1, alpha = 0.4, size = 3, color = "#003366") +
-        stat_summary(fun=mean, colour="#FFCC00", size = 2, geom="line", aes(group = 1, shape = "Mean")) + theme_bw() + 
+        stat_summary(fun=mean, colour="#FFCC00", size = 2, geom="line", aes(group = 1, shape = "Mean")) + 
         xlab("") + scale_shape_manual("", values=c("Mean"="x")) +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5))
+        theme(axis.text.x = element_text(angle = 45, hjust = 1)) + theme_bw()
       ggplotly(p4, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
     
@@ -444,9 +441,9 @@ server <- function(input, output, session) {
         mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>%
         ggplot(aes(x=gameCode, y=maxVelocity, text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "maxVelocity: ", 
                     maxVelocity))) + geom_jitter(width = 0.1, alpha = 0.4, size = 3, color = "#003366") +
-        stat_summary(fun=mean, colour="#FFCC00", size = 2, geom="line", aes(group = 1, shape = "Mean")) + theme_bw() + 
+        stat_summary(fun=mean, colour="#FFCC00", size = 2, geom="line", aes(group = 1, shape = "Mean")) + 
         xlab("") + scale_shape_manual("", values=c("Mean"="x")) +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5))
+        theme(axis.text.x = element_text(angle = 45, hjust = 1)) + theme_bw()
       ggplotly(p5, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
     
@@ -456,11 +453,12 @@ server <- function(input, output, session) {
         mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>%
         ggplot(aes(x=gameCode, y=distanceHSR, text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "distanceHSR: ", 
               distanceHSR))) + geom_jitter(width = 0.1, alpha = 0.4, size = 3, color = "#003366") +
-        stat_summary(fun=mean, colour="#FFCC00", size = 2, geom="line", aes(group = 1, shape = "Mean")) + theme_bw() + 
+        stat_summary(fun=mean, colour="#FFCC00", size = 2, geom="line", aes(group = 1, shape = "Mean")) + 
         xlab("") + scale_shape_manual("", values=c("Mean"="x")) +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5))
+        theme(axis.text.x = element_text(angle = 45, hjust = 1)) + theme_bw()
       ggplotly(p6, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
+    
     ## Player Tab ##
     
     # Update Player Selector Input
@@ -478,9 +476,8 @@ server <- function(input, output, session) {
       p7 <- Data() %>% filter(Name == input$player) %>%
         ggplot(aes(x = Date, y = playerLoad, group = 1, 
                    text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "playerLoad: ", playerLoad))) + 
-        geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() + xlab("") +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
-        scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Player Load Over Time")
+        geom_point(aes(color = Activity), size = 4) + geom_line() + xlab("") + scale_color_manual(values = c("#FFCC00", "#003366")) +
+        theme(axis.text.x = element_text(angle = 45, hjust = 1)) + theme_bw()
       ggplotly(p7, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
     
@@ -489,9 +486,8 @@ server <- function(input, output, session) {
       p8 <- Data() %>% filter(Name == input$player, maxVelocity < 20, maxVelocity != 0) %>% 
         ggplot(aes(x = Date, y = maxVelocity, group = 1, 
                    text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "maxVelocity: ", maxVelocity))) + 
-        geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() + xlab("") +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
-        scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Max Velocity Over Time")
+        geom_point(aes(color = Activity), size = 4) + geom_line() + xlab("") + scale_color_manual(values = c("#FFCC00", "#003366")) +
+        theme(axis.text.x = element_text(angle = 45, hjust = 1)) + theme_bw()
       ggplotly(p8, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
     
@@ -500,9 +496,8 @@ server <- function(input, output, session) {
       p8 <- Data() %>% filter(Name == input$player, maxVelocity < 20, maxVelocity != 0) %>% 
         ggplot(aes(x = Date, y = distanceHSR, group = 1, 
                    text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "distanceHSR: ", distanceHSR))) + 
-        geom_point(aes(color = Activity), size = 4) + geom_line() + theme_bw() + xlab("") +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5)) + 
-        scale_color_manual(values = c("#FFCC00", "#003366")) + ggtitle("Max Velocity Over Time")
+        geom_point(aes(color = Activity), size = 4) + geom_line() + xlab("") + scale_color_manual(values = c("#FFCC00", "#003366")) +
+        theme(axis.text.x = element_text(angle = 45, hjust = 1)) + theme_bw()
       ggplotly(p8, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
     
@@ -512,9 +507,9 @@ server <- function(input, output, session) {
         mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>%
         ggplot(aes(x=gameCode, y=playerLoad, text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "playerLoad: ", 
                     playerLoad))) + geom_jitter(width = 0.1, alpha = 0.4, size = 3, color = "#003366") +
-        stat_summary(fun=mean, colour="#FFCC00", size = 2, geom="line", aes(group = 1, shape = "Mean")) + theme_bw() + 
+        stat_summary(fun=mean, colour="#FFCC00", size = 2, geom="line", aes(group = 1, shape = "Mean")) + 
         xlab("") + scale_shape_manual("", values=c("Mean"="x")) +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5))
+        theme(axis.text.x = element_text(angle = 45, hjust = 1)) + theme_bw()
       ggplotly(p9, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
     
@@ -525,9 +520,9 @@ server <- function(input, output, session) {
         mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>% 
         ggplot(aes(x=gameCode, y=maxVelocity, text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "maxVelocity: ", 
                     maxVelocity))) + geom_jitter(width = 0.1, alpha = 0.4, size = 3, color = "#003366") +
-        stat_summary(fun=mean, colour="#FFCC00", size = 2, geom="line", aes(group = 1, shape = "Mean")) + theme_bw() + 
+        stat_summary(fun=mean, colour="#FFCC00", size = 2, geom="line", aes(group = 1, shape = "Mean")) + 
         xlab("") + scale_shape_manual("", values=c("Mean"="x")) +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5))
+        theme(axis.text.x = element_text(angle = 45, hjust = 1)) + theme_bw()
       ggplotly(p10, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
     
@@ -538,9 +533,9 @@ server <- function(input, output, session) {
         mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>% 
         ggplot(aes(x=gameCode, y=distanceHSR, text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "distanceHSR: ", 
               distanceHSR))) + geom_jitter(width = 0.1, alpha = 0.4, size = 3, color = "#003366") +
-        stat_summary(fun=mean, colour="#FFCC00", size = 2, geom="line", aes(group = 1, shape = "Mean")) + theme_bw() + 
+        stat_summary(fun=mean, colour="#FFCC00", size = 2, geom="line", aes(group = 1, shape = "Mean")) + 
         xlab("") + scale_shape_manual("", values=c("Mean"="x")) +
-        theme(axis.text.x = element_text(angle = 45, hjust = 1), plot.title = element_text(hjust = 0.5))
+        theme(axis.text.x = element_text(angle = 45, hjust = 1)) + theme_bw()
       ggplotly(p11, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
     
@@ -552,14 +547,15 @@ server <- function(input, output, session) {
       )
       
       p12 <- Data() %>% filter(Name == input$player) %>%
-        mutate(Acute = round(EMA(playerLoad, as.integer(input$acute)), 2), Chronic = round(EMA(playerLoad, as.integer(input$acute)*4), 2), ACWR = round(Acute/Chronic, 2)) %>%
+        mutate(Acute = round(EMA(playerLoad, as.integer(input$acute)), 2), 
+               Chronic = round(EMA(playerLoad, as.integer(input$acute)*4), 2), ACWR = round(Acute/Chronic, 2)) %>%
         filter(!is.na(Chronic)) %>%
         ggplot(aes(Date, ACWR, text = paste0("Date: ", Date, "\n", "Acute: ", Acute, "\n", "Chronic: ", Chronic, "\n", "ACWR: ", ACWR))) + 
         geom_line(group = 1) + scale_y_continuous(breaks = seq(0.5, 1.5, 0.5), limits = c(0.5, 1.5)) + 
         geom_hline(aes(yintercept = input$acwr[1]), color = "#d95f02", alpha = 0.5) + 
         geom_hline(aes(yintercept = 1), color = "#308446", alpha = 0.5) +
-        geom_hline(aes(yintercept = input$acwr[2]), color = "#f03b20", alpha = 0.5) + ggtitle("ACWR Using Exponentially Weighted Moving Average") + 
-        xlab("") + ylab("ACWR") + theme_bw() + theme(plot.title = element_text(hjust = 0.5))
+        geom_hline(aes(yintercept = input$acwr[2]), color = "#f03b20", alpha = 0.5) + 
+        xlab("") + ylab("ACWR") + theme(axis.text.x = element_text(angle = 45, hjust = 1)) + theme_bw()
       ggplotly(p12, tooltip = "text") %>% config(displayModeBar = FALSE)
     })
 }
