@@ -11,4 +11,4 @@ ACWR: Acute-Chronic Workload Ratio is used in this app to monitor injury risk of
 
 
 
-See: [Catapult](https://www.catapultsports.com/) for more information on the wearable technology
+_See: [Catapult](https://www.catapultsports.com/) for more information on the wearable technology_
