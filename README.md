@@ -1,4 +1,4 @@
-<p><src="https://github.com/blg-uwm/Catapult/blob/master/www/logo.png" width="200" height="150"><img src= "https://github.com/blg-uwm/Catapult/blob/master/catapult%20logo.jpg" width="150" height="150"></p>
+<p><img src="https://github.com/blg-uwm/Catapult/blob/master/www/logo.png" width="200" height="150"><img align = "right" src= "https://github.com/blg-uwm/Catapult/blob/master/catapult%20logo.jpg" width="150" height="150"></p>
 
 # Catapult Shiny App
 
