@@ -121,7 +121,7 @@ ui <- dashboardPage(skin = "black", title = "Catapult",
                                tabPanel("Max Velocity by Game Code",
                                         withSpinner(plotlyOutput("TeamVelocityCode", height = "70vh"), type = 7, color = "#FFCC00", size = 2)
                                ),
-                               tabPanel("HSR by Game code",
+                               tabPanel("HSR by Game Code",
                                         withSpinner(plotlyOutput("TeamHSRCode", height = "70vh"), type = 7, color = "#FFCC00", size = 2)
                                )
                         )
@@ -427,7 +427,7 @@ server <- function(input, output, session) {
     output$TeamLoadCode <- renderPlotly({
       p4 <- Data() %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7")) %>% 
         mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>%
-        ggplot(aes(x=gameCode, y=playerLoad, text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "playerLoad: ", 
+        ggplot(aes(x=gameCode, y=playerLoad, text = paste0("Date: ", Date, "\n", "Name: ", Name, "\n", "playerLoad: ", 
                     playerLoad))) + geom_jitter(width = 0.1, alpha = 0.4, size = 3, color = "#003366") +
         stat_summary(fun=mean, colour="#FFCC00", size = 2, geom="line", aes(group = 1, shape = "Mean")) + 
         xlab("") + scale_shape_manual("", values=c("Mean"="x")) +
@@ -439,7 +439,7 @@ server <- function(input, output, session) {
     output$TeamVelocityCode <- renderPlotly({
       p5 <- Data() %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7"), maxVelocity < 20, maxVelocity != 0) %>% 
         mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>%
-        ggplot(aes(x=gameCode, y=maxVelocity, text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "maxVelocity: ", 
+        ggplot(aes(x=gameCode, y=maxVelocity, text = paste0("Date: ", Date, "\n", "Name: ", Name, "\n", "maxVelocity: ", 
                     maxVelocity))) + geom_jitter(width = 0.1, alpha = 0.4, size = 3, color = "#003366") +
         stat_summary(fun=mean, colour="#FFCC00", size = 2, geom="line", aes(group = 1, shape = "Mean")) + 
         xlab("") + scale_shape_manual("", values=c("Mean"="x")) +
@@ -451,7 +451,7 @@ server <- function(input, output, session) {
     output$TeamHSRCode <- renderPlotly({
       p6 <- Data() %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7"), maxVelocity < 20, maxVelocity != 0) %>% 
         mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>%
-        ggplot(aes(x=gameCode, y=distanceHSR, text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "distanceHSR: ", 
+        ggplot(aes(x=gameCode, y=distanceHSR, text = paste0("Date: ", Date, "\n", "Name: ", Name, "\n", "distanceHSR: ", 
               distanceHSR))) + geom_jitter(width = 0.1, alpha = 0.4, size = 3, color = "#003366") +
         stat_summary(fun=mean, colour="#FFCC00", size = 2, geom="line", aes(group = 1, shape = "Mean")) + 
         xlab("") + scale_shape_manual("", values=c("Mean"="x")) +
