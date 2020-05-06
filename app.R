@@ -505,8 +505,8 @@ server <- function(input, output, session) {
     output$PlayerLoadCode <- renderPlotly({
       p9 <- Data() %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7"), Name == input$player) %>% 
         mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>%
-        ggplot(aes(x=gameCode, y=playerLoad, text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "playerLoad: ", 
-                    playerLoad))) + geom_jitter(width = 0.1, alpha = 0.4, size = 3, color = "#003366") +
+        ggplot(aes(x=gameCode, y=playerLoad, text = paste0("Date: ", Date, "\n", "playerLoad: ", playerLoad))) + 
+        geom_jitter(width = 0.1, alpha = 0.4, size = 3, color = "#003366") +
         stat_summary(fun=mean, colour="#FFCC00", size = 2, geom="line", aes(group = 1, shape = "Mean")) + 
         xlab("") + scale_shape_manual("", values=c("Mean"="x")) +
         theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
@@ -518,8 +518,8 @@ server <- function(input, output, session) {
       p10 <- Data() %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7"), 
                               Name == input$player, maxVelocity < 20, maxVelocity != 0) %>% 
         mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>% 
-        ggplot(aes(x=gameCode, y=maxVelocity, text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "maxVelocity: ", 
-                    maxVelocity))) + geom_jitter(width = 0.1, alpha = 0.4, size = 3, color = "#003366") +
+        ggplot(aes(x=gameCode, y=maxVelocity, text = paste0("Date: ", Date, "\n", "maxVelocity: ", maxVelocity))) + 
+        geom_jitter(width = 0.1, alpha = 0.4, size = 3, color = "#003366") +
         stat_summary(fun=mean, colour="#FFCC00", size = 2, geom="line", aes(group = 1, shape = "Mean")) + 
         xlab("") + scale_shape_manual("", values=c("Mean"="x")) +
         theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
@@ -531,8 +531,8 @@ server <- function(input, output, session) {
       p11 <- Data() %>% filter(gameCode %in% c("G","G-1","G-2","G-3","G-4","G-5","G-6","G-7"), 
                                Name == input$player, maxVelocity < 20, maxVelocity != 0) %>% 
         mutate(gameCode = factor(gameCode, levels = c("G-7","G-6","G-5","G-4","G-3","G-2","G-1","G"))) %>% 
-        ggplot(aes(x=gameCode, y=distanceHSR, text = paste0("Date: ", Date, "\n", "gameCode: ", gameCode, "\n", "distanceHSR: ", 
-              distanceHSR))) + geom_jitter(width = 0.1, alpha = 0.4, size = 3, color = "#003366") +
+        ggplot(aes(x=gameCode, y=distanceHSR, text = paste0("Date: ", Date, "\n", "distanceHSR: ", distanceHSR))) + 
+        geom_jitter(width = 0.1, alpha = 0.4, size = 3, color = "#003366") +
         stat_summary(fun=mean, colour="#FFCC00", size = 2, geom="line", aes(group = 1, shape = "Mean")) + 
         xlab("") + scale_shape_manual("", values=c("Mean"="x")) +
         theme_bw() + theme(axis.text.x = element_text(angle = 45, hjust = 1))
