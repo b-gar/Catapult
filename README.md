@@ -1,10 +1,10 @@
 # Catapult Shiny App
-<p><img src="https://github.com/blg-uwm/Catapult/blob/master/www/logo.png" width="200" height="150"><img align = "right" src= "https://github.com/blg-uwm/Catapult/blob/master/catapult%20logo.jpg" width="150" height="150"></p>
+<p><img src="https://github.com/b-gar/Catapult/blob/master/www/logo.png" width="200" height="150"><img align = "right" src= "https://github.com/b-gar/Catapult/blob/master/catapult%20logo.jpg" width="150" height="150"></p>
 
 ### Shiny Application: https://bengarski.shinyapps.io/Catapult/
 
 #### Requirements: CSV files to upload into the Shiny App, exported from [Catapult Open Field](https://openfield.catapultsports.com/)
-* CSV files can be downloaded [here](https://github.com/blg-uwm/Catapult/tree/master/Catapult%20Demo%20Files) for testing out the app
+* CSV files can be downloaded [here](https://github.com/b-gar/Catapult/tree/master/Catapult%20Demo%20Files) for testing out the app
 
 <br>
 
